@@ -14,6 +14,6 @@ public class Group {
 	}
 	
 	public String toString() {
-		return "Group with name:" + firstName;
+		return "Group with name: " + firstName;
 	}
 }
