@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 public class VkGroupStatApplication {
 
 	public static void main(String[] args) {
