@@ -30,7 +30,7 @@ public class StockController {
 		return group.toString();
 	}
 	
-	@RequestMapping("/parse")
+	@RequestMapping("/parse")  
 	public String returnSubs(@RequestParam String groupName) {
 		return service.returnSubs(groupName);
 	}

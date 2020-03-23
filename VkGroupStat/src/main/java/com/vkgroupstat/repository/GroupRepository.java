@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.vkgroupstat.VkGroupStatApplication;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.vkconnection.VkConnection;
 
