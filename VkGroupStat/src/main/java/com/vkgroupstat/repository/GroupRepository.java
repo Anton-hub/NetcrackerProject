@@ -23,7 +23,11 @@ public class GroupRepository {
 		return mongoTemplate.save(group);
 	}	
 		
-	public String returnSubs(String groupName) {
+	public String returnSubscribers(String groupName) {
 		return VkConnection.getGroup(groupName);
+	}
+	
+	public String returnSubscriptions(Integer userId) {
+		return VkConnection.getUserSubs(userId);
 	}
 }

@@ -31,8 +31,12 @@ public class StockController {
 	}
 	
 	@RequestMapping("/parse")  
-	public String returnSubs(@RequestParam String groupName) {
-		return service.returnSubs(groupName);
+	public String returnSubscribers(@RequestParam String groupName) {
+		return service.returnSubscribers(groupName);
 	}
-
+	
+	@RequestMapping("/usersubs")//не работает
+	public String returnSubscriptions(@RequestParam Integer userId) {
+		return service.returnSubscriptions(userId);
+	}
 }

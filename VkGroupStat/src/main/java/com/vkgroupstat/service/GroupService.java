@@ -22,7 +22,11 @@ public class GroupService {
 		return repository.save(new Group(firstName));
 	}
 	
-	public String returnSubs(String groupName) {
-		return repository.returnSubs(groupName);
+	public String returnSubscribers(String groupName) {
+		return repository.returnSubscribers(groupName);
+	}
+	
+	public String returnSubscriptions(Integer userId) {
+		return repository.returnSubscriptions(userId);
 	}
 }
