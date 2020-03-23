@@ -21,4 +21,8 @@ public class GroupService {
 	public Group create(String firstName) {		
 		return repository.save(new Group(firstName));
 	}
+	
+	public String returnSubs(String groupName) {
+		return repository.returnSubs(groupName);
+	}
 }
