@@ -1,6 +1,10 @@
 package com.vkgroupstat.vkconnection;
 
-import com.vkgroupstat.model.Group;
+import com.vk.api.sdk.client.TransportClient;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.ServiceActor;
+import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.httpclient.HttpTransportClient;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,6 +16,26 @@ import org.json.*;
 public class VkConnection {
 
 	private static String token = "b8188fe1b8188fe1b8188fe1ffb868d748bb818b8188fe1e6699966a9d9035f1e14fbda";
+	
+	public static String getGroupVkSdk(String groupName) {
+		
+		ServiceActor actor = new ServiceActor(7362729, token);
+		VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
+		
+		String response = "";
+		
+		try {
+			response = vk.groups()
+						.getMembers(actor)
+						.groupId(groupName)
+						.unsafeParam("access_token", actor.getAccessToken())//без этого выдает ошибку
+						.offset(0)
+						.executeAsString();
+		} catch (ClientException e) {
+			e.printStackTrace();
+		}
+		return response;
+	}
 	
 	public static String getGroup(String groupName) {
 		Integer offset = 0;

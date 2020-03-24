@@ -24,7 +24,7 @@ public class GroupRepository {
 	}	
 		
 	public String returnSubscribers(String groupName) {
-		return VkConnection.getGroup(groupName);
+		return VkConnection.getGroupVkSdk(groupName);
 	}
 	
 	public String returnSubscriptions(Integer userId) {
