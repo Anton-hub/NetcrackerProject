@@ -1,6 +1,5 @@
 package com.vkgroupstat.vkconnection;
 
-import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -9,6 +8,7 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.apache.commons.io.IOUtils;
 import org.json.*;
@@ -16,52 +16,42 @@ import org.json.*;
 public class VkConnection {
 
 	private static String token = "b8188fe1b8188fe1b8188fe1ffb868d748bb818b8188fe1e6699966a9d9035f1e14fbda";
+	private static ServiceActor actor = new ServiceActor(7362729, token);
+	private static VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
 	
 	public static String getGroupVkSdk(String groupName) {
-		
-		ServiceActor actor = new ServiceActor(7362729, token);
-		VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
-		
+		LinkedList <Integer> subIdArray = new LinkedList<Integer>();
+		Integer offset = 0;
+		Integer subCount = 0;
 		String response = "";
+		JSONObject jsonresponse = null;
 		
 		try {
-			response = vk.groups()
-						.getMembers(actor)
-						.groupId(groupName)
-						.unsafeParam("access_token", actor.getAccessToken())//без этого выдает ошибку
-						.offset(0)
-						.executeAsString();
+			response = vk.groups().getMembers(actor).groupId(groupName)
+						.unsafeParam("access_token", actor.getAccessToken()).offset(offset).executeAsString();
+			responseHandler(response, subIdArray);
+			jsonresponse = new JSONObject(response).getJSONObject("response");			
+			subCount = jsonresponse.getInt("count");
+			offset += 1000;
+			while (offset < subCount) {				
+				response = vk.groups().getMembers(actor).groupId(groupName)
+							.unsafeParam("access_token", actor.getAccessToken()).offset(offset).executeAsString();
+				responseHandler(response, subIdArray);
+				offset += 1000;
+			}
 		} catch (ClientException e) {
 			e.printStackTrace();
 		}
-		return response;
+		return subIdArray.toString();//можно использовать для засовывания, как массив, в документ монго
+	}
+	private static void responseHandler(String response, LinkedList <Integer> anyList) {
+		JSONObject jsonresponse = new JSONObject(response).getJSONObject("response");
+		Iterator<Object> items = jsonresponse.getJSONArray("items").iterator();
+		while (items.hasNext()) {
+			anyList.add((Integer)items.next());
+		}
 	}
 	
-	public static String getGroup(String groupName) {
-		Integer offset = 0;
-		Integer subscribersCount = 0;
-		
-		String staticPartUrl = "https://api.vk.com/method/groups.getMembers?group_id=" + groupName;
-		String dynPartUrl = staticPartUrl;
-		String response = null;
-		
-		try {			
-			dynPartUrl = staticPartUrl + "&access_token=" + token + "&v=5.103";
-			response = IOUtils.toString(new URL(dynPartUrl).openStream());
-			subscribersCount = new JSONObject(response).getJSONObject("response").getInt("count");
-			
-            do {
-            	dynPartUrl = staticPartUrl + "&offset=" + offset + "&access_token=" + token + "&v=5.103";
-            	response += "\n" + IOUtils.toString(new URL(dynPartUrl).openStream());
-				offset += 1000;
-			} while (offset < subscribersCount);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		response += "\n" + (offset / 1000); //количество запросов
-		return response;
-	}
 	public static String getUserSubs(Integer userId) {
 		String response = null;
 		String url = "https://api.vk.com/method/users.getSubscriptions?user_id=" + userId 
