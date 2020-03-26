@@ -38,4 +38,7 @@ public class GroupService {
 	public String returnSubscriptionsVkWorking(Integer userId) {
 		return repository.returnSubscriptionsVkWorking(userId);
 	}
+
+//	public String returnSubscriptionsVkWorkingAlmost(Integer userId) throws Exception{ return repository.returnSubscriptionsVkWorkingAlmost(userId);
+//	}
 }

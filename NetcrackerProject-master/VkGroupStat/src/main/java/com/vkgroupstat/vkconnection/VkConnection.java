@@ -1,5 +1,6 @@
 package com.vkgroupstat.vkconnection;
 
+import com.bluelinelabs.logansquare.LoganSquare;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -121,19 +122,20 @@ public class VkConnection {
 				e.printStackTrace();
 			}
 			JSONObject json = new JSONObject(response);
+			//Item items = new Item();
 			Person person = new Person();
-			person.setCount(json.getJSONObject("response").getInt("count"));
-			Item[] items = new Item[json.getJSONObject("response").getInt("count")];
-			StringBuilder[] name = new StringBuilder[100];
-			StringBuilder[] screen_name = new StringBuilder[100];
-			StringBuilder[] temp = new StringBuilder[100];
-			for (int i=0; i<json.getJSONObject("response").getInt("count"); i++) {
-				temp[i] = new StringBuilder(json.getJSONArray("items").getString(i));
+			person.setCount(json.getJSONObject("response").getJSONObject("groups").getInt("count"));
+			Item[] items = new Item[json.getJSONObject("response").getJSONObject("groups").getInt("count")];
+			StringBuilder[] id = new StringBuilder[200];
+			StringBuilder[] screen_name = new StringBuilder[200];
+			StringBuilder[] temp = new StringBuilder[200];
+			for (int i=0; i<json.getJSONObject("response").getJSONObject("groups").getInt("count"); i++) {
+				id[i] = new StringBuilder(json.getJSONObject("response").getJSONObject("groups").getJSONArray("items").getInt(i));
 				JSONObject jsonTemp = new JSONObject(temp[i].toString());
-				name[i] = new StringBuilder(jsonTemp.getJSONObject(temp[i].toString()).getString("name"));
-				screen_name[i] = new StringBuilder(jsonTemp.getJSONObject(temp[i].toString()).getString("screen_name"));
-				items[i].setName(name[i].toString());
-				items[i].setScreen_name(screen_name[i].toString());
+//				name[i] = new StringBuilder(jsonTemp.getJSONObject(temp[i].toString()).getString("name"));
+//				screen_name[i] = new StringBuilder(jsonTemp.getJSONObject(temp[i].toString()).getString("screen_name"));
+				items[i].setId(id[i].toString());
+				//items[i].setScreen_name(screen_name[i].toString());
 			}
 
 			person.setItems(items);
@@ -161,4 +163,47 @@ public class VkConnection {
 
 		return response;
 	}
+//	public static String getUserSubsVkSdkWorkingAlmost(Integer userId) throws Exception {
+//
+//		ServiceActor actor = new ServiceActor(7362729, token);
+//		VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
+//
+//		String response = "";
+//
+//		try {
+//			response = vk.users()
+//					.getSubscriptions(actor)
+//					.userId(userId)
+//					.unsafeParam("access_token", actor.getAccessToken())//без этого выдает ошибку
+//					.offset(200)
+//					.count(200)
+//					.executeAsString();
+//		} catch (ClientException e) {
+//			e.printStackTrace();
+//		}
+//		JSONArray jsonarray = new JSONArray(response);
+//	//	Person newPerson = LoganSquare.parse(response, Person.class);
+//		for (int i = 0; i < jsonarray.length(); i++) {
+//			JSONObject jsonModel = jsonarray.getJSONObject(i);
+//			String count = jsonModel.getString("count");
+//			JSONArray items = jsonModel.getJSONArray("items");
+//			String[] id = new String[items.length()];
+//			String[] name = new String[items.length()];
+//			String[] screen_name = new String[items.length()];
+//
+//
+//
+//			for(int j = 0; j < items.length(); j++){
+//				id[j] = jsonModel.getString("id");
+//				name[j] = jsonModel.getString("name");
+//				screen_name[j] = jsonModel.getString("screen_name");
+//			}
+//
+//
+//		}
+//		Person newPerson = LoganSquare.parse(response, Person.class);
+//		newPerson.say(); // print "Hi , World!"
+//		return response;
+//	}
+
 }

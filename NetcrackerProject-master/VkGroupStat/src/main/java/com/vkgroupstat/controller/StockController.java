@@ -52,4 +52,8 @@ public class StockController {
 	public String returnSubscriptionsVkWorking(@RequestParam Integer userId) {
 		return service.returnSubscriptionsVkWorking(userId);
 	}
+//	@RequestMapping("/usersubsworkingalmost")//в работе
+//	public String returnSubscriptionsVkWorkingAlmost(@RequestParam Integer userId) throws Exception{
+//		return service.returnSubscriptionsVkWorkingAlmost(userId);
+//	}
 }

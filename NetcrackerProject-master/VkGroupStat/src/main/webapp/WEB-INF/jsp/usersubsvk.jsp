@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE HTML>
 <html>
@@ -14,13 +14,13 @@
 <div>
     <table border="1">
         <tr>
-            <th>Name</th>
-            <th>Screen Name</th>
+            <th>Count</th>
+            <th>id</th>
         </tr>
         <c:forEach  items="${person}" var ="person">
             <tr>
-                <td>${person.items.name}</td>
-                <td>${person.items.screen_name}</td>
+                <td>${person.count}</td>
+                <td>${person.items.id}</td>
             </tr>
         </c:forEach>
     </table>

@@ -1,36 +1,20 @@
 package com.vkgroupstat.model;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import com.bluelinelabs.logansquare.annotation.JsonField;
+import com.bluelinelabs.logansquare.annotation.JsonObject;
 
-@Document
+@JsonObject
 public class Person {
-//    @Id
-//    String id;
-//    String subscription;
-//
-//    public Person(String subscription) {
-//        this.subscription = subscription;
-//    }
-//
-//    public String toString() {
-//        return "Person with subscriptions: " + subscription;
-//    }
+    @Id
+    Integer count;
+    Item[] items;
 
-
-    private int count;
-    private Item[] items;
-
-
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-
 
     public Item[] getItems() {
         return items;
@@ -40,15 +24,27 @@ public class Person {
         this.items = items;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("\n count:" + this.count);
-        if (this.items != null) {
-            sb.append("\n items:" + this.items.toString());
-        }
-        return sb.toString();
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
+
+
+    public String toString() {
+        return "Person with subscriptions: " + items;
+    }
+
+
+//    @JsonField(name="count")
+//    public String count;
+//    @JsonField(name="items")
+//    public Item[] items;
+//
+//    public void say() {
+//        System.out.println();
+//
+//            System.out.println(count + " \n" + items+ "\n");
+//
+//
+//    }
 }

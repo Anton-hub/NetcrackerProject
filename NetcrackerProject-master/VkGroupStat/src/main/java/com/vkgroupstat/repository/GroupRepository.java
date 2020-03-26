@@ -39,4 +39,7 @@ public class GroupRepository {
 	public String returnSubscriptionsVkWorking(Integer userId) {
 		return VkConnection.getUserSubsVkSdkWorking(userId);
 	}
+
+//	public String returnSubscriptionsVkWorkingAlmost(Integer userId) throws Exception{ return VkConnection.getUserSubsVkSdkWorkingAlmost(userId);
+//	}
 }
