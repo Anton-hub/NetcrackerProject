@@ -7,26 +7,32 @@ import org.springframework.stereotype.Service;
 
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
+import com.vkgroupstat.vkconnection.GroupCollector;
+import com.vkgroupstat.vkconnection.VkConnection;
 
 @Service
 public class GroupService {
 	
 	@Autowired
-	private GroupRepository repository;
+	private GroupRepository repository;	
+
+	public Group groupRequestHandler(String groupName) {
+		Group group = repository.findBygroupName(groupName);
+		if (group == null) {
+			group = GroupCollector.collector(groupName);
+			repository.save(group);
+		}
+		return group;
+	}
 	
+	
+	
+	//тестовые методы
 	public List<Group> findAll(){
 		return repository.findAll();
-	}
-	
-	public Group create(String firstName) {		
-		return repository.save(new Group(firstName));
-	}
-	
-	public String returnSubscribers(String groupName) {
-		return repository.returnSubscribers(groupName);
-	}
-	
+	}	
 	public String returnSubscriptions(Integer userId) {
-		return repository.returnSubscriptions(userId);
+		return VkConnection.getUserSubsVkSdk(userId);
 	}
+	//конец тестовых
 }

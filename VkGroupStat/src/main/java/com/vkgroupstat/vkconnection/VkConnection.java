@@ -5,6 +5,8 @@ import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 
+import io.netty.buffer.UnpooledByteBufAllocator;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -19,7 +21,7 @@ public class VkConnection {
 	private static ServiceActor actor = new ServiceActor(7362729, token);
 	private static VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
 	
-	public static String getGroupVkSdk(String groupName) {
+	public static LinkedList <Integer> getGroupVkSdk(String groupName) {
 		LinkedList <Integer> subIdArray = new LinkedList<Integer>();
 		Integer offset = 0;
 		Integer subCount = 0;
@@ -29,22 +31,22 @@ public class VkConnection {
 		try {
 			response = vk.groups().getMembers(actor).groupId(groupName)
 						.unsafeParam("access_token", actor.getAccessToken()).offset(offset).executeAsString();
-			responseHandler(response, subIdArray);
+			groupResponseHandler(response, subIdArray);
 			jsonresponse = new JSONObject(response).getJSONObject("response");			
 			subCount = jsonresponse.getInt("count");
 			offset += 1000;
 			while (offset < subCount) {				
 				response = vk.groups().getMembers(actor).groupId(groupName)
 							.unsafeParam("access_token", actor.getAccessToken()).offset(offset).executeAsString();
-				responseHandler(response, subIdArray);
+				groupResponseHandler(response, subIdArray);
 				offset += 1000;
 			}
 		} catch (ClientException e) {
 			e.printStackTrace();
 		}
-		return subIdArray.toString();//можно использовать для засовывания, как массив, в документ монго
+		return subIdArray;
 	}
-	private static void responseHandler(String response, LinkedList <Integer> anyList) {
+	private static void groupResponseHandler(String response, LinkedList <Integer> anyList) {
 		JSONObject jsonresponse = new JSONObject(response).getJSONObject("response");
 		Iterator<Object> items = jsonresponse.getJSONArray("items").iterator();
 		while (items.hasNext()) {
@@ -52,52 +54,38 @@ public class VkConnection {
 		}
 	}
 	
-	public static String getUserSubs(Integer userId) {
+	
+	public static String getUserSubsVkSdk(Integer userId) {
+		LinkedList<String> subsIdArray = new LinkedList<String>();
+		Integer subCount = 0;
+		Integer offset = 0;
 		String response = null;
-		String url = "https://api.vk.com/method/users.getSubscriptions?user_id=" + userId 
-						+ "&extended=1&count=200&access_token=" + token + "&v=5.103";
-		
+		JSONObject jsonresponse = null;
 		try {
-			response = IOUtils.toString(new URL(url).openStream());
-		} catch (IOException e) {
+			response = vk.users().getSubscriptionsExtended(actor)
+						.unsafeParam("access_token", actor.getAccessToken())
+						.userId(userId).count(200).offset(offset).executeAsString();
+			subCount = new JSONObject(response).getJSONObject("response").getInt("count");
+			userResponseHandler(response, subsIdArray);
+			if (subCount > 200) {
+				while (offset < subCount) {
+					offset += 200;
+					response = vk.users().getSubscriptionsExtended(actor)
+							.unsafeParam("access_token", actor.getAccessToken()).userId(userId).count(200)
+							.offset(offset).executeAsString();
+					userResponseHandler(response, subsIdArray);
+				}
+			}
+		} catch (ClientException e) {
 			e.printStackTrace();
 		}
-		JSONObject json = new JSONObject(response);
-		response = "";
-		Iterator<Object> items = json.getJSONObject("response").getJSONArray("items").iterator();
+		return subsIdArray.toString();
+	}
+	private static void userResponseHandler(String response, LinkedList <String> anyList) {
+		JSONObject jsonresponse = new JSONObject(response).getJSONObject("response");
+		Iterator<Object> items = jsonresponse.getJSONArray("items").iterator();
 		while (items.hasNext()) {
-			response += "\n" + ((JSONObject)items.next()).getString("screen_name"); //не видит screen_name
-		}//http://localhost:8080/usersubs?userId=169589685
-		return response;
-		
-		/*пример того как выглядит ответ на вызываемый метод
-		 * {
-  "response": {
-    "count": 37,
-    "items": [
-      {
-        "id": 125004421,
-        "name": "Настоящий Лентач",
-        "screen_name": "true_lentach",
-        "is_closed": 0,
-        "type": "page",
-        "photo_50": "https://sun9-11.userapi.com/c850020/v850020444/170e07/J8tqsBt-S-A.jpg?ava=1",
-        "photo_100": "https://sun9-20.userapi.com/c850020/v850020444/170e06/xEUdAaPYrcM.jpg?ava=1",
-        "photo_200": "https://sun9-54.userapi.com/c850020/v850020444/170e05/ex-Y2ubuSr0.jpg?ava=1"
-      },
-      {
-        "id": 29534144,
-        "name": "Лентач",
-        "screen_name": "lentach",
-        "is_closed": 0,
-        "type": "page",
-        "photo_50": "https://sun9-55.userapi.com/c205520/v205520309/6ba4a/7sggvySs-J4.jpg?ava=1",
-        "photo_100": "https://sun9-39.userapi.com/c205520/v205520309/6ba49/FZnT81BEgh0.jpg?ava=1",
-        "photo_200": "https://sun9-50.userapi.com/c205520/v205520309/6ba48/hd6ghzm5Lnw.jpg?ava=1"
-      }
-    ]
-  }
-}
-		 */
+			anyList.add(((JSONObject)items.next()).getString("screen_name"));
+		}
 	}
 }

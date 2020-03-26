@@ -1,5 +1,7 @@
 package com.vkgroupstat.controller;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,31 +14,29 @@ import com.vkgroupstat.service.GroupService;
 public class StockController {
 
 	@Autowired
-	GroupService service;
+	GroupService service;	
 	
+	@RequestMapping("/findgroup")
+	public String returnSubscriptions(@RequestParam String groupName) {
+		Group group = service.groupRequestHandler(groupName);
+		return group.getUsers().length + "<br>" + group.getGroupName() + "<br><br>" 
+				+ Arrays.asList(group.getUsers()).toString();
+	}
+	
+	
+	
+	//тестовые методы
 	@RequestMapping("/")
 	public String getHello() {
 		return "Hello";
-	}
-	
+	}	
 	@RequestMapping("/all")
 	public String all() {
 		return service.findAll().toString();
-	}
-	
-	@RequestMapping("/create")
-	public String create(@RequestParam String firstName) {
-		Group group = service.create(firstName);
-		return group.toString();
-	}
-	
-	@RequestMapping("/parse")  
-	public String returnSubscribers(@RequestParam String groupName) {
-		return service.returnSubscribers(groupName);
-	}
-	
-	@RequestMapping("/usersubs")//не работает
+	}	
+	@RequestMapping("/usersubs")
 	public String returnSubscriptions(@RequestParam Integer userId) {
 		return service.returnSubscriptions(userId);
 	}
+	//конец тестовых
 }
