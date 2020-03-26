@@ -122,24 +122,15 @@ public class VkConnection {
 				e.printStackTrace();
 			}
 			JSONObject json = new JSONObject(response);
-			//Item items = new Item();
 			Person person = new Person();
 			person.setCount(json.getJSONObject("response").getJSONObject("groups").getInt("count"));
 			Item[] items = new Item[json.getJSONObject("response").getJSONObject("groups").getInt("count")];
 			StringBuilder[] id = new StringBuilder[200];
-			StringBuilder[] screen_name = new StringBuilder[200];
-			StringBuilder[] temp = new StringBuilder[200];
 			for (int i=0; i<json.getJSONObject("response").getJSONObject("groups").getInt("count"); i++) {
 				id[i] = new StringBuilder(json.getJSONObject("response").getJSONObject("groups").getJSONArray("items").getInt(i));
-				JSONObject jsonTemp = new JSONObject(temp[i].toString());
-//				name[i] = new StringBuilder(jsonTemp.getJSONObject(temp[i].toString()).getString("name"));
-//				screen_name[i] = new StringBuilder(jsonTemp.getJSONObject(temp[i].toString()).getString("screen_name"));
 				items[i].setId(id[i].toString());
-				//items[i].setScreen_name(screen_name[i].toString());
 			}
-
 			person.setItems(items);
-
 			return person;
 		}
 	public static String getUserSubsVkSdkWorking(Integer userId) {
