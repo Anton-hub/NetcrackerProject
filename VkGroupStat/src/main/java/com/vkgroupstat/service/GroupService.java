@@ -12,8 +12,11 @@ import com.vkgroupstat.vkconnection.*;
 @Service
 public class GroupService {
 	
-	@Autowired
-	private GroupRepository repository;	
+	
+	private final GroupRepository repository;	
+	public GroupService(GroupRepository repository) {
+		this.repository = repository;
+	}
 
 	public Group groupRequestHandler(String groupName) {
 		Group group = repository.findBygroupName(groupName);

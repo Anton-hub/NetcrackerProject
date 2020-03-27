@@ -13,9 +13,12 @@ import com.vkgroupstat.service.GroupService;
 @RestController
 public class StockController {
 
-	@Autowired
-	GroupService service;	
-	
+	private final GroupService service;		
+	public StockController(GroupService service) {
+		this.service = service;
+	}
+
+
 	@RequestMapping("/findgroup")
 	public String returnSubscriptions(@RequestParam String groupName) {
 		Group group = service.groupRequestHandler(groupName);
