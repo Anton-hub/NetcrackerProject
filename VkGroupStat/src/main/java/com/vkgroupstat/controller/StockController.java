@@ -38,5 +38,9 @@ public class StockController {
 	public String returnSubscriptions(@RequestParam Integer userId) {
 		return service.returnSubscriptions(userId);
 	}
+	@RequestMapping("/conc")
+	public String testConc(@RequestParam String groupName) {
+		return service.testConc(groupName);
+	}
 	//конец тестовых
 }

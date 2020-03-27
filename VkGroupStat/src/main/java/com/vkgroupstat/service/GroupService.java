@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
-import com.vkgroupstat.vkconnection.GroupCollector;
-import com.vkgroupstat.vkconnection.VkConnection;
+import com.vkgroupstat.vkconnection.*;
 
 @Service
 public class GroupService {
@@ -33,6 +32,9 @@ public class GroupService {
 	}	
 	public String returnSubscriptions(Integer userId) {
 		return VkConnection.getUserSubsVkSdk(userId);
+	}
+	public String testConc(String groupName) {
+		return TestConcurrent.test(groupName);
 	}
 	//конец тестовых
 }

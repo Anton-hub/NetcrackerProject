@@ -5,14 +5,9 @@ import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 
-import io.netty.buffer.UnpooledByteBufAllocator;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.apache.commons.io.IOUtils;
 import org.json.*;
 
 public class VkConnection {
@@ -26,14 +21,11 @@ public class VkConnection {
 		Integer offset = 0;
 		Integer subCount = 0;
 		String response = "";
-		JSONObject jsonresponse = null;
-		
 		try {
 			response = vk.groups().getMembers(actor).groupId(groupName)
 						.unsafeParam("access_token", actor.getAccessToken()).offset(offset).executeAsString();
-			groupResponseHandler(response, subIdArray);
-			jsonresponse = new JSONObject(response).getJSONObject("response");			
-			subCount = jsonresponse.getInt("count");
+			groupResponseHandler(response, subIdArray);		
+			subCount = new JSONObject(response).getJSONObject("response").getInt("count");
 			offset += 1000;
 			while (offset < subCount) {				
 				response = vk.groups().getMembers(actor).groupId(groupName)
@@ -53,14 +45,12 @@ public class VkConnection {
 			anyList.add((Integer)items.next());
 		}
 	}
-	
-	
+		
 	public static String getUserSubsVkSdk(Integer userId) {
 		LinkedList<String> subsIdArray = new LinkedList<String>();
 		Integer subCount = 0;
 		Integer offset = 0;
 		String response = null;
-		JSONObject jsonresponse = null;
 		try {
 			response = vk.users().getSubscriptionsExtended(actor)
 						.unsafeParam("access_token", actor.getAccessToken())
