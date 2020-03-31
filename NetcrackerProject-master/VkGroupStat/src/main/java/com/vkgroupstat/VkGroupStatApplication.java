@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
-@SpringBootApplication(scanBasePackages = "com.vkgroupstat")
+@SpringBootApplication
 public class VkGroupStatApplication {
 
 	public static void main(String[] args) {

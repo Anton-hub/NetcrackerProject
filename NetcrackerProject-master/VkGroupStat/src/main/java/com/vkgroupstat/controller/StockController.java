@@ -3,12 +3,11 @@ package com.vkgroupstat.controller;
 import com.vkgroupstat.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.service.GroupService;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @RestController
@@ -16,12 +15,26 @@ public class StockController {
 	private static Person person = new Person();
 	@Autowired
 	GroupService service;
-	
-	@RequestMapping("/")
-	public String getHello() {
-		return "Hello";
+
+	@GetMapping
+	public String index() {
+
+		return "redirect:/index";
 	}
-	
+
+	@GetMapping("/index")
+	public String getIndexr() {
+
+		return "index.html";
+	}
+
+//@RequestMapping({"/index", "/"})
+//public ModelAndView index() {
+////	logger.info("Loading view: index");
+//	ModelAndView modelAndView = new ModelAndView();
+//	modelAndView.setViewName("index");
+//	return modelAndView;
+//}
 	@RequestMapping("/all")
 	public String all() {
 		return service.findAll().toString();
