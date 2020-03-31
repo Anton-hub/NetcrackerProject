@@ -36,14 +36,14 @@ public class StockController {
 	@RequestMapping("/all")
 	public String all() {
 		return service.findAll().toString();
-	}	
-	@RequestMapping("/usersubs")
-	public String returnSubscriptions(@RequestParam Integer userId) {
-		return service.returnSubscriptions(userId);
 	}
-	@RequestMapping("/conc")
-	public String testConc(@RequestParam String groupName) {
-		return service.testConc(groupName);
+	@RequestMapping("/usersubsint")
+	public String returnSubscriptionsInt(@RequestParam Integer userId) {
+		return service.returnSubscriptionsInt(userId);
+	}
+	@RequestMapping("/test")
+	public String test(@RequestParam String groupName) {
+		return service.testMainFunctional(groupName);
 	}
 	//конец тестовых
 }

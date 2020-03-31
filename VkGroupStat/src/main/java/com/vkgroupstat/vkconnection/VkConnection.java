@@ -5,8 +5,10 @@ import com.vk.api.sdk.client.actors.ServiceActor;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import org.json.*;
 
@@ -45,37 +47,32 @@ public class VkConnection {
 			anyList.add((Integer)items.next());
 		}
 	}
-		
-	public static String getUserSubsVkSdk(Integer userId) {
-		LinkedList<String> subsIdArray = new LinkedList<String>();
-		Integer subCount = 0;
-		Integer offset = 0;
+	
+	public static LinkedList<String> getUserSubsVkSdk(Integer userId) {
+		LinkedList<String> subsIdArray = null;
 		String response = null;
 		try {
-			response = vk.users().getSubscriptionsExtended(actor)
-						.unsafeParam("access_token", actor.getAccessToken())
-						.userId(userId).count(200).offset(offset).executeAsString();
-			subCount = new JSONObject(response).getJSONObject("response").getInt("count");
-			userResponseHandler(response, subsIdArray);
-			if (subCount > 200) {
-				while (offset < subCount) {
-					offset += 200;
-					response = vk.users().getSubscriptionsExtended(actor)
-							.unsafeParam("access_token", actor.getAccessToken()).userId(userId).count(200)
-							.offset(offset).executeAsString();
-					userResponseHandler(response, subsIdArray);
-				}
-			}
+			response = vk.users()
+							.getSubscriptions(actor)
+							.unsafeParam("access_token", actor.getAccessToken())
+							.userId(userId)
+							.count(200)
+							.executeAsString();			
 		} catch (ClientException e) {
 			e.printStackTrace();
 		}
-		return subsIdArray.toString();
-	}
-	private static void userResponseHandler(String response, LinkedList <String> anyList) {
-		JSONObject jsonresponse = new JSONObject(response).getJSONObject("response");
-		Iterator<Object> items = jsonresponse.getJSONArray("items").iterator();
-		while (items.hasNext()) {
-			anyList.add(((JSONObject)items.next()).getString("screen_name"));
-		}
+		if (response.contains("error"))
+			return null;
+		subsIdArray = new LinkedList<String>(Arrays.asList(
+							new JSONObject(response)
+							.getJSONObject("response")
+							.getJSONObject("groups")
+							.getJSONArray("items") 
+							.toString()
+							.substring(1)
+							.split(",")));
+		subsIdArray.set(subsIdArray.size()-1, subsIdArray.get(subsIdArray.size()-1).replaceFirst("]", ""));
+		//LinkedList<Integer> intSubsIdArray = new LinkedList<Integer>(subsIdArray.stream().map(Integer::valueOf).collect(Collectors.toList()));
+		return subsIdArray;
 	}
 }
