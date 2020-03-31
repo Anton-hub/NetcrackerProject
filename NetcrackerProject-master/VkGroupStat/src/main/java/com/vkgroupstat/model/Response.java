@@ -28,9 +28,9 @@ public class Response {
 
     @Override
     public String toString() {
-        return "Response{" +
+//        return "Response{" +
 //                "Users='" + users + '\'' +
-                "Groups='" + groups + '\'' +
+           return "Groups{" + groups + '\'' +
                 '}';
     }
 }

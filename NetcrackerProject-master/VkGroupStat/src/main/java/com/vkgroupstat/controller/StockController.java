@@ -4,7 +4,6 @@ import com.vkgroupstat.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.service.GroupService;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +22,7 @@ public class StockController {
 	}
 
 	@GetMapping("/index")
-	public String getIndexr() {
+	public String getIndex() {
 
 		return "index.html";
 	}

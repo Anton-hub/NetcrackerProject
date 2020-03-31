@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 import com.vkgroupstat.model.Item;
 import com.vkgroupstat.model.Person;
+import com.vkgroupstat.parser.JacksonDataBind;
 import org.apache.commons.io.IOUtils;
 import org.json.*;
 
@@ -151,7 +152,7 @@ public class VkConnection {
 		} catch (ClientException e) {
 			e.printStackTrace();
 		}
-
+		JacksonDataBind.parseJson(response);
 		return response;
 	}
 //	public static String getUserSubsVkSdkWorkingAlmost(Integer userId) throws Exception {
