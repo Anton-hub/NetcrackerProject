@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,13 +12,13 @@ import java.util.stream.Collectors;
 
 public class СoncurrentParse {
 	LinkedList<Integer> in; 
-	LinkedHashMap<String, Integer> out = new LinkedHashMap<String, Integer>(); 
+	LinkedHashMap<Integer, Integer> out = new LinkedHashMap<Integer, Integer>(); 
 	
 	public СoncurrentParse(LinkedList<Integer> list) {
 		in = new LinkedList<Integer>(list);
 	}
 	
-	public LinkedHashMap<String, Integer> start() {
+	public LinkedHashMap<Integer, Integer> start() {
 		ExecutorService executor = Executors.newCachedThreadPool();
 		
 		for (int i = 0 ; i < 15 ; i++)
@@ -41,9 +42,8 @@ public class СoncurrentParse {
 	
 	class Worker implements Runnable {
 		LinkedList<Integer> threadIn = new LinkedList<Integer>();
-		LinkedHashMap<String, Integer> threadOut = new LinkedHashMap<String, Integer>();
-		LinkedList<String> temp = new LinkedList<String>();
-		
+		LinkedHashMap<Integer, Integer> threadOut = new LinkedHashMap<Integer, Integer>();
+		List<Integer> temp;
 		int count = 0;
 		
 		public void run() {
@@ -62,13 +62,13 @@ public class СoncurrentParse {
 					if (temp == null)
 						continue;
 					while(temp.size() > 0) {
-						threadOut.merge(temp.remove(), 1, (oldVal, newVal) -> oldVal + newVal);						
+						threadOut.merge(temp.remove(0), 1, (oldVal, newVal) -> oldVal + newVal);						
 					}					
 				}
 			}	
 			
 			synchronized (out) {
-				for (Map.Entry<String, Integer> entry : threadOut.entrySet()) {
+				for (Map.Entry<Integer, Integer> entry : threadOut.entrySet()) {
 			        out.merge(entry.getKey(), entry.getValue(), (oldVal, newVal) -> oldVal + newVal);           
 			    }				
 			}

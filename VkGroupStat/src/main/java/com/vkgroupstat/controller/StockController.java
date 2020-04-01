@@ -2,7 +2,6 @@ package com.vkgroupstat.controller;
 
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +43,10 @@ public class StockController {
 	@RequestMapping("/test")
 	public String test(@RequestParam String groupName) {
 		return service.testMainFunctional(groupName);
+	}
+	@RequestMapping("/testnew")
+	public String testss(@RequestParam String groupName) {
+		return service.returnSubsnew(groupName);
 	}
 	//конец тестовых
 }
