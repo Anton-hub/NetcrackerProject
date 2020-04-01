@@ -2,6 +2,7 @@ package com.vkgroupstat.controller;
 
 import com.vkgroupstat.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.vkgroupstat.model.Group;
@@ -9,11 +10,14 @@ import com.vkgroupstat.service.GroupService;
 import org.springframework.web.servlet.ModelAndView;
 
 
-@RestController
+@Controller
 public class StockController {
 	private static Person person = new Person();
-	@Autowired
-	GroupService service;
+	final GroupService service;
+
+	public StockController(GroupService service) {
+		this.service = service;
+	}
 
 	@GetMapping
 	public String index() {
@@ -24,7 +28,7 @@ public class StockController {
 	@GetMapping("/index")
 	public String getIndex() {
 
-		return "index.html";
+		return "index";
 	}
 
 //@RequestMapping({"/index", "/"})
