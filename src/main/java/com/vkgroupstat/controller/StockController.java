@@ -30,6 +30,11 @@ public class StockController {
 
 		return "index";
 	}
+	@GetMapping("/search")
+	public String getSearch() {
+
+		return "search";
+	}
 
 //@RequestMapping({"/index", "/"})
 //public ModelAndView index() {
