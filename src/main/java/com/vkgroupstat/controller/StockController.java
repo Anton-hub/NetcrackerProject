@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Controller
+@RestController
 public class StockController {
 	private final GroupService service;
 	public StockController(GroupService service) {
@@ -33,35 +33,20 @@ public class StockController {
 //				+ Arrays.asList(group.getUsers()).toString();
 //	}
 	@PostMapping("/findgroup")
-	@ResponseBody
-	public  String getSearchResultViaAjax( SearchCriteria search) {
+
+	public  String getSearchResultViaAjax(@RequestBody SearchCriteria search)  {
 
 
 
 
-		Group group = service.groupRequestHandler(search.getGroupId());
+		Group group = service.groupRequestHandler(search.getGroupName());
 
 
 		return group.toString();
 
 	}
 
-	@GetMapping
-	public String index() {
 
-		return "redirect:/index";
-	}
-
-	@GetMapping("/index")
-	public String getIndex() {
-
-		return "index";
-	}
-	@GetMapping("/search")
-	public String getSearch() {
-
-		return "search";
-	}
 
 //@RequestMapping({"/index", "/"})
 //public ModelAndView index() {
