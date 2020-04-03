@@ -56,13 +56,14 @@ public class VkConnection {
 						.getGroups()
 						.getItems();
 		} catch (ApiException | ClientException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.err.println(e);
 			return null;
 		}
 		return subsIdArray;
 	}
 	
-	public static List<GroupFull> getGroupInfo(Collection<Integer> keySet, String parameter) {
+	public static List<GroupFull> getGroupsInfo(Collection<Integer> keySet, String parameter) {
 		Collection<String> stringList = keySet.stream().map(Object::toString).collect(Collectors.toList());
 		List<GroupFull> response;
 		try {
@@ -71,6 +72,21 @@ public class VkConnection {
 					.groupIds(stringList.toArray(new String[0]))
 					//.fields(GroupField.valueOf(parameter))
 					.execute();
+		} catch (ApiException | ClientException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return response;
+	}
+	
+	public static GroupFull getGroupInfo(String groupSreenName) {
+		GroupFull response;
+		try {
+			response = vk.groups()
+					.getById(actor)
+					.groupId(groupSreenName)
+					.execute()
+					.get(0);
 		} catch (ApiException | ClientException e) {
 			e.printStackTrace();
 			return null;

@@ -1,13 +1,12 @@
 package com.vkgroupstat.controller;
 
-import java.util.Arrays;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.service.GroupService;
+import com.vkgroupstat.vkconnection.Convertor;
 
 @RestController
 public class StockController {
@@ -21,8 +20,7 @@ public class StockController {
 	@RequestMapping("/findgroup")
 	public String returnSubscriptions(@RequestParam String groupName) {
 		Group group = service.groupRequestHandler(groupName);
-		return group.getUsers().length + "<br>" + group.getGroupName() + "<br><br>" 
-				+ Arrays.asList(group.getUsers()).toString();
+		return Convertor.groupParse(group);
 	}
 	
 	
@@ -32,10 +30,6 @@ public class StockController {
 	public String getHello() {
 		return "Hello";
 	}	
-	@RequestMapping("/all")
-	public String all() {
-		return service.findAll().toString();
-	}
 	@RequestMapping("/usersubsint")
 	public String returnSubscriptionsInt(@RequestParam Integer userId) {
 		return service.returnSubscriptionsInt(userId);

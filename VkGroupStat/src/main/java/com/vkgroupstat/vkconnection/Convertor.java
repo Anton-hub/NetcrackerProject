@@ -5,8 +5,17 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
+import com.vkgroupstat.model.Group;
 
-public class GroupListCollector {
+//класс для тестового вывода
+public class Convertor {
+	public static String groupParse(Group group) {
+		String out = "";
+		out += VkConnection.getGroupInfo(group.getGroupName()).getName() + "\n<br>";
+		out += group.getSavingDate().toString() + "\n<br><br>";
+		out += stringOut(collect(group.getRangeList(), 20));		
+		return out;
+	}
 	public static LinkedHashMap<String, Integer> collect(LinkedHashMap<Integer, Integer> handledMap, Integer size){
 		
 		LinkedList<Integer> keyHolder = new LinkedList<Integer>();
@@ -24,7 +33,7 @@ public class GroupListCollector {
 				break;
 			}				
 		}
-		LinkedList<GroupFull> groupInfoHolder = new LinkedList<GroupFull>(VkConnection.getGroupInfo(keyHolder, "name"));
+		LinkedList<GroupFull> groupInfoHolder = new LinkedList<GroupFull>(VkConnection.getGroupsInfo(keyHolder, "name"));
 		while ((keyHolder.size() > 0) && (valueHolder.size() > 0)) {
 			result.put(groupInfoHolder.removeFirst().getName(), valueHolder.removeFirst());
 		}
@@ -34,8 +43,9 @@ public class GroupListCollector {
 	
 	public static String stringOut(LinkedHashMap<String, Integer> handledMap) {
 		String response = "";
+		int count = 0;
 		for (Map.Entry<String, Integer> entry : handledMap.entrySet())
-			response += entry.getKey() + " - " + entry.getValue() + "<br>";
+			response += ++count + ".  " + entry.getKey() + " - " + entry.getValue() + "<br>";
 		return response;
 	}
 }
