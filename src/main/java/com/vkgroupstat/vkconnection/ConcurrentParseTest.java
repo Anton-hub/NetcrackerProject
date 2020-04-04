@@ -1,26 +1,44 @@
 package com.vkgroupstat.vkconnection;
 
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.ServiceActor;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.httpclient.HttpTransportClient;
+
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class СoncurrentParse {
+//В РАЗРАБОТКЕ!!!
+public class ConcurrentParseTest {
 	LinkedList<Integer> in; 
 	LinkedHashMap<Integer, Integer> out = new LinkedHashMap<Integer, Integer>(); 
+	String token1 = "ad2deb63ad2deb63ad2deb63ebad5d5087aad2dad2deb63f3abd5d8d7b7c18a57ddd0c0";
+	Integer id1 = 7388132;
+	String token2 = "b6166003b6166003b61660038eb666dbeabb616b6166003e8905f92ed1c7d66665201ff";
+	Integer id2 = 7388137;
+	String token3 = "ceae46b0ceae46b0ceae46b000cedefd5bcceaeceae46b09028796c9682837c82621528";
+	Integer id3 = 7388139;
+//	String token4 = "ad2deb63ad2deb63ad2deb63ebad5d5087aad2dad2deb63f3abd5d8d7b7c18a57ddd0c0";
+//	Integer id4 = 7388132;
+//	String token5 = "ad2deb63ad2deb63ad2deb63ebad5d5087aad2dad2deb63f3abd5d8d7b7c18a57ddd0c0";
+//	Integer id5 = 7388132;
 	
-	public СoncurrentParse(LinkedList<Integer> list) {
+	public ConcurrentParseTest(LinkedList<Integer> list) {
 		in = new LinkedList<Integer>(list);
 	}
 	
 	public LinkedHashMap<Integer, Integer> start() {
 		ExecutorService executor = Executors.newCachedThreadPool();
+		executor.execute(new Worker(id1, token1));
+		executor.execute(new Worker(id2, token2));
+		executor.execute(new Worker(id3, token3));
 		
-		for (int i = 0 ; i < 100 ; i++)
-			executor.execute(new Worker());
 		
 		executor.shutdown();
-		while (!executor.isTerminated()) {//??
+		while (!executor.isTerminated()) {
 			try {
 				Thread.sleep(100);
 			} catch (Exception e) {
@@ -39,21 +57,29 @@ public class СoncurrentParse {
 		LinkedList<Integer> threadIn = new LinkedList<Integer>();
 		LinkedHashMap<Integer, Integer> threadOut = new LinkedHashMap<Integer, Integer>();
 		List<Integer> temp;
-		int count = 0;
+		int count = 0;	
+		
+		ServiceActor actor;
+		VkApiClient vk;
+		public Worker(Integer id, String token) {
+			actor = new ServiceActor(id, token);
+			vk = new VkApiClient(HttpTransportClient.getInstance());
+		}
+		
 		
 		public void run() {
 			Date t1 = new Date();
 			while (in.size() > 0) {
 				
 				synchronized (in) {
-					for (int i = 0; (in.size() > 0)&&(i < 200); i++) {
+					for (int i = 0; (in.size() > 0)&&(i < 100); i++) {
 						threadIn.add(in.remove());
 					}
 				}
 				
 				while (threadIn.size() > 0) {
 					count++;
-					temp = VkConnection.getUserSubsVkSdk(threadIn.remove());
+					temp = getUserSubsVkSdk(threadIn.remove());
 					if (temp == null)
 						continue;
 					while(temp.size() > 0) {
@@ -70,6 +96,20 @@ public class СoncurrentParse {
 			
 			Date t2 = new Date();
 			System.out.println(Thread.currentThread().getName() + " is END! which processed " + count + " users in " + (t2.getTime() - t1.getTime())/1000 + " seconds");
+		}
+		private List<Integer> getUserSubsVkSdk(Integer userId) {
+			List<Integer> subsIdArray = null;
+			try {
+				subsIdArray = vk.users()
+							.getSubscriptions(actor)
+							.userId(userId)
+							.execute()
+							.getGroups()
+							.getItems();
+			} catch (ApiException | ClientException e) {
+				return null;
+			}
+			return subsIdArray;
 		}
 	}
 }
