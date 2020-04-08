@@ -13,7 +13,7 @@ function fire_ajax() {
     search["groupName"] =  $('#groupName').val();;
 
 
-    // $("#btn-search").prop("disabled", true);
+    $('#searchBtn').prop("disabled", true);
 
     $.ajax({
         type: "POST",
@@ -24,18 +24,30 @@ function fire_ajax() {
         cache: false,
         // timeout: 600000,
         success: function (data) {
-
+            var i = 0;
+            var arrKey = [];
+            var arrValue = [];
             for ( var key in data.result ) {
+                arrKey[i] = key;
                 let value = data.result[key];
+                arrValue[i] = value;
                 console.log( 'ключ: ' + key + ', значение: ' + value );
+                i = i+1;
             }
-            var json = "<h4>Самые популярные сообщества среди ваших подписчиков</h4><pre>"
-                + JSON.stringify(data.result, null, 4) + "</pre>";
-            $('#getResultDiv').html(json);
+            // var json = "<h4>Самые популярные сообщества среди ваших подписчиков</h4><pre>"
+            //     + JSON.stringify(data.result, null, 4) + "</pre>";
+            // $('#getResultDiv').html(json);
 
+
+            const table = document.getElementById('tbody');
+
+            for (let i = 0; i <  Object.keys( data.result ).length; i++) {
+                let row = document.createElement('tr');
+                row.innerHTML = `<td>${i+1}</td><td>${arrKey[i]}</td><td>${arrValue[i]}</td>`;
+                table.appendChild(row);
+            }
             console.log("SUCCESS : ", data);
             $("#btn-search").prop("disabled", false);
-
         },
         error: function (e) {
 
