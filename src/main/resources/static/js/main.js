@@ -25,8 +25,12 @@ function fire_ajax() {
         // timeout: 600000,
         success: function (data) {
 
-            var json = "<h4>Ajax Response</h4><pre>"
-                + JSON.stringify(data, null, 4) + "</pre>";
+            for ( var key in data.result ) {
+                let value = data.result[key];
+                console.log( 'ключ: ' + key + ', значение: ' + value );
+            }
+            var json = "<h4>Самые популярные сообщества среди ваших подписчиков</h4><pre>"
+                + JSON.stringify(data.result, null, 4) + "</pre>";
             $('#getResultDiv').html(json);
 
             console.log("SUCCESS : ", data);
