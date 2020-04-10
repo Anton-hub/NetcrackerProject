@@ -26,7 +26,7 @@ public class Convertor {
 		int count = 0;
 		
 		for (Map.Entry<Integer, Integer> entry : handledMap.entrySet()) {
-			count++;
+			++count;
 			keyHolder.addLast(entry.getKey());
 			valueHolder.addLast(entry.getValue());
 			if (count > size) {

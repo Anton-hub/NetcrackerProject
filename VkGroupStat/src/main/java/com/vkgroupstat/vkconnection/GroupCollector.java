@@ -33,7 +33,7 @@ public class GroupCollector {
 					            						, LinkedHashMap::new
 					            						)
 					            		);
-				System.out.println("Download and collect group data completed in " + (new Date().getTime() - startTime) + " miliseconds!");
+				System.out.println("Download and collect group data completed in " + (new Date().getTime() - startTime) + " miliseconds! " + listUsers.size());
 				return new Group(groupName, arrayUsers, cuteRengeList);
 	}
 }

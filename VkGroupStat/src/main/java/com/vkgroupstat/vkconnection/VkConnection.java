@@ -61,6 +61,7 @@ public class VkConnection {
 			return null;
 		}
 		return subsIdArray;
+		//photo_id, verified, sex, bdate, city, country, home_town, has_photo, domain, has_mobile, contacts, site, education, universities, schools, last_seen, followers_count, common_count, occupation, nickname, relatives, relation, personal, connections, exports, activities, interests, music, movies, tv, books, games, about, quotes, timezone, screen_name, maiden_name, career, militarycan_be_invited_group
 	}
 	
 	public static List<GroupFull> getGroupsInfo(Collection<Integer> keySet, String parameter) {
