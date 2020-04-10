@@ -1,14 +1,16 @@
 package com.vkgroupstat.vkconnection;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.ServiceActor;
+import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import org.json.*;
+import com.vk.api.sdk.objects.groups.GroupFull;
 
 public class VkConnection {
 
@@ -20,62 +22,75 @@ public class VkConnection {
 		LinkedList <Integer> subIdArray = new LinkedList<Integer>();
 		Integer offset = 0;
 		Integer subCount = 0;
-		String response = "";
 		try {
-			response = vk.groups().getMembers(actor).groupId(groupName)
-						.unsafeParam("access_token", actor.getAccessToken()).offset(offset).executeAsString();
-			groupResponseHandler(response, subIdArray);		
-			subCount = new JSONObject(response).getJSONObject("response").getInt("count");
-			offset += 1000;
-			while (offset < subCount) {				
-				response = vk.groups().getMembers(actor).groupId(groupName)
-							.unsafeParam("access_token", actor.getAccessToken()).offset(offset).executeAsString();
-				groupResponseHandler(response, subIdArray);
+			subCount = vk.groups()
+							.getMembers(actor)
+							.groupId(groupName)
+							.unsafeParam("access_token", actor.getAccessToken())
+							.execute()
+							.getCount();
+			while (offset < subCount) {	
+				subIdArray.addAll(vk.groups()
+							.getMembers(actor)
+							.groupId(groupName)
+							.unsafeParam("access_token", actor.getAccessToken())
+							.offset(offset)
+							.execute()
+							.getItems());
 				offset += 1000;
 			}
-		} catch (ClientException e) {
+		} catch (ClientException | ApiException e) {
 			e.printStackTrace();
+			return null;
 		}
 		return subIdArray;
 	}
-	private static void groupResponseHandler(String response, LinkedList <Integer> anyList) {
-		JSONObject jsonresponse = new JSONObject(response).getJSONObject("response");
-		Iterator<Object> items = jsonresponse.getJSONArray("items").iterator();
-		while (items.hasNext()) {
-			anyList.add((Integer)items.next());
-		}
-	}
-		
-	public static String getUserSubsVkSdk(Integer userId) {
-		LinkedList<String> subsIdArray = new LinkedList<String>();
-		Integer subCount = 0;
-		Integer offset = 0;
-		String response = null;
+	
+	public static List<Integer> getUserSubsVkSdk(Integer userId) {
+		List<Integer> subsIdArray = null;
 		try {
-			response = vk.users().getSubscriptionsExtended(actor)
-						.unsafeParam("access_token", actor.getAccessToken())
-						.userId(userId).count(200).offset(offset).executeAsString();
-			subCount = new JSONObject(response).getJSONObject("response").getInt("count");
-			userResponseHandler(response, subsIdArray);
-			if (subCount > 200) {
-				while (offset < subCount) {
-					offset += 200;
-					response = vk.users().getSubscriptionsExtended(actor)
-							.unsafeParam("access_token", actor.getAccessToken()).userId(userId).count(200)
-							.offset(offset).executeAsString();
-					userResponseHandler(response, subsIdArray);
-				}
-			}
-		} catch (ClientException e) {
-			e.printStackTrace();
+			subsIdArray = vk.users()
+						.getSubscriptions(actor)
+						.userId(userId)
+						.execute()
+						.getGroups()
+						.getItems();
+		} catch (ApiException | ClientException e) {
+			//e.printStackTrace();
+			System.err.println(e);
+			return null;
 		}
-		return subsIdArray.toString();
+		return subsIdArray;
 	}
-	private static void userResponseHandler(String response, LinkedList <String> anyList) {
-		JSONObject jsonresponse = new JSONObject(response).getJSONObject("response");
-		Iterator<Object> items = jsonresponse.getJSONArray("items").iterator();
-		while (items.hasNext()) {
-			anyList.add(((JSONObject)items.next()).getString("screen_name"));
+	
+	public static List<GroupFull> getGroupsInfo(Collection<Integer> keySet, String parameter) {
+		Collection<String> stringList = keySet.stream().map(Object::toString).collect(Collectors.toList());
+		List<GroupFull> response;
+		try {
+			response = vk.groups()
+					.getById(actor)
+					.groupIds(stringList.toArray(new String[0]))
+					//.fields(GroupField.valueOf(parameter))
+					.execute();
+		} catch (ApiException | ClientException e) {
+			e.printStackTrace();
+			return null;
 		}
+		return response;
+	}
+	
+	public static GroupFull getGroupInfo(String groupSreenName) {
+		GroupFull response;
+		try {
+			response = vk.groups()
+					.getById(actor)
+					.groupId(groupSreenName)
+					.execute()
+					.get(0);
+		} catch (ApiException | ClientException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return response;
 	}
 }

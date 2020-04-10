@@ -1,13 +1,16 @@
 package com.vkgroupstat.service;
 
+import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
-import com.vkgroupstat.vkconnection.*;
+import com.vkgroupstat.vkconnection.GroupCollector;
+import com.vkgroupstat.vkconnection.Convertor;
+import com.vkgroupstat.vkconnection.VkConnection;
+import com.vkgroupstat.vkconnection.СoncurrentParse;
 
 @Service
 public class GroupService {
@@ -21,23 +24,34 @@ public class GroupService {
 	public Group groupRequestHandler(String groupName) {
 		Group group = repository.findBygroupName(groupName);
 		if (group == null) {
-			group = GroupCollector.collector(groupName);
+			group = GroupCollector.collect(groupName);
 			repository.save(group);
 		}
 		return group;
 	}
 	
-	
+
 	
 	//тестовые методы
 	public List<Group> findAll(){
 		return repository.findAll();
-	}	
-	public String returnSubscriptions(Integer userId) {
-		return VkConnection.getUserSubsVkSdk(userId);
 	}
-	public String testConc(String groupName) {
-		return TestConcurrent.test(groupName);
+	public String returnSubsnew(String groupName) {
+		return new Integer(VkConnection.getGroupVkSdk(groupName).size()).toString();
+	}
+	public String returnSubscriptionsInt(Integer userId) {
+		return VkConnection.getUserSubsVkSdk(userId).toString();
+	}
+	//загрузка с игнорированием базы
+	public String testMainFunctional(String groupName) {
+		Date start = new Date();
+		return Convertor.stringOut(
+					Convertor.collect(
+							new СoncurrentParse(
+										VkConnection
+										.getGroupVkSdk(groupName))
+										.start(), 20)) + 
+				"<br>" + (new Date().getTime() - start.getTime());
 	}
 	//конец тестовых
 }
