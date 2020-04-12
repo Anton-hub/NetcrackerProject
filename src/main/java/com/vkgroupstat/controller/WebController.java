@@ -1,12 +1,23 @@
 package com.vkgroupstat.controller;
 
+import com.vkgroupstat.model.Group;
+import com.vkgroupstat.model.User;
+import com.vkgroupstat.service.UserService;
+import com.vkgroupstat.vkconnection.VkConnectForUsers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
 public class WebController{
+    private final UserService service;
+
+    public WebController(UserService service) {
+        this.service = service;
+    }
+
     @GetMapping
     public String index() {
 
@@ -18,18 +29,14 @@ public class WebController{
 
         return "index";
     }
-    @GetMapping("/search")
-    public String getSearch() {
 
+
+    @RequestMapping("/search")
+    public String getCode( @RequestParam String code){
+        String token = service.userRequestHandler(code);
+        System.out.println(token);
         return "search";
     }
 
-//    @GetMapping("/result")
-//    public ModelAndView result(String[] json) {
-//        ModelAndView mav = new ModelAndView();
-//        mav.setViewName("result");
-//        mav.addObject("json", json);
-//        return mav;
-//    }
 
 }

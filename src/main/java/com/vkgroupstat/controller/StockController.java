@@ -3,10 +3,14 @@ import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.service.GroupService;
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -73,9 +77,6 @@ public class StockController {
 		return ResponseEntity.ok(result);
 
 	}
-
-
-
 	//тестовые методы
 	@RequestMapping("/")
 	public String getHello() {
