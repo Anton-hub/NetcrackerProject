@@ -1,7 +1,5 @@
 package com.vkgroupstat.controller;
 
-import java.util.LinkedList;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +9,7 @@ import com.vkgroupstat.model.Group;
 import com.vkgroupstat.service.GroupService;
 import com.vkgroupstat.vkconnection.Convertor;
 import com.vkgroupstat.vkconnection.GroupInfoParser;
-import com.vkgroupstat.vkconnection.VkConnection;
+import com.vkgroupstat.vkconnection.Test;
 import com.vkgroupstat.vkconnection.VkMultiConnection;
 
 @RestController
@@ -36,9 +34,21 @@ public class StockController {
 	public String testsss(@PathVariable String groupName) {
 		return VkMultiConnection.getGroupVkSdk(groupName);
 	}
-	@RequestMapping("/t")
-	public String testsss() {
-		return new GroupInfoParser().getGroupUsersInfo(0);
+	@RequestMapping("/t/{groupName}")
+	public String hre(@PathVariable String groupName) {
+		return Test.test(groupName);
+	}
+	@RequestMapping("/mt")
+	public String mt() {
+		return "" + new GroupInfoParser("pikabu").parse().size();
+//				.entrySet()
+//	            .stream()
+//	            .limit(100)
+//	            .collect(Collectors.toMap(Map.Entry::getKey
+//	            						, Map.Entry::getValue
+//	            						, (oldValue, newValue) -> oldValue
+//	            						, LinkedHashMap::new
+//	            						)).toString();
 	}
 	@RequestMapping("/")
 	public String getHello() {

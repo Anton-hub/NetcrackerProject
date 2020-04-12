@@ -9,5 +9,4 @@ public class VkGroupStatApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VkGroupStatApplication.class, args);
 	}
-
 }

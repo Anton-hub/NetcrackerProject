@@ -23,7 +23,7 @@ public class VkMultiConnection {
 	private static final ServiceActor actor_s = new ServiceActor(7362729, token);
 	private static final VkApiClient vk_s = new VkApiClient(HttpTransportClient.getInstance());
 	
-	private static final String user_token = "7d6581b7a6ba55ee55c580d6ba0908b4b04a218b22309dc2907902261b8a2f71876e0034b89f65335dc20";
+	private static final String user_token = "788ee1a7661917ae996ba0328d0ef942c32965d0c274b25a0cdff606949cc4acc4b6cd488769ebbc9d8d7";
 	private static final UserActor actor_u = new UserActor(7362729, user_token);
 	private static final VkApiClient vk_u = new VkApiClient(HttpTransportClient.getInstance());
 	

@@ -1,36 +1,19 @@
 package com.vkgroupstat.vkconnection;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.client.actors.ServiceActor;
-import com.vk.api.sdk.client.actors.UserActor;
+import com.google.gson.JsonArray;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import com.vk.api.sdk.httpclient.HttpTransportClient;
+import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 
-import com.vkgroupstat.vkconnection.Sub;
-
-public class GroupInfoParser {
-	
-	private final String token = "b8188fe1b8188fe1b8188fe1ffb868d748bb818b8188fe1e6699966a9d9035f1e14fbda";
-	private final ServiceActor actor_s = new ServiceActor(7362729, token);
-	private final VkApiClient vk_s = new VkApiClient(HttpTransportClient.getInstance());
-	
-	private final String user_token = "7d6581b7a6ba55ee55c580d6ba0908b4b04a218b22309dc2907902261b8a2f71876e0034b89f65335dc20";
-	private final UserActor actor_u = new UserActor(7362729, user_token);
-	private final VkApiClient vk_u = new VkApiClient(HttpTransportClient.getInstance());
+public class GroupInfoParser implements VkSdkObjHolder{
 	
 	private String groupName;	
 	private Integer count;
-	
-	public GroupInfoParser() {
-		this.groupName = "molodoipeterburg";
-		this.count = 1400;
-	}
+	private LinkedList<Subscriber> response = new LinkedList<Subscriber>();
 	
 	public GroupInfoParser(String groupName) {
 		this.groupName = groupName;
@@ -47,30 +30,72 @@ public class GroupInfoParser {
 			count = 0;
 		}
 	}
-	
-	public String getGroupUsersInfo(Integer offset) {
-		LinkedList<Integer> usersList = new LinkedList<Integer>();
-		LinkedHashMap<Integer, Sub> userInfoMap = new LinkedHashMap<Integer, Sub>();
-		JsonObject response = null;
-		try {
-			response = vk_u.execute()
-					.storageFunction(actor_u, "getGroupSubsInfo")
-					.unsafeParam("offset", offset)
-					.unsafeParam("count", count)
-					.unsafeParam("groupName", groupName)
-					.execute()
-					.getAsJsonObject();
-		} catch (ClientException | ApiException e) {
-			System.err.println(e.getMessage());
+	public LinkedList<Subscriber> parse(){
+		Integer offset = 0;
+		ExecutorService executor = Executors.newCachedThreadPool();
+		
+		while(offset < count) {
+			for (int i = 0; (i < 3)&&(offset < count); i++) {
+				executor.execute(new Request(offset));
+				offset += 8000;
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				System.err.println("interrupt!");
+			}
 		}
-		response
-			.get("info")
-			.getAsJsonArray()
-			.forEach(item -> { 
-							JsonObject json = item.getAsJsonObject();
-							userInfoMap.put(json.get("id").getAsInt(),new Sub(json));								
-										 }
-								);
-		return userInfoMap.toString();
+		
+		executor.shutdown();
+		while (!executor.isTerminated()) {//??
+			try {
+				Thread.sleep(100);
+			} catch (Exception e) {
+				System.err.println(e);
+			}
+		}
+		return response;
 	}
+	
+	public LinkedList<Subscriber> getInfoRequest(Integer offset) {
+		LinkedList<Subscriber> userInfoList = new LinkedList<Subscriber>();
+		JsonArray response = null;
+		boolean flag = true;
+		int execeptionCount = 0;
+		while (flag) {
+			try {
+				response = vk_u.execute()
+							   .storageFunction(actor_u, "getGroupSubsInfo")
+							   .unsafeParam("offset", offset)
+							   .unsafeParam("count", count)
+							   .unsafeParam("groupName", groupName)
+							   .execute()
+							   .getAsJsonArray();
+				response.forEach(item -> userInfoList.add(new Subscriber(item.getAsJsonObject())));
+				flag = false;
+			} catch (ClientException | ApiException e) {
+				System.err.println(e.getMessage());
+				execeptionCount++;
+				try {
+					System.err.println("The request didn't fit in the timing!!! " + execeptionCount + "try.");
+					Thread.sleep(3000);//!!
+				} catch (InterruptedException e1) {}
+			} 
+		}		
+		return userInfoList;
+	}
+	
+	class Request implements Runnable{
+		Integer offset;
+		public Request(Integer offset) {
+			this.offset = offset;
+		}
+		@Override
+		public void run() {
+			LinkedList<Subscriber> userInfoMap = getInfoRequest(offset);
+			synchronized (response) {
+				response.addAll(userInfoMap);
+			}
+		}		
+	}	
 }
