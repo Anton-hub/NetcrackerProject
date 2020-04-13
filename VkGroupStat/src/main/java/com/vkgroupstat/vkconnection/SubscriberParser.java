@@ -9,13 +9,13 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 
-public class GroupInfoParser implements VkSdkObjHolder{
+public class SubscriberParser implements VkSdkObjHolder{
 	
 	private String groupName;	
 	private Integer count;
 	private LinkedList<Subscriber> response = new LinkedList<Subscriber>();
 	
-	public GroupInfoParser(String groupName) {
+	public SubscriberParser(String groupName) {
 		this.groupName = groupName;
 		try {
 			count = vk_s

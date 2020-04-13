@@ -1,51 +1,49 @@
 package com.vkgroupstat.model;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.vkgroupstat.vkconnection.vkentity.Subscription;
+import com.vkgroupstat.vkconnection.vkentity.SubscriptionStat;
 
 @Document
 public class Group {
 	@Id
 	String id;
-	String groupName;
-	Integer[] users;
-	LinkedHashMap<Integer, Integer> rangeList;
-	Date savingDate;
+	String urlName;
+	String stringName;
 	
-	public Group(String groupName, Integer[] users, LinkedHashMap<Integer, Integer> rangeList) {
+	SubscriptionStat baseStat;
+	LinkedList<Subscription> rangeList;
+	Date createDate = new Date();
+	
+	public Group(String urlName, String stringName, SubscriptionStat baseStat, LinkedList<Subscription> rangeList) {
 		super();
-		this.groupName = groupName;
-		this.users = users;
-		this.rangeList = rangeList;
-		savingDate = new Date();
-	}
-	
-	public String getGroupName() {
-		return groupName;
-	}
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-	public Integer[] getUsers() {
-		return users;
-	}
-	public void setUsers(Integer[] users) {
-		this.users = users;
-	}
-	public LinkedHashMap<Integer, Integer> getRangeList() {
-		return rangeList;
-	}
-	public void setRangeList(LinkedHashMap<Integer, Integer> rangeList) {
+		this.urlName = urlName;
+		this.stringName = stringName;
+		this.baseStat = baseStat;
 		this.rangeList = rangeList;
 	}
-	public Date getSavingDate() {
-		return savingDate;
-	}
+
 	public String getId() {
 		return id;
-	}	
+	}
+	public String getUrlName() {
+		return urlName;
+	}
+	public String getStringName() {
+		return stringName;
+	}
+	public SubscriptionStat getBaseStat() {
+		return baseStat;
+	}
+	public LinkedList<Subscription> getRangeList() {
+		return rangeList;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
 }

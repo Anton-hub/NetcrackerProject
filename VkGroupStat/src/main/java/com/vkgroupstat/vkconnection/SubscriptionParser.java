@@ -2,23 +2,19 @@ package com.vkgroupstat.vkconnection;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-
-import org.springframework.util.comparator.Comparators;
 
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
-public class СoncurrentParse implements VkSdkObjHolder{
+public class SubscriptionParser implements VkSdkObjHolder{
+	String baseGroupName;
 	LinkedList<Subscriber> in; 
 	LinkedHashMap<Integer, Subscription> out = new LinkedHashMap<Integer, Subscription>(); 
 	//////////////////////////
@@ -26,14 +22,15 @@ public class СoncurrentParse implements VkSdkObjHolder{
 	Double baseTime = 0d;
 	String log ="";
 	//////////////////////////
-	public СoncurrentParse(Collection<Subscriber> subscriberSet) {
+	public SubscriptionParser(Collection<Subscriber> subscriberSet, String baseGroupName) {
+		this.baseGroupName = baseGroupName;
 		in = new LinkedList<Subscriber>(subscriberSet);
 	}
 	
 	public LinkedList<Subscription> parse() {
 		////////////////////////////
 		long s = new Date().getTime();
-		Integer threadCount = 100;
+		Integer threadCount = 10;
 		////////////////////////////
 		ExecutorService executor = Executors.newCachedThreadPool();		
 		for (int i = 0 ; i < threadCount ; i++)
@@ -46,17 +43,16 @@ public class СoncurrentParse implements VkSdkObjHolder{
 				System.err.println(e);
 			}
 		}
+		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
 		///////////////////////
-		System.out.println(log);
+		//System.out.println(log);
 		System.err.println("Parse, on " + threadCount + " threads, is completed in " + ((double)(new Date().getTime() - s))/1000 + " seconds!"
 							+ "\nAverage number of processed subscribers - " + baseCountSubs/threadCount
 							+ "\nAverage time of thread complete - " + baseTime/(threadCount*1000) + " seconds.");
 		//////////////////////
-		return out
-				.values()
-				.stream()
-				.sorted()
-				.collect(Collectors.toList(LinkedList<Subscription>::new));
+		LinkedList<Subscription> responseList = new LinkedList<Subscription>(out.values());
+		Collections.sort(responseList);
+		return responseList;
 	}
 	
 	class Request implements Runnable {
@@ -78,7 +74,7 @@ public class СoncurrentParse implements VkSdkObjHolder{
 					Subscriber subscriber = threadIn.remove();
 					if (subscriber.getClosed())
 						continue;	
-					temp = ParsingMethodHolder.getUserSubsVkSdk(subscriber.getId());									
+					temp = ParsingMethodHolder.getUserSubscriptions(subscriber.getId());									
 					while(temp.size() > 0) {
 						Integer subscriptionId = temp.remove(0);
 						if (threadOut.containsKey(subscriptionId)) {

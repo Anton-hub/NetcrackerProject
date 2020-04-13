@@ -1,16 +1,12 @@
 package com.vkgroupstat.service;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
 import com.vkgroupstat.vkconnection.GroupCollector;
-import com.vkgroupstat.vkconnection.Convertor;
-import com.vkgroupstat.vkconnection.ParsingMethodHolder;
-import com.vkgroupstat.vkconnection.СoncurrentParse;
 
 @Service
 public class GroupService {
@@ -22,36 +18,17 @@ public class GroupService {
 	}
 
 	public Group groupRequestHandler(String groupName) {
-		Group group = repository.findBygroupName(groupName);
+		Group group = repository.findByurlName(groupName);
 		if (group == null) {
 			group = GroupCollector.collect(groupName);
 			repository.save(group);
+		} else {
+			if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l) {
+				repository.delete(group);
+				group = GroupCollector.collect(groupName);
+				repository.save(group);
+			}
 		}
 		return group;
 	}
-	
-
-	
-	//тестовые методы
-	public List<Group> findAll(){
-		return repository.findAll();
-	}
-	public String returnSubsnew(String groupName) {
-		return new Integer(ParsingMethodHolder.getGroupVkSdk(groupName).size()).toString();
-	}
-	public String returnSubscriptionsInt(Integer userId) {
-		return ParsingMethodHolder.getUserSubsVkSdk(userId).toString();
-	}
-	//загрузка с игнорированием базы
-//	public String testMainFunctional(String groupName) {
-//		Date start = new Date();
-//		return Convertor.stringOut(
-//					Convertor.collect(
-//							new СoncurrentParse(
-//										ParsingMethodHolder
-//										.getGroupVkSdk(groupName))
-//										.start(), 20)) + 
-//				"<br>" + (new Date().getTime() - start.getTime());
-//	}
-	//конец тестовых
 }
