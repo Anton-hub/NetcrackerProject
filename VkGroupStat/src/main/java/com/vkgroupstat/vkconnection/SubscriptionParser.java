@@ -2,7 +2,6 @@ package com.vkgroupstat.vkconnection;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,21 +16,13 @@ public class SubscriptionParser implements VkSdkObjHolder{
 	String baseGroupName;
 	LinkedList<Subscriber> in; 
 	LinkedHashMap<Integer, Subscription> out = new LinkedHashMap<Integer, Subscription>(); 
-	//////////////////////////
-	Integer baseCountSubs = 0;
-	Double baseTime = 0d;
-	String log ="";
-	//////////////////////////
 	public SubscriptionParser(Collection<Subscriber> subscriberSet, String baseGroupName) {
 		this.baseGroupName = baseGroupName;
 		in = new LinkedList<Subscriber>(subscriberSet);
 	}
 	
 	public LinkedList<Subscription> parse() {
-		////////////////////////////
-		long s = new Date().getTime();
-		Integer threadCount = 10;
-		////////////////////////////
+		Integer threadCount = 200;
 		ExecutorService executor = Executors.newCachedThreadPool();		
 		for (int i = 0 ; i < threadCount ; i++)
 			executor.execute(new Request());		
@@ -44,12 +35,6 @@ public class SubscriptionParser implements VkSdkObjHolder{
 			}
 		}
 		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
-		///////////////////////
-		//System.out.println(log);
-		System.err.println("Parse, on " + threadCount + " threads, is completed in " + ((double)(new Date().getTime() - s))/1000 + " seconds!"
-							+ "\nAverage number of processed subscribers - " + baseCountSubs/threadCount
-							+ "\nAverage time of thread complete - " + baseTime/(threadCount*1000) + " seconds.");
-		//////////////////////
 		LinkedList<Subscription> responseList = new LinkedList<Subscription>(out.values());
 		Collections.sort(responseList);
 		return responseList;
@@ -59,10 +44,8 @@ public class SubscriptionParser implements VkSdkObjHolder{
 		LinkedList<Subscriber> threadIn = new LinkedList<Subscriber>();
 		LinkedHashMap<Integer, Subscription> threadOut = new LinkedHashMap<Integer, Subscription>();
 		List<Integer> temp;
-		int count = 0;///////////////
 		
-		public void run() {
-			Date t1 = new Date();/////////////////		
+		public void run() {	
 			while (in.size() > 0) {				
 				synchronized (in) {
 					for (int i = 0; (in.size() > 0)&&(i < 200); i++) {
@@ -70,7 +53,6 @@ public class SubscriptionParser implements VkSdkObjHolder{
 					}
 				}				
 				while (threadIn.size() > 0) {
-					count++;
 					Subscriber subscriber = threadIn.remove();
 					if (subscriber.getClosed())
 						continue;	
@@ -94,20 +76,6 @@ public class SubscriptionParser implements VkSdkObjHolder{
 					}          
 			    }				
 			}
-			//////////////////////////////
-			Date t2 = new Date();
-			synchronized (baseCountSubs) {
-				baseCountSubs += count;
-			}
-			synchronized (baseTime) {
-				baseTime += new Double(t2.getTime() - t1.getTime());
-			}
-			synchronized (log) {
-				String s = Thread.currentThread().getName();
-				log += new Date() + " : [" + s.substring(s.length()-15, s.length()) + "] is END! which processed " + count 
-						+ " users in " + (t2.getTime() - t1.getTime())/1000 + " seconds\n";
-			}
-			//////////////////////////////
 		}
 	}
 }

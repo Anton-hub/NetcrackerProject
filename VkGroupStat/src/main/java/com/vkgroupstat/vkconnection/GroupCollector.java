@@ -19,7 +19,7 @@ public class GroupCollector {
 		LinkedList<Subscription> subscriptionList = new SubscriptionParser(subscriberList, groupName).parse();		
 		
 		LinkedList<Subscription> slicedSubscriptionList = new LinkedList<Subscription>(subscriptionList
-				.stream().limit(100).collect(Collectors.toList()));
+				.stream().limit(20).collect(Collectors.toList()));
 
 		slicedSubscriptionList.stream().forEach(item -> item.countUp());		
 		fillNameField(slicedSubscriptionList);		
