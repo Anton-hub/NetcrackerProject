@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
@@ -22,14 +23,14 @@ public class SubscriptionParser implements VkSdkObjHolder{
 	}
 	
 	public LinkedList<Subscription> parse() {
-		Integer threadCount = 200;
+		Integer threadCount = 50;
 		ExecutorService executor = Executors.newCachedThreadPool();		
 		for (int i = 0 ; i < threadCount ; i++)
 			executor.execute(new Request());		
 		executor.shutdown();
 		while (!executor.isTerminated()) {//??
 			try {
-				Thread.sleep(100);
+				executor.awaitTermination(500, TimeUnit.MILLISECONDS);
 			} catch (Exception e) {
 				System.err.println(e);
 			}
@@ -48,7 +49,7 @@ public class SubscriptionParser implements VkSdkObjHolder{
 		public void run() {	
 			while (in.size() > 0) {				
 				synchronized (in) {
-					for (int i = 0; (in.size() > 0)&&(i < 200); i++) {
+					for (int i = 0; (in.size() > 0)&&(i < 500); i++) {
 						threadIn.add(in.remove());
 					}
 				}				
@@ -56,7 +57,9 @@ public class SubscriptionParser implements VkSdkObjHolder{
 					Subscriber subscriber = threadIn.remove();
 					if (subscriber.getClosed())
 						continue;	
-					temp = ParsingMethodHolder.getUserSubscriptions(subscriber.getId());									
+					temp = ParsingMethodHolder.getUserSubscriptions(subscriber.getId());
+					if (temp == null)
+						continue;	
 					while(temp.size() > 0) {
 						Integer subscriptionId = temp.remove(0);
 						if (threadOut.containsKey(subscriptionId)) {

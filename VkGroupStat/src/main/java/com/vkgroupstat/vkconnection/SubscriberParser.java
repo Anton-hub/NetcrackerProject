@@ -3,6 +3,7 @@ package com.vkgroupstat.vkconnection;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.google.gson.JsonArray;
 import com.vk.api.sdk.exceptions.ApiException;
@@ -49,7 +50,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 		executor.shutdown();
 		while (!executor.isTerminated()) {//??
 			try {
-				Thread.sleep(100);
+				executor.awaitTermination(500, TimeUnit.MILLISECONDS);
 			} catch (Exception e) {
 				System.err.println(e);
 			}

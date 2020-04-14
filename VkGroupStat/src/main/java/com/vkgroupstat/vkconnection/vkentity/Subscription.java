@@ -9,6 +9,7 @@ public class Subscription implements Comparable<Subscription>{
 	private String urlName = null;
 	private SubscriptionStat statistics= null;
 	private LinkedList<Subscriber> subsList = new LinkedList<Subscriber>();
+	private Integer subsCount = null;
 	
 	
 	public Subscription() {}
@@ -36,6 +37,8 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	public void countUp() {
 		statistics = new SubscriptionStat(subsList);
+		subsCount = sizeList(); //костыль
+		subsList.clear();
 	}
 	
 
@@ -47,6 +50,9 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	public String getUrlName() {
 		return urlName;
+	}	
+	public Integer getSubsCount() {
+		return subsCount;
 	}
 	public LinkedList<Subscriber> getSubsList() {
 		return subsList;
@@ -70,6 +76,6 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	@Override
 	public String toString() {
-		return stringName + "  :  " + urlName + "  :  " + id + "  -  " + sizeList() + "<br>" + statistics; 
+		return stringName + "  :  " + urlName + "  :  " + id + "  -  " + getSubsCount() + "<br>" + statistics; 
 	}
 }
