@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
 public class GroupService {
-	
-	
-	private final GroupRepository repository;	
+
+	private final GroupRepository repository;
 	public GroupService(GroupRepository repository) {
 		this.repository = repository;
 	}
@@ -54,4 +54,5 @@ public class GroupService {
 				"<br>" + (new Date().getTime() - start.getTime());
 	}
 	//конец тестовых
+
 }

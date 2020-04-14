@@ -133,3 +133,16 @@ nav{
 }
 
 
+<<<<<<< HEAD
+=======
+
+/*MODALS*/
+#dlForm{
+	width: 70%;
+	margin: 0 auto;
+}
+#dlForm input{
+	margin-bottom: 15px;
+}
+
+>>>>>>> master

@@ -1,10 +1,7 @@
 package com.vkgroupstat.service;
 
-import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.User;
-import com.vkgroupstat.repository.GroupRepository;
 import com.vkgroupstat.repository.UserRepository;
-import com.vkgroupstat.vkconnection.GroupCollector;
 import com.vkgroupstat.vkconnection.VkConnectForUsers;
 import org.springframework.stereotype.Service;
 

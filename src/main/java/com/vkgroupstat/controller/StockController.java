@@ -1,4 +1,5 @@
 package com.vkgroupstat.controller;
+
 import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
@@ -29,29 +30,6 @@ public class StockController {
 	}
 
 
-
-//    @RequestMapping(value = "/all",
-//            produces = "application/json",
-//            method = {RequestMethod.GET, RequestMethod.POST})
-//        public Response getResource() {
-//        Response response = new Response("Done", cust);
-//        return response;
-//    }
-
-//    @RequestMapping(value = "/save",
-//            produces = "application/json",
-//            method = {RequestMethod.GET, RequestMethod.POST})
-//
-//    public Response postCustomer(@RequestBody Customer customer) {
-//
-//        cust.add(customer);
-//
-//
-//        // Create Response Object
-//        Response response = new Response("Done", customer);
-//        return response;
-//    }
-//}
 		LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
@@ -98,4 +76,5 @@ public class StockController {
 		return service.returnSubsnew(groupName);
 	}
 //конец тестовых
+
 }

@@ -3,6 +3,7 @@ package com.vkgroupstat.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 import java.util.Date;
 import java.util.LinkedHashMap;
 
@@ -11,11 +12,12 @@ import java.util.LinkedHashMap;
 public class Group {
 	@Id
 	String id;
+
 	String groupName;
 	Integer[] users;
 	LinkedHashMap<Integer, Integer> rangeList;
 	Date savingDate;
-	
+
 	public Group(String groupName, Integer[] users, LinkedHashMap<Integer, Integer> rangeList) {
 		super();
 		this.groupName = groupName;
@@ -23,7 +25,7 @@ public class Group {
 		this.rangeList = rangeList;
 		savingDate = new Date();
 	}
-	
+
 	public String getGroupName() {
 		return groupName;
 	}
@@ -47,5 +49,5 @@ public class Group {
 	}
 	public String getId() {
 		return id;
-	}	
+	}
 }

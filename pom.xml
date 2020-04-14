@@ -19,16 +19,22 @@
 	</properties>
 
 	<dependencies>
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<dependency>
+<<<<<<< HEAD
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
 		<dependency>
+=======
+>>>>>>> master
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -69,7 +75,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 		<dependency>
 			<groupId>com.bluelinelabs</groupId>
 			<artifactId>logansquare</artifactId>
