@@ -19,37 +19,25 @@
 	</properties>
 
 	<dependencies>
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<dependency>
-<<<<<<< HEAD
+
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 		</dependency>
 		<dependency>
-=======
->>>>>>> master
+
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<!--следующие 2 зависимости можно будет убрать, если методы VkConnection будут полностью на VK Sdk-->	
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.11</version>
-		</dependency>
-		<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>1.3.2</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
+
 		<dependency>
    			<groupId>org.json</groupId>
     		<artifactId>json</artifactId>
@@ -75,10 +63,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+
 		<dependency>
 			<groupId>com.bluelinelabs</groupId>
 			<artifactId>logansquare</artifactId>
