@@ -10,6 +10,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script src="/js/main.js"></script>
 
 
@@ -141,7 +143,7 @@
 
             </div>
                  <div>
-                     <form class="form-inline" style="margin:20px 20px 20px 20px" id="customerForm">
+                     <form class="form-inline" style="margin:20px 20px 20px 20px" id="groupForm">
                          <div class="form-group">
                              <label for="groupName" style="margin-right:5px">groupName:</label>
                              <input type="text" class="form-control" id="groupName" placeholder="Enter GroupName"/>
@@ -151,7 +153,8 @@
                      </form>
 
                  </div>
-<!--                 </form>-->
+                 <div id="chart_div"></div>
+                 <div id="columnchart_values"></div>
                  <table class="table table-hover">
                      <thead>
                      <tr>
