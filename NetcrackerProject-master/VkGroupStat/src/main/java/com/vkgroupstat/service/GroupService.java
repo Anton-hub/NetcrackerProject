@@ -1,44 +1,34 @@
 package com.vkgroupstat.service;
 
-import java.util.List;
+import java.util.Date;
 
-import com.vkgroupstat.model.Person;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
+import com.vkgroupstat.vkconnection.GroupCollector;
 
 @Service
 public class GroupService {
-	
-	@Autowired
-	private GroupRepository repository;
-	
-	public List<Group> findAll(){
-		return repository.findAll();
-	}
-	
-	public Group create(String firstName) {		
-		return repository.save(new Group(firstName));
-	}
-	
-	public String returnSubscribers(String groupName) {
-		return repository.returnSubscribers(groupName);
-	}
-	
-	public String returnSubscriptions(Integer userId) {
-		return repository.returnSubscriptions(userId);
+
+
+	private final GroupRepository repository;
+	public GroupService(GroupRepository repository) {
+		this.repository = repository;
 	}
 
-	public Person returnSubscriptionsVk(Integer userId) {
-		return repository.returnSubscriptionsVk(userId);
+	public Group groupRequestHandler(String groupName) {
+		Group group = repository.findByurlName(groupName);
+		if (group == null) {
+			group = GroupCollector.collect(groupName);
+			repository.save(group);
+		} else {
+			if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l) {
+				repository.delete(group);
+				group = GroupCollector.collect(groupName);
+				repository.save(group);
+			}
+		}
+		return group;
 	}
-
-	public String returnSubscriptionsVkWorking(Integer userId) {
-		return repository.returnSubscriptionsVkWorking(userId);
-	}
-
-//	public String returnSubscriptionsVkWorkingAlmost(Integer userId) throws Exception{ return repository.returnSubscriptionsVkWorkingAlmost(userId);
-//	}
 }
