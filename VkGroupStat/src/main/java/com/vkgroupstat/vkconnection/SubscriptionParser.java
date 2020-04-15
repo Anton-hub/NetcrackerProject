@@ -14,27 +14,25 @@ import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
 public class SubscriptionParser implements VkSdkObjHolder{
+	Integer batchSize;
 	String baseGroupName;
 	LinkedList<Subscriber> in; 
 	LinkedHashMap<Integer, Subscription> out = new LinkedHashMap<Integer, Subscription>(); 
 	public SubscriptionParser(Collection<Subscriber> subscriberSet, String baseGroupName) {
 		this.baseGroupName = baseGroupName;
 		in = new LinkedList<Subscriber>(subscriberSet);
+		batchSize = in.size() / 50;
 	}
 	
 	public LinkedList<Subscription> parse() {
-		Integer threadCount = 50;
 		ExecutorService executor = Executors.newCachedThreadPool();		
-		for (int i = 0 ; i < threadCount ; i++)
+		for (int i = 0 ; i < 50 ; i++)
 			executor.execute(new Request());		
 		executor.shutdown();
-		while (!executor.isTerminated()) {//??
-			try {
-				executor.awaitTermination(500, TimeUnit.MILLISECONDS);
-			} catch (Exception e) {
-				System.err.println(e);
-			}
-		}
+		try {
+			executor.awaitTermination(3, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {System.err.println(e);}
+		
 		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
 		LinkedList<Subscription> responseList = new LinkedList<Subscription>(out.values());
 		Collections.sort(responseList);
@@ -49,13 +47,13 @@ public class SubscriptionParser implements VkSdkObjHolder{
 		public void run() {	
 			while (in.size() > 0) {				
 				synchronized (in) {
-					for (int i = 0; (in.size() > 0)&&(i < 500); i++) {
+					for (int i = 0; (in.size() > 0)&&(i < batchSize); i++) {
 						threadIn.add(in.remove());
 					}
 				}				
 				while (threadIn.size() > 0) {
 					Subscriber subscriber = threadIn.remove();
-					if (subscriber.getClosed())
+					if (subscriber.getClosed()||subscriber.getIsBanned())
 						continue;	
 					temp = ParsingMethodHolder.getUserSubscriptions(subscriber.getId());
 					if (temp == null)

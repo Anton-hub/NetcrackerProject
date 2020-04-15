@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 public class SubscriptionStat {
 	private LinkedHashMap<String, Integer> sexStat = new LinkedHashMap<String, Integer>();
 	private LinkedHashMap<String, Integer> cityStat = new LinkedHashMap<String, Integer>();
-	private LinkedHashMap<String, Integer> ageStat = new LinkedHashMap<String, Integer>();	
+	private LinkedHashMap<String, Integer> ageStat = new LinkedHashMap<String, Integer>();
+	private Integer bannedUserCount = 0;
 	{
 		ageStat.put("менее 10", 0);
 		for (int i = 10; i < 50; i += 10)
@@ -27,6 +28,8 @@ public class SubscriptionStat {
 	
 	public void countUp(LinkedList<Subscriber> subsList) {			
 		for (Subscriber subscriber : subsList) {
+			if (subscriber.getIsBanned())
+				bannedUserCount++;
 			sexStat.merge(subscriber.getSex(), 1, (value, inc) -> value + inc);
 			cityStat.merge(subscriber.getCity(), 1, (value, inc) -> value + inc);
 			
@@ -64,6 +67,9 @@ public class SubscriptionStat {
 			sexStat.put("Женщин", sexStat.remove("1"));
 		if (sexStat.containsKey("2"))
 			sexStat.put("Мужчин", sexStat.remove("2"));
+		if (sexStat.containsKey("0"))
+			sexStat.put("Не указан", sexStat.remove("0"));
+			
 		
 		if (cityStat.containsKey(null)) {
 			cityStat.put("Не указан", cityStat.get(null));
@@ -97,10 +103,14 @@ public class SubscriptionStat {
 	public LinkedHashMap<String, Integer> getAgeStat() {
 		return ageStat;
 	}
+	public Integer getBannedUserCount() {
+		return bannedUserCount;
+	}
 
 	@Override
 	public String toString() {
-		return "sexStat =  " + sexStat + "<br>cityStat = " + cityStat + "<br>ageStat = " + ageStat + "<br>";
+		return "sexStat =  " + sexStat + "<br>cityStat = " + cityStat + "<br>ageStat = " 
+					+ ageStat + "<br>bannedCount = " + bannedUserCount + "<br>";
 	}
 	
 }

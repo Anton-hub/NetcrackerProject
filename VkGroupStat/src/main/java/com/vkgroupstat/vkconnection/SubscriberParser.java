@@ -18,18 +18,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 	
 	public SubscriberParser(String groupName) {
 		this.groupName = groupName;
-		try {
-			count = VK_S
-					.groups()
-					.getMembers(S_ACTOR)
-					.groupId(groupName)
-					.unsafeParam("access_token", S_ACTOR.getAccessToken())
-					.execute()
-					.getCount();
-		} catch (ApiException | ClientException e) {
-			System.err.println(e.getMessage());
-			count = 0;
-		}
+		count = ParsingMethodHolder.getGroupSubsCount(groupName);
 	}
 	public LinkedList<Subscriber> parse(){
 		Integer offset = 0;

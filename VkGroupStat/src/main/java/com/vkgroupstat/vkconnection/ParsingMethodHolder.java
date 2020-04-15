@@ -24,6 +24,20 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
+	public static Integer getGroupSubsCount(String groupName) {
+		try {
+			return VK_S.groups()
+					   .getMembers(S_ACTOR)
+					   .groupId(groupName)
+					   .unsafeParam("access_token", S_ACTOR.getAccessToken())
+					   .execute()
+					   .getCount();
+		} catch (ApiException | ClientException e) {
+			System.err.println(e);
+			return null;
+		}
+	}
+	
 	public static List<GroupFull> getGroupsInfo(LinkedList<Integer> litsId) {
 		List<String> stringList = litsId.stream().map(Object::toString).collect(Collectors.toList());
 		try {

@@ -35,17 +35,13 @@ public class TEST_SimpleSubscriptionParser implements VkSdkObjHolder{
 		for (int i = 0 ; i < 100 ; i++)
 			executor.execute(new Request());		
 		executor.shutdown();
-		while (!executor.isTerminated()) {//??
-			try {
-				executor.awaitTermination(500, TimeUnit.MILLISECONDS);
-			} catch (Exception e) {
-				System.err.println(e);
-			}
-		}
+		try {
+			executor.awaitTermination(3, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {System.err.println(e);}
 		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
 		
 		LinkedList<SimpleSubscription> SSList = new LinkedList<SimpleSubscription>(out.values());
-		Collections.sort(SSList, (o1, o2) -> o2.getSubsCount().compareTo(o1.getSubsCount()));
+		Collections.sort(SSList, (o1, o2) -> o2.getTargetSubsCount().compareTo(o1.getTargetSubsCount()));
 		LinkedList<Subscription> responseList = new LinkedList<Subscription>(
 				SSList.stream().map(SimpleSubscription::castDown).collect(Collectors.toList()));
 		return responseList;
@@ -65,7 +61,7 @@ public class TEST_SimpleSubscriptionParser implements VkSdkObjHolder{
 				}				
 				while (threadIn.size() > 0) {
 					Subscriber subscriber = threadIn.remove();
-					if (subscriber.getClosed())
+					if (subscriber.getClosed()||subscriber.getIsBanned())
 						continue;	
 					temp = ParsingMethodHolder.getUserSubscriptions(subscriber.getId());
 					if (temp == null)

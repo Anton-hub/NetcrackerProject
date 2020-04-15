@@ -4,14 +4,14 @@ public class SimpleSubscription extends Subscription{
 	
 	public SimpleSubscription(Integer id) {
 		this.id = id;
-		subsCount = 1;
+		targetSubsCount = 1;
 	}
 	
 	public void incSubsCount() {
-		subsCount++;
+		targetSubsCount++;
 	}
 	public void concat(SimpleSubscription subs) {
-		subsCount += subs.subsCount;
+		targetSubsCount += subs.targetSubsCount;
 	}
 	public Subscription castDown() {
 		return (Subscription)this;

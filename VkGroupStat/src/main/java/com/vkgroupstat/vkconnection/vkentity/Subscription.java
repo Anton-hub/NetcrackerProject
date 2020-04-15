@@ -7,7 +7,9 @@ public class Subscription implements Comparable<Subscription>{
 	protected Integer id = null;
 	protected String stringName = null;
 	protected String urlName = null;
-	protected Integer subsCount = null;
+	protected Integer targetSubsCount = null;
+	protected Integer thisGroupSubsCount = null;
+	
 	protected SubscriptionStat statistics= null;
 	protected LinkedList<Subscriber> subsList = new LinkedList<Subscriber>();
 	
@@ -18,7 +20,6 @@ public class Subscription implements Comparable<Subscription>{
 		addSub(firstSub);
 	}	
 	public Subscription(Integer id, String stringName, String urlName, LinkedList<Subscriber> subsList) {
-		super();
 		this.id = id;
 		this.stringName = stringName;
 		this.urlName = urlName;
@@ -38,7 +39,7 @@ public class Subscription implements Comparable<Subscription>{
 	public void countUp() {
 		if (subsList.size() > 0) {
 			statistics = new SubscriptionStat(subsList);
-			subsCount = sizeList();
+			targetSubsCount = sizeList();
 			subsList.clear();
 		}
 	}
@@ -53,8 +54,11 @@ public class Subscription implements Comparable<Subscription>{
 	public String getUrlName() {
 		return urlName;
 	}	
-	public Integer getSubsCount() {
-		return subsCount;
+	public Integer getTargetSubsCount() {
+		return targetSubsCount;
+	}	
+	public Integer getThisGroupSubsCount() {
+		return thisGroupSubsCount;
 	}
 	public LinkedList<Subscriber> getSubsList() {
 		return subsList;
@@ -70,14 +74,17 @@ public class Subscription implements Comparable<Subscription>{
 	public void setUrlName(String urlName) {
 		this.urlName = urlName;
 	}
+	public void setThisGroupSubsCount(Integer thisGroupSubsCount) {
+		this.thisGroupSubsCount = thisGroupSubsCount;
+	}
 	
-
+	
 	@Override
 	public int compareTo(Subscription o) {		
 		return new Integer(o.getSubsList().size()).compareTo(new Integer(this.getSubsList().size()));
 	}
 	@Override
 	public String toString() {
-		return stringName + "  :  " + urlName + "  :  " + id + "  -  " + getSubsCount() + "<br>" + statistics; 
+		return stringName + "  :  " + urlName + "  :  " + thisGroupSubsCount + "  -  " + targetSubsCount + "<br>" + statistics; 
 	}
 }
