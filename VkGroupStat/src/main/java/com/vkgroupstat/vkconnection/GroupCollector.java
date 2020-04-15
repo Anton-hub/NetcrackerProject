@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vkgroupstat.model.Group;
+import com.vkgroupstat.vkconnection.TEST.TEST_SimpleSubscriptionParser;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 import com.vkgroupstat.vkconnection.vkentity.SubscriptionStat;
@@ -16,12 +17,13 @@ public class GroupCollector {
 		long startTime = new Date().getTime();		
 
 		LinkedList<Subscriber> subscriberList = new SubscriberParser(groupName).parse();		
-		LinkedList<Subscription> subscriptionList = new SubscriptionParser(subscriberList, groupName).parse();		
+		LinkedList<Subscription> subscriptionList = new TEST_SimpleSubscriptionParser(subscriberList, groupName).parse();
+//													new SubscriptionParser(subscriberList, groupName).parse();		
 		
 		LinkedList<Subscription> slicedSubscriptionList = new LinkedList<Subscription>(subscriptionList
 				.stream().limit(20).collect(Collectors.toList()));
 
-		slicedSubscriptionList.stream().forEach(item -> item.countUp());		
+//		slicedSubscriptionList.stream().forEach(item -> item.countUp());	
 		fillNameField(slicedSubscriptionList);		
 		
 		GroupFull baseGrInf = ParsingMethodHolder.getGroupInfo(groupName);

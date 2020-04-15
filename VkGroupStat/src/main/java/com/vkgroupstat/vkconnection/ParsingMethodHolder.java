@@ -12,8 +12,8 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 	
 	public static List<Integer> getUserSubscriptions(Integer userId) {
 		try {
-			return vk_s.users()
-					   .getSubscriptions(actor_s)
+			return VK_S.users()
+					   .getSubscriptions(S_ACTOR)
 					   .userId(userId)
 					   .execute()
 					   .getGroups()
@@ -27,8 +27,8 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 	public static List<GroupFull> getGroupsInfo(LinkedList<Integer> litsId) {
 		List<String> stringList = litsId.stream().map(Object::toString).collect(Collectors.toList());
 		try {
-			return vk_s.groups()
-					   .getById(actor_s)
+			return VK_S.groups()
+					   .getById(S_ACTOR)
 					   .groupIds(stringList.toArray(new String[0]))
 					   .execute();
 		} catch (ApiException | ClientException e) {
@@ -39,8 +39,8 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 	
 	public static GroupFull getGroupInfo(String groupSreenName) {
 		try {
-			return vk_s.groups()
-					   .getById(actor_s)
+			return VK_S.groups()
+					   .getById(S_ACTOR)
 					   .groupId(groupSreenName)
 					   .execute()
 					   .get(0);

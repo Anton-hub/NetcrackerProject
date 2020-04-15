@@ -4,12 +4,12 @@ import java.util.LinkedList;
 
 public class Subscription implements Comparable<Subscription>{
 	
-	private Integer id = null;
-	private String stringName = null;
-	private String urlName = null;
-	private SubscriptionStat statistics= null;
-	private LinkedList<Subscriber> subsList = new LinkedList<Subscriber>();
-	private Integer subsCount = null;
+	protected Integer id = null;
+	protected String stringName = null;
+	protected String urlName = null;
+	protected Integer subsCount = null;
+	protected SubscriptionStat statistics= null;
+	protected LinkedList<Subscriber> subsList = new LinkedList<Subscriber>();
 	
 	
 	public Subscription() {}
@@ -36,9 +36,11 @@ public class Subscription implements Comparable<Subscription>{
 		subsList.add(sub);
 	}
 	public void countUp() {
-		statistics = new SubscriptionStat(subsList);
-		subsCount = sizeList(); //костыль
-		subsList.clear();
+		if (subsList.size() > 0) {
+			statistics = new SubscriptionStat(subsList);
+			subsCount = sizeList();
+			subsList.clear();
+		}
 	}
 	
 

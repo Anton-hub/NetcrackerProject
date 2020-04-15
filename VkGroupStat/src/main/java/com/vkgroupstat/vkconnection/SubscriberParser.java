@@ -19,11 +19,11 @@ public class SubscriberParser implements VkSdkObjHolder{
 	public SubscriberParser(String groupName) {
 		this.groupName = groupName;
 		try {
-			count = vk_s
+			count = VK_S
 					.groups()
-					.getMembers(actor_s)
+					.getMembers(S_ACTOR)
 					.groupId(groupName)
-					.unsafeParam("access_token", actor_s.getAccessToken())
+					.unsafeParam("access_token", S_ACTOR.getAccessToken())
 					.execute()
 					.getCount();
 		} catch (ApiException | ClientException e) {
@@ -65,8 +65,8 @@ public class SubscriberParser implements VkSdkObjHolder{
 		int execeptionCount = 0;
 		while (flag) {
 			try {
-				response = vk_u.execute()
-							   .storageFunction(actor_u, "getGroupSubsInfo")
+				response = VK_U.execute()
+							   .storageFunction(U_ACTOR, "getGroupSubsInfo")
 							   .unsafeParam("offset", offset)
 							   .unsafeParam("count", count)
 							   .unsafeParam("groupName", groupName)
