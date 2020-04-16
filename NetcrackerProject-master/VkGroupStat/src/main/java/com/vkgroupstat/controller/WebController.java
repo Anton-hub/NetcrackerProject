@@ -34,6 +34,11 @@ public class WebController{
         System.out.println(token);
         return "search";
     }
+    @GetMapping("/send")
+    public String getSend() {
+
+        return "send";
+    }
 
 
 }

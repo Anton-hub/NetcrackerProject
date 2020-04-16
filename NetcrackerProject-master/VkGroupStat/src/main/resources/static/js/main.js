@@ -26,6 +26,7 @@ function fire_ajax() {
         success: function (data) {
             const statGender = data.baseStat.sexStat;
             const statCity = data.baseStat.cityStat;
+            const statAge = data.baseStat.ageStat;
             var arrCity = [];
             var arrNumber = [];
             var i = 0;
@@ -56,7 +57,7 @@ function fire_ajax() {
                 dataGender.addColumn('string', 'Gender');
                 dataGender.addColumn('number', 'Number');
                 dataGender.addRows([
-                    ['Не указан', statGender[0]],
+                    // ['Не указан', statGender[0]],
                     ['Женщин', statGender["Женщин"]],
                     ['Мужчин', statGender["Мужчин"]]
                 ]);
@@ -79,21 +80,13 @@ function fire_ajax() {
 
                 // Set a callback to run when the Google Visualization API is loaded.
 
-                // Create the data table.
-                // var dataCity = new google.visualization.DataTable();
-                // dataCity.addColumn('string', 'Сiry');
-                // dataCity.addColumn('number', 'Number');
-                //
-                // dataCity.addRows([
-                //     [arrCity[0], arrNumber[0]],
-                //     [arrCity[1], arrNumber[1]],
-                //     [arrCity[2], arrNumber[2]],
-                //     [arrCity[3], arrNumber[3]],
-                //     [arrCity[4], arrNumber[4]],
-                //     [arrCity[5], arrNumber[5]]
-                // ]);
-                var dataCity = google.visualization.arrayToDataTable([
-                    ['Город', 'Количество'],
+
+                var dataCity = new google.visualization.DataTable();
+                dataCity.addColumn('string', 'Сity');
+                 dataCity.addColumn('number', 'Number');;
+                // dataCity.addColumn({ role: "style" });
+
+                dataCity.addRows([
                     [arrCity[0], arrNumber[0]],
                     [arrCity[1], arrNumber[1]],
                     [arrCity[2], arrNumber[2]],
@@ -101,12 +94,40 @@ function fire_ajax() {
                     [arrCity[4], arrNumber[4]],
                     [arrCity[5], arrNumber[5]]
                 ]);
+                // var dataCity = google.visualization.arrayToDataTable([
+                //     ['Город', 'Количество'],
+                //     [arrCity[0], arrNumber[0]],
+                //     [arrCity[1], arrNumber[1]],
+                //     [arrCity[2], arrNumber[2]],
+                //     [arrCity[3], arrNumber[3]],
+                //     [arrCity[4], arrNumber[4]],
+                //     [arrCity[5], arrNumber[5]]
+                // ]);
 
+                // var dataCity = google.visualization.arrayToDataTable([
+                //     ['Город', 'Количество'],
+                //     ['arrCity[0]', arrNumber[0]],
+                //     ['arrCity[1]', arrNumber[1]],
+                //     ['arrCity[2]', arrNumber[2]],
+                //     ['arrCity[3]', arrNumber[3]],
+                //     ['arrCity[4]', arrNumber[4]],
+                //     ['arrCity[5]', arrNumber[5]]
+                // ]);
 
                 // Set chart options
-                var options = {'title':'Города',
+                var options = {'title':'Подписчики по городам',
                     is3D: true,
-                    colors: ['#4169E1','#FF8C00','#F08080', '#2E8B57', '#20B2AA', '#BA55D3'],
+                    // slices: {
+                    //     0: { color: '#20B2AA' },
+                    //     1: { color: '#4169E1' },
+                    //     2: { color: '#FF8C00' },
+                    //     3: { color: '#F08080' },
+                    //     4: { color: '#2E8B57' },
+                    //     5: { color: '#BA55D3' },
+                    //
+                    // },
+                    legend         : 'none',
+                    colors:[['#FF8C00'],['#F08080'], ['#2E8B57'], ['#20B2AA'], ['#BA55D3'], ['#4169E1']],
                     'width':400,
                     'height':300};
 
@@ -115,6 +136,46 @@ function fire_ajax() {
                 chart.draw(dataCity, options);
             }
 
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages':['corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawAgeChart);
+
+            // Callback that creates and populates a data table,
+            // instantiates the pie chart, passes in the data and
+            // draws it.
+
+            function drawAgeChart() {
+
+
+                // Set a callback to run when the Google Visualization API is loaded.
+
+                // Create the data table.
+                var dataAge = new google.visualization.DataTable();
+                dataAge.addColumn('string', 'Age');
+                dataAge.addColumn('number', 'Number');
+                dataAge.addRows([
+                    // ['Не указан', statGender[0]],
+                    ['менее 10', statAge["менее 10"]],
+                    ['10 - 20', statAge["10 - 20"]],
+                    ['20 - 30', statAge["20 - 30"]],
+                    ['30 - 40', statAge["30 - 40"]],
+                    ['40 - 50', statAge["40 - 50"]],
+                    ['60 и более', statAge["60 и более"]],
+                    ['Не указан', statAge["Не указан"]]
+                ]);
+
+                // Set chart options
+                var options = {'title':'Возраст аудитории',
+                    is3D: true,
+                    'width':400,
+                    'height':300};
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.PieChart(document.getElementById('agechart_div'));
+                chart.draw(dataAge, options);
+            }
             const table = document.getElementById('tbody');
 
 
