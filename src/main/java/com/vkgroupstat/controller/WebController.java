@@ -1,9 +1,6 @@
 package com.vkgroupstat.controller;
 
-import com.vkgroupstat.model.Group;
-import com.vkgroupstat.model.User;
 import com.vkgroupstat.service.UserService;
-import com.vkgroupstat.vkconnection.VkConnectForUsers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +33,11 @@ public class WebController{
         String token = service.userRequestHandler(code);
         System.out.println(token);
         return "search";
+    }
+    @GetMapping("/send")
+    public String getSend() {
+
+        return "send";
     }
 
 

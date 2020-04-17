@@ -1,11 +1,11 @@
 package com.vkgroupstat.repository;
 
-
-import com.vkgroupstat.model.Group;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import com.vkgroupstat.model.Group;
+
 @Repository
 public interface GroupRepository extends MongoRepository<Group, String>{
-	public Group findBygroupName(String groupName);
+	public Group findByurlName(String groupName);
 }

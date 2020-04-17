@@ -10,6 +10,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script src="/js/main.js"></script>
 
 
@@ -84,6 +86,7 @@
                   <div id="menu" class="collapse">
                     <ul class="nav navbar-nav">
                         <li class="right"> <a href="/index"><b>Главная</b></a></li>
+                        <li class="right"> <a href="/send"><b>Обратная связь</b></a></li>
                     
                     </ul>
                   </div>
@@ -132,7 +135,7 @@
       <div class="container">
         <div class="row">
           
-             <div class="col-sm-8 col-centered">
+            <div class="col-sm-8 col-centered">
             <div class="sec-title-container text-left">
             <div class="ce-title-line"></div>
             <div class="clearfix"></div>
@@ -141,17 +144,41 @@
 
             </div>
                  <div>
-                     <form class="form-inline" style="margin:20px 20px 20px 20px" id="customerForm">
+                     <form class="form-inline" style="margin:20px 20px 20px 20px" id="groupForm">
                          <div class="form-group">
                              <label for="groupName" style="margin-right:5px">groupName:</label>
                              <input type="text" class="form-control" id="groupName" placeholder="Enter GroupName"/>
                          </div>
                          <button id="searchBtn" class="btn btn-success btn-medium" style="margin-left:20px; margin-right:5px">Искать</button>
-<!--                         <div id="getResultDiv" style="padding:20px 10px 20px 50px"/>-->
+                         <div id="getResultDiv" style="padding:20px 10px 20px 50px"/>
                      </form>
 
                  </div>
-<!--                 </form>-->
+
+                <div class="col-md-6">
+                            <div id="chart_div"></div>
+                </div>
+                <!--end item-->
+
+                <div class="col-md-6">
+                    <div id="agechart_div"></div>
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="col-divider-margin-6"></div>
+                <div class="col-md-6">
+                    <div id="columnchart_values"></div>
+                </div>
+                <!--end item-->
+
+                <div class="clearfix"></div>
+                <div class="col-divider-margin-6"></div>
+                <div class="col-md-6">
+<!--                    <div id="agechart_div"></div>-->
+                </div>
+                <!--end item-->
+
+                <div class="col-md-12">
                  <table class="table table-hover">
                      <thead>
                      <tr>
@@ -163,14 +190,12 @@
                      <tbody id="tbody">
                      </tbody>
                  </table>
-
-          </div>
-
+                </div>
+            </div>
           <!--end title-->
-
-          
+            </div>
         </div>
-      </div>
+
     </section>
     <div class="clearfix"></div>
     <!-- end section -->

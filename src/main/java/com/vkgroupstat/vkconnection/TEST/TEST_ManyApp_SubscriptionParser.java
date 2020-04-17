@@ -1,4 +1,14 @@
-package com.vkgroupstat.vkconnection;
+package com.vkgroupstat.vkconnection.TEST;
+
+import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.ServiceActor;
@@ -6,13 +16,8 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-
 //В РАЗРАБОТКЕ!!!
-public class ConcurrentParseTest {
+public class TEST_ManyApp_SubscriptionParser {
 	LinkedList<Integer> in; 
 	LinkedHashMap<Integer, Integer> out = new LinkedHashMap<Integer, Integer>(); 
 	String token1 = "ad2deb63ad2deb63ad2deb63ebad5d5087aad2dad2deb63f3abd5d8d7b7c18a57ddd0c0";
@@ -26,7 +31,7 @@ public class ConcurrentParseTest {
 //	String token5 = "ad2deb63ad2deb63ad2deb63ebad5d5087aad2dad2deb63f3abd5d8d7b7c18a57ddd0c0";
 //	Integer id5 = 7388132;
 	
-	public ConcurrentParseTest(LinkedList<Integer> list) {
+	public TEST_ManyApp_SubscriptionParser(LinkedList<Integer> list) {
 		in = new LinkedList<Integer>(list);
 	}
 	

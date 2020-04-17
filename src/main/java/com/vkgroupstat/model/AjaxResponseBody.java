@@ -6,7 +6,7 @@ import java.util.List;
 public class AjaxResponseBody {
 
     String msg;
-    LinkedHashMap<String, Integer> result;
+    Group group;
 
     public String getMsg() {
         return msg;
@@ -16,11 +16,11 @@ public class AjaxResponseBody {
         this.msg = msg;
     }
 
-    public LinkedHashMap<String, Integer> getResult() {
-        return result;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setResult(LinkedHashMap<String, Integer> result) {
-        this.result = result;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }
