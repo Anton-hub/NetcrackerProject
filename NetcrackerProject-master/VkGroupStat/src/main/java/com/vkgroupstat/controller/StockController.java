@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,17 +30,12 @@ import java.util.stream.Collectors;
 public class StockController {
 	@Autowired
 	private MailSender mailSender;
-//
-//	@Value("checkins.tracker@gmail.com")
-//	String email="checkins.tracker@gmail.com";
+
 	private final GroupService service;
 
 	public StockController(GroupService service) {
 		this.service = service;
 	}
-
-
-		LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
 	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
@@ -54,7 +51,6 @@ public class StockController {
 		Group group = service.groupRequestHandler(search.getGroupName());
 		result.setGroup(group);
 		return ResponseEntity.ok(group);
-
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
@@ -76,7 +72,5 @@ public class StockController {
 
 		return "The message has been sent!";
 	}
-	//тестовые методы
-
 
 }

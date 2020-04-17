@@ -1,5 +1,6 @@
 package com.vkgroupstat.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -12,7 +13,6 @@ import java.util.regex.Pattern;
 @Service
 public class FeedbackService {
     private MailSender mailSender;
-
 
     public FeedbackService(MailSender mailSender) {
         this.mailSender = mailSender;
