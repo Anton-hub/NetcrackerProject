@@ -11,21 +11,22 @@ import com.vkgroupstat.vkconnection.GroupCollector;
 @Service
 public class GroupService {
 	
-	
+	private final GroupCollector collcetor;
 	private final GroupRepository repository;	
-	public GroupService(GroupRepository repository) {
+	public GroupService(GroupRepository repository, GroupCollector collector) {
 		this.repository = repository;
+		this.collcetor = collector;
 	}
 
 	public Group groupRequestHandler(String groupName) {
 		Group group = repository.findByurlName(groupName);
 		if (group == null) {
-			group = GroupCollector.collect(groupName);
+			group = collcetor.collect(groupName);
 			repository.save(group);
 		} else {
 			if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l) {
 				repository.delete(group);
-				group = GroupCollector.collect(groupName);
+				group = collcetor.collect(groupName);
 				repository.save(group);
 			}
 		}
