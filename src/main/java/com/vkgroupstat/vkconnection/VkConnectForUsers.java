@@ -1,24 +1,18 @@
 package com.vkgroupstat.vkconnection;
 
-import com.vk.api.sdk.client.TransportClient;
-import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.client.actors.ServiceActor;
+import java.util.HashMap;
+
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vkgroupstat.model.User;
 
-import java.util.HashMap;
 
 
 
-
-public class VkConnectForUsers {
-    private static Integer client_id = 7362729;
+public class VkConnectForUsers implements VkSdkObjHolder{
     private static String client_secret = "pqnxEFjvEdh3GHY0iOf3";
-    private static VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
     private static String redirect_uri = "http://localhost:8080/search";
 
     public static HashMap<User, String> getUser(String code) {
@@ -26,8 +20,8 @@ public class VkConnectForUsers {
         Integer userId;
         HashMap<User, String> userAndToken = new HashMap<>();
         try {
-            UserAuthResponse authResponse = vk.oauth()
-                    .userAuthorizationCodeFlow(client_id, client_secret, redirect_uri, code)
+            UserAuthResponse authResponse = VK.oauth()
+                    .userAuthorizationCodeFlow(APPID, client_secret, redirect_uri, code)
                     .execute();
 
             UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());

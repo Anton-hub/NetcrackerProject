@@ -1,5 +1,6 @@
 package com.vkgroupstat.controller;
 
+import org.jboss.logging.Logger;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,8 @@ import com.vkgroupstat.vkconnection.TEST.TEST_parseStat;
 @RestController
 @RequestMapping("/test")
 public class TestController {
+	
+	private static final Logger LOG = Logger.getLogger(TestController.class);
 	
 	@RequestMapping("/")
 	public String main() {
@@ -25,5 +28,10 @@ public class TestController {
 	@RequestMapping("/stat")
 	public String getStat() {
 		return TEST_parseStat.statGet("sad");
+	}
+	
+	@RequestMapping("/log")
+	public void testLogger() {
+		LOG.error("Ошибка");
 	}
 }

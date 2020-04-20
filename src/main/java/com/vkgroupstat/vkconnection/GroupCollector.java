@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
@@ -12,6 +15,9 @@ import com.vkgroupstat.vkconnection.vkentity.Subscription;
 import com.vkgroupstat.vkconnection.vkentity.SubscriptionStat;
 
 public class GroupCollector {
+	
+	private static final Logger LOG = LogManager.getLogger(GroupCollector.class);
+	
 	public static Group collect(String groupName) {
 		long startTime = new Date().getTime();		
 
@@ -29,7 +35,7 @@ public class GroupCollector {
 		GroupFull baseGrInf = ParsingMethodHolder.getGroupInfo(groupName);
 		SubscriptionStat baseStat = new SubscriptionStat(subscriberList);		
 		
-		System.out.println("Download and collect group data completed in " + (new Date().getTime() - startTime) + " miliseconds! ");
+		LOG.info("Download and collect group data completed in " + (new Date().getTime() - startTime) + " miliseconds!");
 		
 		return new Group(groupName, baseGrInf.getName(), baseStat, slicedSubscriptionList);
 	}
