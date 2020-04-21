@@ -3,19 +3,16 @@ package com.vkgroupstat.controller;
 import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
+import com.vkgroupstat.model.User;
 import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
-import org.apache.commons.io.IOUtils;
+import com.vkgroupstat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,13 +25,16 @@ import java.util.stream.Collectors;
 public class StockController {
 	@Autowired
 	private MailSender mailSender;
+
 //
 //	@Value("checkins.tracker@gmail.com")
 //	String email="checkins.tracker@gmail.com";
 	private final GroupService service;
+	private final UserService uService;
 
-	public StockController(GroupService service) {
+	public StockController(GroupService service, UserService uService) {
 		this.service = service;
+		this.uService = uService;
 	}
 
 
@@ -54,6 +54,16 @@ public class StockController {
 		Group group = service.groupRequestHandler(search.getGroupName());
 		result.setGroup(group);
 		return ResponseEntity.ok(group);
+
+	}
+	@PostMapping("/showhistory")
+	public ResponseEntity<?> getHistory() {
+
+
+		User user = uService.getUser(WebController.USER_ID);
+		System.out.println(user.getUserId());
+
+		return ResponseEntity.ok(user);
 
 	}
 

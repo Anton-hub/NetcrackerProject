@@ -179,7 +179,7 @@ function fire_ajax() {
             const table = document.getElementById('tbody');
 
 
-            for (let i = 0; i <  100; i++) {
+            for (let i = 0; i <  20; i++) {
                 let row = document.createElement('tr');
                 const group = data.rangeList[i];
                 row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.targetSubsCount}</td>`;

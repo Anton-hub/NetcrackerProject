@@ -3,6 +3,7 @@ package com.vkgroupstat.model;
 import java.util.Date;
 import java.util.LinkedList;
 
+import com.vkgroupstat.controller.WebController;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,18 +16,26 @@ public class Group {
 	String id;
 	String urlName;
 	String stringName;
-	
+	String userId;
 	SubscriptionStat baseStat;
 	LinkedList<Subscription> rangeList;
 	Date createDate = new Date();
 	
-	public Group(String urlName, String stringName, SubscriptionStat baseStat, LinkedList<Subscription> rangeList) {
+	public Group(String urlName, String stringName, String userId, SubscriptionStat baseStat, LinkedList<Subscription> rangeList) {
 		super();
 		this.urlName = urlName;
 		this.stringName = stringName;
+		this.userId = userId;
 		this.baseStat = baseStat;
 		this.rangeList = rangeList;
 	}
+//public Group(String urlName, String stringName, SubscriptionStat baseStat, LinkedList<Subscription> rangeList) {
+//	super();
+//	this.urlName = urlName;
+//	this.stringName = stringName;
+//	this.baseStat = baseStat;
+//	this.rangeList = rangeList;
+//}
 
 	public String getId() {
 		return id;

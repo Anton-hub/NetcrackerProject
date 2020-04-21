@@ -3,14 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title> Send </title>
+    <title> History </title>
     <meta name="keywords" content="" />
     <meta name="description" content="">
     <meta name="author" content="">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/send.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="/js/history.js"></script>
 
 
     <!-- Mobile view -->
@@ -83,8 +85,9 @@
                                     </ul>
                                     <div id="menu" class="collapse">
                                         <ul class="nav navbar-nav">
-                                                <li class="right"> <a href="https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/search&scope=offline&response_type=code&v=5.103"><b>К поиску</b></a></li>
-                                                <li class="right"> <a href="https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/history&scope=offline&response_type=code&v=5.103"><b>История поиска</b></a></li>
+                                            <li class="right"> <a href="/index"><b>Главная</b></a></li>
+                                            <li class="right"> <a href="/send"><b>Обратная связь</b></a></li>
+                                            <li class="right"> <a href="https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/search&scope=offline&response_type=code&v=5.103"><b>К поиску</b></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -110,8 +113,8 @@
                         <div class="col-md-12 col-sm-12 col-xs-12 clearfix nopadding">
                             <div class="header-inner"> <div class="overlay">
                                 <div class="text text-center">
-                                    <h3 class="uppercase text-white less-mar-1 title">Связаться</h3>
-                                    <h6 class="uppercase text-white sub-title">с разработчиками</h6>
+                                    <h3 class="uppercase text-white less-mar-1 title">История</h3>
+                                    <h6 class="uppercase text-white sub-title">Поиска</h6>
                                 </div>
                             </div>
                             </div></div>
@@ -127,101 +130,43 @@
         <!--end section-->
 
 
-        <!--end map-->
+
         <section class="sec-padding">
             <div class="container">
                 <div class="row">
-        <div class="clearfix"></div>
-        <br/>
 
-        <h3>Contact Form</h3>
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit. Suspendisse et justo. augue.</p>
-        <br/>
-        <br/>
+                    <div class="col-sm-8 col-centered">
+                        <div class="sec-title-container text-left">
+                            <div class="ce-title-line"></div>
+                            <div class="clearfix"></div>
+<!--                            <h2 class="font-weight-6 less-mar-1 line-height-5">История поиска </h2>-->
+                            <!--               <div class="col-md-6 nopadding"> <h6 class="font-weight-3">Praesent mattis commodo augue Aliquam ornare hendrerit augue Cras tellus. <br> </h6></div>-->
 
+                        </div>
+                        <div>
+                            <form class="form-inline" style="margin:20px 20px 20px 20px" id="historyForm">
 
-        <div class="text-box white padding-4">
-            <div class="one_half">
+                                <button id="historyBtn" class="btn btn-success btn-medium" style="margin-left:20px; margin-right:5px">показать историю поиска</button>
+                                <div id="getResultDiv" style="padding:20px 10px 20px 50px"/>
+                            </form>
 
-
-                <div class="cforms_sty3">
-
-
-                    <div id="form_status"></div>
-                    <form  id="form-feedback">
-                        <label class="label">Name <em>*</em></label>
-                        <label class="input">
-                            <input type="text" name="name" id="name">
-                        </label>
-
-                        <div class="clearfix"></div>
-
-                        <label class="label">E-mail <em>*</em></label>
-                        <label class="input">
-                            <input type="email" name="email" id="email">
-                        </label>
-
-                        <!-- <div class="clearfix"></div>
-
-
-                        <label class="label">Phone <em>*</em></label>
-                        <label class="input">
-                            <input type="text" name="phone" id="phone">
-                        </label> -->
-
-                        <div class="clearfix"></div>
-
-                        <label class="label">Subject <em>*</em></label>
-                        <label class="input">
-                            <input type="text" name="subject" id="subject">
-                        </label>
-
-                        <div class="clearfix"></div>
-
-                        <label class="label">Message <em>*</em></label>
-                        <label class="textarea">
-                            <textarea rows="5" name="message" id="message"></textarea>
-                        </label>
-
-                        <div class="clearfix"></div>
-                        <input type="hidden" name="token" value="FsWga4&@f6aw" />
-                        <button id="sendBtn" class="btn btn-success btn-medium" style="margin-left:20px; margin-right:5px">Отправить</button>
-
-                    </form>
-
-
+                        </div>
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">№</th>
+                                    <th scope="col">Группа</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    <!--end title-->
                 </div>
+            </div>
 
-            </div></div>
-
-    </div>
-    <!--end right col-->
-
-
-</div>
-
-</section>
-<div class="clearfix"></div>
-<!--                <div class="box">-->
-<!--&lt;!&ndash;                    <div class="row uniform half" id='setType'>&ndash;&gt;-->
-<!--                        <div class="11u">-->
-<!--                            <form>-->
-<!--                                Your email for feedback <input type="text" name="email" id="email"><br>-->
-<!--                                Subject <input type="text" name="subject" id="subject"><br>-->
-<!--                                Content <input type="text" name="content" id="content"><br>-->
-<!--                            </form>-->
-<!--                            </ul>-->
-<!--                            </ul><div></div>-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                    </div>-->
-
-<!--                    &lt;!&ndash; Submit button &ndash;&gt;-->
-<!--                    <ul class="actions align-center">-->
-<!--                        <li><a id = "send" class="button" onclick = sendMailToGetFeedback()>Send</a></li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-                </div>
-                </div>
         </section>
         <div class="clearfix"></div>
         <!-- end section -->

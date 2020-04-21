@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
+import com.vkgroupstat.controller.WebController;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
@@ -31,7 +32,8 @@ public class GroupCollector {
 		
 		System.out.println("Download and collect group data completed in " + (new Date().getTime() - startTime) + " miliseconds! ");
 		
-		return new Group(groupName, baseGrInf.getName(), baseStat, slicedSubscriptionList);
+		return new Group(groupName, baseGrInf.getName(), WebController.USER_ID, baseStat, slicedSubscriptionList);
+//		return new Group(groupName, baseGrInf.getName(), baseStat, slicedSubscriptionList);
 	}
 
 	public static void fillNameField(LinkedList<Subscription> handledList) {

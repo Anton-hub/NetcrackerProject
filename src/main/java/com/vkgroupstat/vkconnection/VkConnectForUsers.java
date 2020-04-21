@@ -8,6 +8,7 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
+import com.vkgroupstat.Constants;
 import com.vkgroupstat.model.User;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 
 
 public class VkConnectForUsers {
-    private static Integer client_id = 7362729;
+
     private static String client_secret = "pqnxEFjvEdh3GHY0iOf3";
     private static VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
     private static String redirect_uri = "http://localhost:8080/search";
@@ -27,7 +28,7 @@ public class VkConnectForUsers {
         HashMap<User, String> userAndToken = new HashMap<>();
         try {
             UserAuthResponse authResponse = vk.oauth()
-                    .userAuthorizationCodeFlow(client_id, client_secret, redirect_uri, code)
+                    .userAuthorizationCodeFlow(Constants.APPID, Constants.client_secret, Constants.redirect_uri, code)
                     .execute();
 
             UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
