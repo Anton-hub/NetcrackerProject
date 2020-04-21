@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vkgroupstat.vkconnection.GroupCollector;
 import com.vkgroupstat.vkconnection.TEST.TEST_StringOut;
+import com.vkgroupstat.vkconnection.TEST.TEST_activityParser;
 import com.vkgroupstat.vkconnection.TEST.TEST_parseStat;
 
 @RestController
@@ -29,5 +30,10 @@ public class TestController {
 	@RequestMapping("/stat")
 	public String getStat() {
 		return TEST_parseStat.statGet("sad");
+	}
+	
+	@RequestMapping("/wall")
+	public String getPosts() {
+		return TEST_activityParser.wallGet();
 	}
 }

@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.groups.GroupFull;
+import com.vk.api.sdk.objects.wall.WallPostFull;
+import com.vk.api.sdk.queries.wall.WallGetFilter;
 
 public class ParsingMethodHolder implements VkSdkObjHolder{
 	
@@ -63,6 +65,23 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 					   .groupId(groupSreenName)
 					   .execute()
 					   .get(0);
+		} catch (ApiException | ClientException e) {
+			LOG.error(e.getMessage());
+			return null;
+		}
+	}
+	
+	public static List<WallPostFull> getWallPosts(String groupName, Integer offset){
+		try {
+			return VK.wall()
+						.get(S_ACTOR)
+						.domain(groupName)
+						.offset(offset)
+						.count(100)
+						.filter(WallGetFilter.ALL)
+						.unsafeParam("extended", 0)
+						.execute()
+						.getItems();
 		} catch (ApiException | ClientException e) {
 			LOG.error(e.getMessage());
 			return null;
