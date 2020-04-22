@@ -1,8 +1,11 @@
 package com.vkgroupstat.controller;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
@@ -18,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
+import com.vkgroupstat.model.User;
 import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
+import com.vkgroupstat.service.UserService;
 
 
 
@@ -28,15 +33,21 @@ import com.vkgroupstat.service.GroupService;
 @RestController
 @RequestMapping("/api")
 public class StockController {
+	
+	private static final Logger LOG = LogManager.getLogger(StockController.class);
+	
 	@Autowired
 	private MailSender mailSender;
+
 //
 //	@Value("checkins.tracker@gmail.com")
 //	String email="checkins.tracker@gmail.com";
 	private final GroupService service;
+	private final UserService uService;
 
-	public StockController(GroupService service) {
+	public StockController(GroupService service, UserService uService) {
 		this.service = service;
+		this.uService = uService;
 	}
 
 
@@ -57,6 +68,15 @@ public class StockController {
 		result.setGroup(group);
 		return ResponseEntity.ok(group);
 
+	}
+	@PostMapping("/showhistory")
+	public ResponseEntity<?> getHistory() {
+		User user = uService.getUser(WebController.USER_ID);
+		LOG.info("user = " + user.getUserId());
+		LOG.info(user.getListGroupsId().toString());
+		LinkedList<Group> list = service.findListById(user.getListGroupsId());
+		LOG.info(list.toString());
+		return ResponseEntity.ok(list);
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)

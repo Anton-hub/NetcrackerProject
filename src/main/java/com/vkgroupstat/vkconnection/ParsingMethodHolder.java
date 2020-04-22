@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vk.api.sdk.objects.wall.WallPostFull;
 import com.vk.api.sdk.queries.wall.WallGetFilter;
@@ -84,6 +85,17 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 						.getItems();
 		} catch (ApiException | ClientException e) {
 			LOG.error(e.getMessage());
+			return null;
+		}
+	}
+	
+	public static UserAuthResponse getUserAuthInfo(String code) {
+		try {
+			return VK.oauth()
+						.userAuthorizationCodeFlow(APPID, PROTECTEDKEY, "http://localhost:8080/search", code)
+						.execute();
+		} catch (ClientException | ApiException e) {
+			LOG.error(e);
 			return null;
 		}
 	}

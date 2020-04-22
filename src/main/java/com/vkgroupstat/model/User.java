@@ -1,26 +1,36 @@
 package com.vkgroupstat.model;
 
+import java.util.LinkedList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.LinkedHashMap;
 
 @Document
 public class User {
     @Id
     String id;
-    String userId;
+    Integer userId;
+//    @DBRef
+//    private List<Group> listGroups;
+    LinkedList<String> listGroupsId = new LinkedList<String>();
+    
 
-    public User(String userId) {
-        super();
+    public User(Integer userId) {
         this.userId = userId;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
-
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
+	public LinkedList<String> getListGroupsId() {
+		return listGroupsId;
+	}
+	
+	public void addGroupId(String groupId) {
+		if (!listGroupsId.contains(groupId))
+			listGroupsId.add(groupId);
+	}
 }
