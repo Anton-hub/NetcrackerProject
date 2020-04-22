@@ -39,9 +39,8 @@ public class GroupCollector {
 		SubscriptionStat baseStat = new SubscriptionStat(subscriberList);		
 		
 		LOG.info("Download and collect group data completed in " + (new Date().getTime() - startTime) + " miliseconds!");
-		
-		return new Group(groupName, baseGrInf.getName(), WebController.USER_ID, baseStat, slicedSubscriptionList);
-//		return new Group(groupName, baseGrInf.getName(), baseStat, slicedSubscriptionList);
+
+		return new Group(groupName, baseGrInf.getName(), baseStat, slicedSubscriptionList);
 	}
 
 	public void fillNameField(LinkedList<Subscription> handledList) {
