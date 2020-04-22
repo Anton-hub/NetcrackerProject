@@ -1,22 +1,18 @@
 package com.vkgroupstat.controller;
 
-import com.vkgroupstat.model.Group;
-import com.vkgroupstat.model.User;
-import com.vkgroupstat.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.LinkedList;
-
+import com.vkgroupstat.service.UserService;
 
 @Controller
 public class WebController{
 
 
     private final UserService service;
-    public static String USER_ID;
+    public static Integer USER_ID;
     public WebController(UserService service) {
         this.service = service;
     }

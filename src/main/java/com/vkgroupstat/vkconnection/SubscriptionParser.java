@@ -10,10 +10,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
 public class SubscriptionParser implements VkSdkObjHolder{
+	
+	private static final Logger LOG = LogManager.getLogger(Subscription.class);
+	
 	Integer batchSize;
 	String baseGroupName;
 	LinkedList<Subscriber> in; 
@@ -31,7 +37,7 @@ public class SubscriptionParser implements VkSdkObjHolder{
 		executor.shutdown();
 		try {
 			executor.awaitTermination(3, TimeUnit.MINUTES);
-		} catch (InterruptedException e) {System.err.println(e);}
+		} catch (InterruptedException e) {LOG.error(e.getMessage());}
 		
 		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
 		LinkedList<Subscription> responseList = new LinkedList<Subscription>(out.values());

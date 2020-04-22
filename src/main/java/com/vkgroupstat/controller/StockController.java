@@ -1,5 +1,23 @@
 package com.vkgroupstat.controller;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
@@ -7,14 +25,6 @@ import com.vkgroupstat.model.User;
 import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
 import com.vkgroupstat.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSender;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 
 
@@ -23,6 +33,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class StockController {
+	
+	private static final Logger LOG = LogManager.getLogger(StockController.class);
+	
 	@Autowired
 	private MailSender mailSender;
 
@@ -58,13 +71,12 @@ public class StockController {
 	}
 	@PostMapping("/showhistory")
 	public ResponseEntity<?> getHistory() {
-
-
 		User user = uService.getUser(WebController.USER_ID);
-		System.out.println(user.getUserId());
-
-		return ResponseEntity.ok(user);
-
+		LOG.info("user = " + user.getUserId());
+		LOG.info(user.getListGroupsId().toString());
+		LinkedList<Group> list = service.findListById(user.getListGroupsId());
+		LOG.info(list.toString());
+		return ResponseEntity.ok(list);
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)

@@ -10,7 +10,7 @@ public class TEST_parseStat implements VkSdkObjHolder{
 		try {
 			@SuppressWarnings(value = "deprecation")
 			JsonObject json = new JsonParser()
-									.parse(VK_U
+									.parse(VK
 											.stats()
 											.get(U_ACTOR)
 											.appId(APPID)

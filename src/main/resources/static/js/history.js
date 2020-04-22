@@ -23,9 +23,9 @@ function fire_ajax() {
             const table = document.getElementById('tbody');
 
 
-            for (let i = 0; i <  data.listGroups.length; i++) {
+            for (let i = 0; i <  data.length; i++) {
                 let row = document.createElement('tr');
-                const group = data.listGroups[i];
+                const group = data[i];
                 row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td>`;
                 table.appendChild(row);
             }

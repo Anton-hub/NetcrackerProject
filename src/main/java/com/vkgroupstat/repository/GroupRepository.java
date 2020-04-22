@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface GroupRepository extends MongoRepository<Group, String>{
 	public Group findByurlName(String groupName);
-	public List<Group> findByUserId(String userId);
+	public List<Group> findByUserId(Integer userId);
 
 }
