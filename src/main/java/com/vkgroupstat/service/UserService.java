@@ -24,10 +24,6 @@ public class UserService {
             HashMap<User, String> userAndToken = VkConnectForUsers.getUser(code);
             User newUser = (User)userAndToken.keySet().toArray()[0];
 
-//            newUser.setGroups();
-//            Group userGroup = GroupRepository.findByUserId("newUser.getUserId()");
-//            newUser.setGroups(new HashSet<>(Arrays.asList(userGroup)));
-//            userRepository.save(user);
             String token = userAndToken.get(newUser);
             User user = repository.findByuserId(newUser.getUserId());
             currentUser = user;
@@ -44,13 +40,9 @@ public class UserService {
             user.setListGroups(groupList);
             repository.save(user);
             currentUser = user;
-
-
-//        return repository.findByuserId(newUser.getUserId());
     }
     public User getUser(String userId){
         User user = repository.findByuserId(userId);
         return user;
     }
-
-    }
+}
