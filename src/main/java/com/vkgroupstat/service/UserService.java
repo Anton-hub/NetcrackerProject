@@ -12,6 +12,7 @@ import com.vkgroupstat.vkconnection.ParsingMethodHolder;
 
 @Service
 public class UserService {
+
 	
 	private static final Logger LOG = LogManager.getLogger(UserService.class);
 	
@@ -42,4 +43,5 @@ public class UserService {
 		User user = userRep.findByuserId(userId);
 		return user;
 	}
+
 }
