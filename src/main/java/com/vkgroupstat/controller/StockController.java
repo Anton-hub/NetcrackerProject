@@ -26,10 +26,6 @@ import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
 import com.vkgroupstat.service.UserService;
 
-
-
-
-
 @RestController
 @RequestMapping("/api")
 public class StockController {
@@ -72,10 +68,7 @@ public class StockController {
 	@PostMapping("/showhistory")
 	public ResponseEntity<?> getHistory() {
 		User user = uService.getUser(WebController.USER_ID);
-		LOG.info("user = " + user.getUserId());
-		LOG.info(user.getListGroupsId().toString());
 		LinkedList<Group> list = service.findListById(user.getListGroupsId());
-		LOG.info(list.toString());
 		return ResponseEntity.ok(list);
 	}
 
