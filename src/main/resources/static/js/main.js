@@ -177,7 +177,7 @@ function fire_ajax() {
                 const group = data.rangeList[i];
                 arrmodal[i] =
 
-                    '   <button class="btn btn-success btn-small"" data-toggle="modal" data-target="#Modal'+i+'">Показать</button>' +
+                    '   <button class="btn btn-info btn-small"" data-toggle="modal" data-target="#Modal'+i+'">Показать</button>' +
                     '    <div class="modal fade bd-example-modal-lg" id="Modal'+i+'">' +
                     '    <div class="modal-dialog">' +
                     '     <div class="modal-content">' +
@@ -352,7 +352,7 @@ function fire_ajax() {
                 let row = document.createElement('tr');
 
 
-                row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
+                row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.thisGroupSubsCount}</td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
                 table.appendChild(row);
                 // let modal = document.createElement('tr');
                 // modal.innerHTML = '' +
