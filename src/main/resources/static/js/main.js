@@ -30,15 +30,15 @@ function fire_ajax() {
             var arrCity = [];
             var arrNumber = [];
             var i = 0;
-            for ( var key in statCity ) {
+            for (var key in statCity) {
                 arrCity[i] = key;
                 let value = statCity[key];
                 arrNumber[i] = value;
-                i = i+1;
+                i = i + 1;
             }
 
             // Load the Visualization API and the corechart package.
-            google.charts.load('current', {'packages':['corechart']});
+            google.charts.load('current', {'packages': ['corechart']});
 
             // Set a callback to run when the Google Visualization API is loaded.
             google.charts.setOnLoadCallback(drawCoreChart);
@@ -63,18 +63,22 @@ function fire_ajax() {
                 ]);
 
                 // Set chart options
-                var options = {'title':'Пол аудитории',
+                var options = {
+                    'title': 'Пол аудитории',
                     is3D: true,
-                    'width':400,
-                    'height':300};
+                    pieHole: 0.2,
+                    'width': 400,
+                    'height': 300
+                };
 
                 // Instantiate and draw our chart, passing in some options.
                 var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                 chart.draw(dataGender, options);
             }
 
-            google.charts.load('current', {'packages':['columnchart']});
+            google.charts.load('current', {'packages': ['corechart']});
             google.charts.setOnLoadCallback(drawColumnChart);
+
             function drawColumnChart() {
 
 
@@ -83,7 +87,8 @@ function fire_ajax() {
 
                 var dataCity = new google.visualization.DataTable();
                 dataCity.addColumn('string', 'Сity');
-                 dataCity.addColumn('number', 'Number');;
+                dataCity.addColumn('number', 'Number');
+                ;
                 // dataCity.addColumn({ role: "style" });
 
                 dataCity.addRows([
@@ -96,16 +101,17 @@ function fire_ajax() {
                 ]);
 
                 // Set chart options
-                var options = {'title':'Подписчики по городам',
+                var options = {
+                    'title': 'Подписчики по городам',
+                    colors: ['#660BAB','#de1f1f','#0bacb8','#d3d60b','#d60b9d','#168235'],
                     is3D: true,
+                    'width': 400,
+                    'height': 300
+                };
 
-                    legend         : 'none',
-                    colors:[['#FF8C00'],['#F08080'], ['#2E8B57'], ['#20B2AA'], ['#BA55D3'], ['#4169E1']],
-                    'width':400,
-                    'height':300};
 
                 // Instantiate and draw our chart, passing in some options.
-                var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+                var chart = new google.visualization.PieChart(document.getElementById("citychart_values"));
                 chart.draw(dataCity, options);
             }
 
@@ -172,7 +178,7 @@ function fire_ajax() {
                 arrmodal[i] =
 
                     '   <button class="btn btn-success btn-small"" data-toggle="modal" data-target="#Modal'+i+'">Показать</button>' +
-                    '    <div class="modal fade" id="Modal'+i+'">' +
+                    '    <div class="modal fade bd-example-modal-lg" id="Modal'+i+'">' +
                     '    <div class="modal-dialog">' +
                     '     <div class="modal-content">' +
                     '     <div class="modal-header">' +
@@ -183,16 +189,20 @@ function fire_ajax() {
                     '     </div>' +
                     '<br>'+
                     '     <div class="modal-body">' +
+                    '<div class="container-fluid">'+
+                    '<div class="col-md-6">'+
                     '       <div id="chart_div_modal'+i+'"></div>'+
                     '       </div>'+
 
-                    '<br>'+
+                    '<div class="col-md-6">'+
                     '       <div id="agechart_div_modal'+i+'"></div>'+
-                    '<br>'+
-
+                    '</div>'+
+                    '<div class="col-divider-margin-6"></div>'+
+                    '<div class="col-md-6">'+
 
                     '       <div id="columnchart_values_modal'+i+'"></div>'+
-
+                    '</div>'+
+                    '</div>'+
                     '     </div>' +
                     '     </div>' +
                     // '     <div class="modal-footer">' +
@@ -209,12 +219,13 @@ function fire_ajax() {
                 statGenderModal[i] = group.statistics.sexStat;
                 statCityModal[i] = group.statistics.cityStat;
                 statAgeModal[i] = group.statistics.ageStat;
-                var CurrentGender = statGenderModal[i];
-                var CurrentCity = statCityModal[i];
-                var CurrentAge = statAgeModal[i];
-                var j = 0;
+                //var sucks :)
+                let CurrentGender = statGenderModal[i];
+                let CurrentCity = statCityModal[i];
+                let CurrentAge = statAgeModal[i];
+                let j = 0;
 
-                for ( var key in CurrentCity ) {
+                for ( let key in CurrentCity ) {
                     arrCity[j] = key;
                     let value = CurrentCity[key];
                     arrNumber[j] = value;
@@ -240,6 +251,7 @@ function fire_ajax() {
                     dataGenderModal[i] = new google.visualization.DataTable();
                     dataGenderModal[i].addColumn('string', 'Gender');
                     dataGenderModal[i].addColumn('number', 'Number');
+                    console.log(CurrentGender);
                     dataGenderModal[i].addRows([
                         // ['Не указан', statGender[0]],
                         ['Женщин', CurrentGender["Женщин"]],
@@ -249,15 +261,16 @@ function fire_ajax() {
                     // Set chart options
                     var options = {'title':'Пол аудитории',
                         is3D: true,
-                        'width':400,
-                        'height':300};
+                        legend: 'none',
+                        'width':200,
+                        'height':150};
 
                     // Instantiate and draw our chart, passing in some options.
                     chartModalGender[i] = new google.visualization.PieChart(document.getElementById('chart_div_modal'+i));
                     chartModalGender[i].draw(dataGenderModal[i], options);
                 }
 
-                google.charts.load('current', {'packages':['columnchart']});
+                google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawColumnChartModal);
                 function drawColumnChartModal() {
 
@@ -284,13 +297,13 @@ function fire_ajax() {
                     var options = {'title':'Подписчики по городам',
                         is3D: true,
 
-                        legend         : 'none',
-                        colors:'#F08080',
-                        'width':400,
-                        'height':300};
+                        legend: 'none',
+
+                        'width':200,
+                        'height':150};
 
                     // Instantiate and draw our chart, passing in some options.
-                    chartModalCity[i] = new google.visualization.ColumnChart(document.getElementById("columnchart_values_modal"+i));
+                    chartModalCity[i] = new google.visualization.PieChart(document.getElementById("columnchart_values_modal"+i));
                     chartModalCity[i].draw(dataCityModal[i], options);
                 }
 
@@ -327,8 +340,9 @@ function fire_ajax() {
                     // Set chart options
                     var options = {'title':'Возраст аудитории',
                         is3D: true,
-                        'width':400,
-                        'height':300};
+                        legend: 'none',
+                        'width':200,
+                        'height':150};
 
                     // Instantiate and draw our chart, passing in some options.
                     chartModalAge[i] = new google.visualization.PieChart(document.getElementById('agechart_div_modal'+i));
@@ -368,7 +382,6 @@ function fire_ajax() {
                 //     '</div>';
                 // table.appendChild(modal);
             }
-
 
             console.log("SUCCESS : ", data);
             // $('#getResultDiv').html(data.result);
