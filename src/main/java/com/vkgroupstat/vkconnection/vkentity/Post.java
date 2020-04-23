@@ -49,7 +49,7 @@ public class Post {
 	
 	@Override
 	public String toString() {
-		return "<br> owner = " + ownerId + " [POST]   id = " + postId + " // date = " + date + " // likes = " + likesCount 
+		return "<br>[POST]   id = " + postId + " // date = " + date + " // likes = " + likesCount 
 				+ " // comments = " + commentsCount + " // likers = " 
 				+ likersIdList.stream().limit(5).map(Object::toString).collect(Collectors.joining(",")) + " ...";
 	}

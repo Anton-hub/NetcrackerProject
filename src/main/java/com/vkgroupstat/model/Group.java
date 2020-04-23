@@ -46,4 +46,9 @@ public class Group {
 	public Date getCreateDate() {
 		return createDate;
 	}
+
+	
+	public void setId(String id) {
+		this.id = id;
+	}	
 }

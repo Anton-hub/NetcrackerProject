@@ -25,30 +25,18 @@ public class GroupService {
 		this.service = service;
 	}
 
-	public Group groupRequestHandler(String groupName) {
-
-		Group group = repository.findByurlName(groupName);
-		if (group == null) {
-			group = collcetor.collect(groupName);
-			String groupId = repository.save(group).getId();
-			service.addGroup(groupId);
-		} else {
-			if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l) {
-				repository.delete(group);
-				group = collcetor.collect(groupName);
-				String groupId = repository.save(group).getId();
-				service.addGroup(groupId);
-			} else {
-				service.addGroup(group.getId());
-			}
-		}
+	public Group groupRequestHandler(String groupName) {		
+		Group group = repository.findOrParse(groupName);		
+		service.addGroup(group.getId());		
+		if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l)
+			repository.refresh(group);
 		return group;
 	}
 	
 	public LinkedList<Group> findListById(LinkedList<String> listId){
 		LinkedList<Group> responseList = new LinkedList<Group>();
 		for (String item : listId) {
-			responseList.add(repository.findById(item).get());
+			responseList.add(repository.findById(item));
 		}		
 		return responseList;
 	}
