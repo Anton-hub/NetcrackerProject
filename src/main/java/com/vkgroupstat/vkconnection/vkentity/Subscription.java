@@ -7,6 +7,7 @@ public class Subscription implements Comparable<Subscription>{
 	protected Integer id = null;
 	protected String stringName = null;
 	protected String urlName = null;
+	protected String photoUrl = null;
 	protected Integer targetSubsCount = null;
 	protected Integer thisGroupSubsCount = null;
 	
@@ -53,7 +54,10 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	public String getUrlName() {
 		return urlName;
-	}	
+	}		
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
 	public Integer getTargetSubsCount() {
 		return targetSubsCount;
 	}	
@@ -73,6 +77,9 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	public void setUrlName(String urlName) {
 		this.urlName = urlName;
+	}	
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 	public void setThisGroupSubsCount(Integer thisGroupSubsCount) {
 		this.thisGroupSubsCount = thisGroupSubsCount;

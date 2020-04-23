@@ -24,9 +24,9 @@ function fire_ajax() {
         dataType: 'json',
         cache: false,
         success: function (data) {
-            const statGender = data.baseStat.sexStat;
-            const statCity = data.baseStat.cityStat;
-            const statAge = data.baseStat.ageStat;
+            const statGender = data.groupStat.sexStat;
+            const statCity = data.groupStat.cityStat;
+            const statAge = data.groupStat.ageStat;
             var arrCity = [];
             var arrNumber = [];
             var i = 0;

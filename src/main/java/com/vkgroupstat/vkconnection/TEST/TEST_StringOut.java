@@ -14,7 +14,7 @@ public class TEST_StringOut {
 		response += "<h1>" + group.getStringName()+"</h1>";
 		response += "<h2>" + group.getUrlName() + "</h2>";
 		response += "<h3>" + group.getCreateDate() + "</h3><br>";
-		response += "<h4>Статистика группы:<br><br>" + group.getBaseStat() + "</h4><br>";
+		response += "<h4>Статистика группы:<br><br>" + group.getGroupStat() + "</h4><br>";
 		response += subsInfo_statistic_StringOut(group.getRangeList());
 		return response;
 	}
