@@ -27,6 +27,7 @@ function fire_ajax() {
             const statGender = data.groupStat.sexStat;
             const statCity = data.groupStat.cityStat;
             const statAge = data.groupStat.ageStat;
+            const statBan = data.groupStat.bannedCount;
             var arrCity = [];
             var arrNumber = [];
             var i = 0;
@@ -36,7 +37,12 @@ function fire_ajax() {
                 arrNumber[i] = value;
                 i = i + 1;
             }
+            var countSubs = 0;
+            for (var key in statGender) {
 
+                let value = statGender[key];
+                countSubs = countSubs + value;
+            }
             var ctx = document.getElementById("myChart").getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'horizontalBar',
@@ -98,11 +104,27 @@ function fire_ajax() {
             var myPieChart = new Chart(ctxP, {
                 type: 'pie',
                 data: {
-                    labels: ["Женщин", "Мужчин"],
+                    labels: ["Женщин", "Мужчин", "Не указано"],
                     datasets: [{
-                        data: [statGender["Женщин"], statGender["Мужчин"]],
-                        backgroundColor: ["#F7464A", "#46BFBD"],
-                        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+                        data: [statGender["Женщин"], statGender["Мужчин"], statGender["Не указано"]],
+                        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
+                        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+            var activeCount = countSubs - statBan;
+            var ctxpB = document.getElementById("banChart").getContext('2d');
+            var myBanChart = new Chart(ctxpB, {
+                type: 'pie',
+                data: {
+                    labels: ["Активные", "Забаненные"],
+                    datasets: [{
+                        data: [activeCount, statBan],
+                        backgroundColor: ["#ff6384", "#62088A"],
+                        hoverBackgroundColor: ["#ff6384", "#62088A"]
                     }]
                 },
                 options: {
@@ -178,7 +200,7 @@ function fire_ajax() {
                     '</div>';
 
                 let row = document.createElement('tr');
-                row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.thisGroupSubsCount}</td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
+                row.innerHTML = `<td>${i+1}</td><td><img src=${group.photoUrl} class="img-responsive"></td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.thisGroupSubsCount}</td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
                 table.appendChild(row);
             }
             for (let i = 0; i <  20; i++) {
@@ -202,11 +224,11 @@ function fire_ajax() {
                 dataGenderModal[i] = new Chart(chartModalGender[i], {
                     type: 'pie',
                     data: {
-                        labels: ["Женщин", "Мужчин"],
+                        labels: ["Женщин", "Мужчин", "Не указано"],
                         datasets: [{
-                            data: [CurrentGender["Женщин"], CurrentGender["Мужчин"]],
-                            backgroundColor: ["#F7464A", "#46BFBD"],
-                            hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+                            data: [CurrentGender["Женщин"], CurrentGender["Мужчин"], CurrentGender["Не указано"]],
+                            backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
+                            hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
                         }]
                     },
                     options: {

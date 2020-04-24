@@ -27,7 +27,7 @@ function fire_ajax() {
                 console.log(data)
                 let row = document.createElement('tr');
                 const group = data[i];
-                row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/${group.urlName}">${group.stringName}</a></td>`;
+                row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.clubId}">${group.stringName}</a></td>`;
                 table.appendChild(row);
             }
             console.log("SUCCESS : ", data);
