@@ -37,45 +37,6 @@ function fire_ajax() {
                 i = i + 1;
             }
 
-            // Load the Visualization API and the corechart package.
-            google.charts.load('current', {'packages': ['corechart']});
-
-            // Set a callback to run when the Google Visualization API is loaded.
-            google.charts.setOnLoadCallback(drawCoreChart);
-
-            // Callback that creates and populates a data table,
-            // instantiates the pie chart, passes in the data and
-            // draws it.
-
-            function drawCoreChart() {
-
-
-                // Set a callback to run when the Google Visualization API is loaded.
-
-                // Create the data table.
-                var dataGender = new google.visualization.DataTable();
-                dataGender.addColumn('string', 'Gender');
-                dataGender.addColumn('number', 'Number');
-                dataGender.addRows([
-                    // ['Не указан', statGender[0]],
-                    ['Женщин', statGender["Женщин"]],
-                    ['Мужчин', statGender["Мужчин"]]
-                ]);
-
-                // Set chart options
-                var options = {
-                    'title': 'Пол аудитории',
-                    is3D: true,
-                    pieHole: 0.2,
-                    'width': 400,
-                    'height': 300
-                };
-
-                // Instantiate and draw our chart, passing in some options.
-                var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-                chart.draw(dataGender, options);
-            }
-
             var ctx = document.getElementById("myChart").getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'horizontalBar',
@@ -114,50 +75,9 @@ function fire_ajax() {
                 }
             });
 
-            // Load the Visualization API and the corechart package.
-            google.charts.load('current', {'packages':['corechart']});
-
-            // Set a callback to run when the Google Visualization API is loaded.
-            google.charts.setOnLoadCallback(drawAgeChart);
-
-            // Callback that creates and populates a data table,
-            // instantiates the pie chart, passes in the data and
-            // draws it.
-
-            function drawAgeChart() {
-
-
-                // Set a callback to run when the Google Visualization API is loaded.
-
-                // Create the data table.
-                var dataAge = new google.visualization.DataTable();
-                dataAge.addColumn('string', 'Age');
-                dataAge.addColumn('number', 'Number');
-                dataAge.addRows([
-                    // ['Не указан', statGender[0]],
-                    ['менее 10', statAge["менее 10"]],
-                    ['10 - 20', statAge["10 - 20"]],
-                    ['20 - 30', statAge["20 - 30"]],
-                    ['30 - 40', statAge["30 - 40"]],
-                    ['40 - 50', statAge["40 - 50"]],
-                    ['60 и более', statAge["60 и более"]],
-                    ['Не указан', statAge["Не указан"]]
-                ]);
-
-                // Set chart options
-                var options = {'title':'Возраст аудитории',
-                    is3D: true,
-                    'width':400,
-                    'height':300};
-
-                // Instantiate and draw our chart, passing in some options.
-                var chart = new google.visualization.PieChart(document.getElementById('agechart_div'));
-                chart.draw(dataAge, options);
-            }
-
             var ctxPA = document.getElementById("polarChart").getContext('2d');
             var myPolarChart = new Chart(ctxPA, {
-                type: 'polarArea',
+                type: 'pie',
                 data: {
                     labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50','60 и более','Не указан'],
                     datasets: [{
@@ -174,8 +94,21 @@ function fire_ajax() {
                     responsive: true
                 }
             });
-
-
+            var ctxP = document.getElementById("pieChart").getContext('2d');
+            var myPieChart = new Chart(ctxP, {
+                type: 'pie',
+                data: {
+                    labels: ["Женщин", "Мужчин"],
+                    datasets: [{
+                        data: [statGender["Женщин"], statGender["Мужчин"]],
+                        backgroundColor: ["#F7464A", "#46BFBD"],
+                        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
 
             const table = document.getElementById('tbody');
             var arrmodal = [];
@@ -205,20 +138,30 @@ function fire_ajax() {
                     '     </div>' +
                     '     <div class="col-centered">'+
                     '     </div>' +
-                    '<br>'+
-                    '     <div class="modal-body">' +
                     '<div class="container-fluid">'+
-                    '<div class="col-md-6">'+
-                    '       <div id="chart_div_modal'+i+'"></div>'+
+                    '     <div class="modal-body">' +
+                    '<div class="col-md-6 col-right">'+
+                    '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit. Suspendisse et justo. augue.+' +
+                    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit.</p>'+
+                    '     </div>' +
+                    '<div class="col-md-6 col-left">'+
+                    '<b>Пол аудитории</b>'+
+                    '<canvas id="pieChart_modal'+i+'"style="padding: 10px"></canvas>'+
+                    '     </div>' +
+                    '<div class="col-divider-margin-3"></div>'+
+                    '<div class="col-md-10 ">'+
+                    '<b>Возраст аудитории</b>'+
+
+                    '<canvas id="polarChart_modal'+i+'" style="padding: 10px"></canvas>'+
                     '       </div>'+
-
-                    '<div class="col-md-6">'+
-                    '       <div id="agechart_div_modal'+i+'"></div>'+
+                    '<div class="col-divider-margin-3"></div>'+
+                    '<div class="col-md-12 ">'+
+                    '<b>Города проживания</b>'+
+                    '<canvas id="myChart'+i+'" style="padding: 10px"></canvas>'+
+                    '     </div>' +
                     '</div>'+
-                    '<div class="col-divider-margin-6"></div>'+
-                    '<div class="col-md-6">'+
 
-                    '       <div id="columnchart_values_modal'+i+'"></div>'+
+
                     '</div>'+
                     '</div>'+
                     '     </div>' +
@@ -234,10 +177,16 @@ function fire_ajax() {
 
                     '</div>';
 
+                let row = document.createElement('tr');
+                row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.thisGroupSubsCount}</td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
+                table.appendChild(row);
+            }
+            for (let i = 0; i <  20; i++) {
+                const group = data.rangeList[i];
                 statGenderModal[i] = group.statistics.sexStat;
                 statCityModal[i] = group.statistics.cityStat;
                 statAgeModal[i] = group.statistics.ageStat;
-                //var sucks :)
+
                 let CurrentGender = statGenderModal[i];
                 let CurrentCity = statCityModal[i];
                 let CurrentAge = statAgeModal[i];
@@ -249,156 +198,85 @@ function fire_ajax() {
                     arrNumber[j] = value;
                     j = j+1;
                 }
+                chartModalGender[i] = document.getElementById("pieChart_modal"+i).getContext('2d');
+                dataGenderModal[i] = new Chart(chartModalGender[i], {
+                    type: 'pie',
+                    data: {
+                        labels: ["Женщин", "Мужчин"],
+                        datasets: [{
+                            data: [CurrentGender["Женщин"], CurrentGender["Мужчин"]],
+                            backgroundColor: ["#F7464A", "#46BFBD"],
+                            hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'right'
+                        },
+                        responsive: true
+                    }
+                });
 
-                // Load the Visualization API and the corechart package.
-                google.charts.load('current', {'packages':['corechart']});
+                chartModalAge[i] = document.getElementById("polarChart_modal"+i).getContext('2d');
+                dataAgeModal[i] = new Chart(chartModalAge[i], {
+                    type: 'pie',
+                    data: {
+                        labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50','60 и более','Не указан'],
+                        datasets: [{
+                            data: [CurrentAge["менее 10"], CurrentAge["10 - 20"], CurrentAge["20 - 30"], CurrentAge["30 - 40"], CurrentAge["40 - 50"], CurrentAge["60 и более"], CurrentAge["Не указан"]],
+                            backgroundColor: ["rgba(219, 0, 0, 0.1)", "rgba(0, 165, 2, 0.1)", "rgba(255, 195, 15, 0.2)",
+                                "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)"
+                            ],
+                            hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
+                                "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)", "rgba(90, 50, 219, 0.9)", "rgba(30, 200, 219, 1)"
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                });
+                chartModalCity[i] = document.getElementById("myChart"+i).getContext('2d');
+                dataCityModal[i] = new Chart(chartModalCity[i], {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: [arrCity[0], arrCity[1], arrCity[2], arrCity[3], arrCity[4], arrCity[5]],
+                        datasets: [{
+                            label: 'количество человек',
+                            data: [arrNumber[0], arrNumber[1], arrNumber[2], arrNumber[3], arrNumber[4], arrNumber[5]],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
 
-                // Set a callback to run when the Google Visualization API is loaded.
-                google.charts.setOnLoadCallback(drawCoreChartModal);
-
-                // Callback that creates and populates a data table,
-                // instantiates the pie chart, passes in the data and
-                // draws it.
-
-                function drawCoreChartModal() {
-
-
-                    // Set a callback to run when the Google Visualization API is loaded.
-
-                    // Create the data table.
-                    dataGenderModal[i] = new google.visualization.DataTable();
-                    dataGenderModal[i].addColumn('string', 'Gender');
-                    dataGenderModal[i].addColumn('number', 'Number');
-                    console.log(CurrentGender);
-                    dataGenderModal[i].addRows([
-                        // ['Не указан', statGender[0]],
-                        ['Женщин', CurrentGender["Женщин"]],
-                        ['Мужчин', CurrentGender["Мужчин"]]
-                    ]);
-
-                    // Set chart options
-                    var options = {'title':'Пол аудитории',
-                        is3D: true,
-                        legend: 'none',
-                        'width':200,
-                        'height':150};
-
-                    // Instantiate and draw our chart, passing in some options.
-                    chartModalGender[i] = new google.visualization.PieChart(document.getElementById('chart_div_modal'+i));
-                    chartModalGender[i].draw(dataGenderModal[i], options);
-                }
-
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawColumnChartModal);
-                function drawColumnChartModal() {
-
-
-                    // Set a callback to run when the Google Visualization API is loaded.
-
-
-                    dataCityModal[i] = new google.visualization.DataTable();
-                    dataCityModal[i].addColumn('string', 'Сity');
-                    dataCityModal[i].addColumn('number', 'Number');;
-                    // dataCity.addColumn({ role: "style" });
-
-                    dataCityModal[i].addRows([
-                        [arrCityModal[0], arrNumberModal[0]],
-                        [arrCityModal[1], arrNumberModal[1]],
-                        [arrCityModal[2], arrNumberModal[2]],
-                        [arrCityModal[3], arrNumberModal[3]],
-                        [arrCityModal[4], arrNumberModal[4]],
-                        [arrCityModal[5], arrNumberModal[5]]
-                    ]);
-
-
-                    // Set chart options
-                    var options = {'title':'Подписчики по городам',
-                        is3D: true,
-
-                        legend: 'none',
-
-                        'width':200,
-                        'height':150};
-
-                    // Instantiate and draw our chart, passing in some options.
-                    chartModalCity[i] = new google.visualization.PieChart(document.getElementById("columnchart_values_modal"+i));
-                    chartModalCity[i].draw(dataCityModal[i], options);
-                }
-
-                // Load the Visualization API and the corechart package.
-                google.charts.load('current', {'packages':['corechart']});
-
-                // Set a callback to run when the Google Visualization API is loaded.
-                google.charts.setOnLoadCallback(drawAgeChartModal);
-
-                // Callback that creates and populates a data table,
-                // instantiates the pie chart, passes in the data and
-                // draws it.
-
-                function drawAgeChartModal() {
-
-
-                    // Set a callback to run when the Google Visualization API is loaded.
-
-                    // Create the data table.
-                    dataAgeModal[i] = new google.visualization.DataTable();
-                    dataAgeModal[i].addColumn('string', 'Age');
-                    dataAgeModal[i].addColumn('number', 'Number');
-                    dataAgeModal[i].addRows([
-                        // ['Не указан', statGender[0]],
-                        ['менее 10', CurrentAge["менее 10"]],
-                        ['10 - 20', CurrentAge["10 - 20"]],
-                        ['20 - 30', CurrentAge["20 - 30"]],
-                        ['30 - 40', CurrentAge["30 - 40"]],
-                        ['40 - 50', CurrentAge["40 - 50"]],
-                        ['60 и более', CurrentAge["60 и более"]],
-                        ['Не указан', CurrentAge["Не указан"]]
-                    ]);
-
-                    // Set chart options
-                    var options = {'title':'Возраст аудитории',
-                        is3D: true,
-                        legend: 'none',
-                        'width':200,
-                        'height':150};
-
-                    // Instantiate and draw our chart, passing in some options.
-                    chartModalAge[i] = new google.visualization.PieChart(document.getElementById('agechart_div_modal'+i));
-                    chartModalAge[i].draw(dataAgeModal[i], options);
-                }
-
-                let row = document.createElement('tr');
-
-
-                row.innerHTML = `<td>${i+1}</td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.thisGroupSubsCount}</td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
-                table.appendChild(row);
-                // let modal = document.createElement('tr');
-                // modal.innerHTML = '' +
-                // var modal = '<div class="container"><div class="row mt-3">' +
-                //     '   <div class="col-12">' +
-                //     '   <button class="btn btn-success btn-small"" data-toggle="modal" data-target="#firstModal">Показать</button>' +
-                //     '    <div class="modal fade" id="firstModal">' +
-                //     '    <div class="modal-dialog">' +
-                //     '     <div class="modal-content">' +
-                //     '     <div class="modal-header">' +
-                //     '     <h5 class="modal-title">Название модального окна</h5>' +
-                //     '     <button class="close" data-dismiss="modal">×</button>' +
-                //     '     </div>' +
-                //     '     <div class="modal-body">' +
-                //     '     <p>Соображения высшего порядка, а также курс' +
-                //     '     на социально-ориентированный проект обеспечивает актуальность' +
-                //     '      позиций, занимаемых участниками в отношении поставленных задач?</p>' +
-                //     '     </div>' +
-                //     '     <div class="modal-footer">' +
-                //     '     <button class="btn btn-primary " data-dismiss="modal">Закрыть</button     >' +
-                //     '     </div>' +
-                //     '     </div>' +
-                //     '    </div>' +
-                //     '    </div>' +
-                //     '   </div>' +
-                //     '  </div>' +
-                //     '</div>';
-                // table.appendChild(modal);
             }
 
             console.log("SUCCESS : ", data);

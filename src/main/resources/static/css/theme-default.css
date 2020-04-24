@@ -164,7 +164,7 @@ h2.less-mar-4 {
 }
 h3 {
 	font-size: 27px;
-	line-height: 30px;
+	line-height: 90px;
 	margin-bottom: 18px;
 	font-style: normal;
 }
@@ -651,7 +651,7 @@ a:hover.text-hover-primary {
 	}
 	
  .line-height-5{
-	 line-height:50px;
+	 line-height:40px;
 	}
 	
  .line-height-6{
@@ -2224,7 +2224,7 @@ a.topbar-btn:hover, a.topbar-btn.active {
 .sec-title-container {
 	width:100%;
 	float:left;
-	padding-bottom:120px;
+	padding-bottom:60px;
 }
 .sec-title-container.less-padding-1 {
 	padding-bottom:60px;
@@ -2997,21 +2997,11 @@ ul.footer-flickr {
 	text-align: center;
 	background-color: #1a1a1a;
 }
-/* section big map
- ------------------------------ */
-.section-big-map {
-	width: 100%;
-	margin: 0;
-	text-align: center;
-	background: #161616 url(../images/site-img46.png) center 150px no-repeat;
-}
-
-
 
 /* Section Paddings
  ------------------------------ */
 .sec-padding {
-	padding: 150px 0 150px 0;
+	padding: 70px 0 70px 0;
 }
 .sec-padding-2 {
 	padding: 110px 0 110px 0;
@@ -4148,12 +4138,12 @@ background-color: #fff;
     z-index: 3;
 }
 .header-inner .text .title {
-	font-size:30px;
+	font-size:60px;
 	font-weight:600;
 }
 .header-inner .text .sub-title {
 	width:100%;
-	font-size:18px;
+	font-size:41px;
 }
 
 /* less height
