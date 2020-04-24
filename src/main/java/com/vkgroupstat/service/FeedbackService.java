@@ -1,13 +1,12 @@
 package com.vkgroupstat.service;
 
-import org.springframework.context.annotation.Bean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class FeedbackService {

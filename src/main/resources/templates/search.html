@@ -12,6 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="js/mdb.min.js"></script>
     <script src="/js/main.js"></script>
 
 
@@ -39,6 +40,7 @@
 <link href="js/owl-carousel/owl.theme.css" rel="stylesheet">
 <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
 <link rel="stylesheet" href="js/parallax/main.css">
+<link rel="stylesheet" href="css/mdb.min.css">
 
 <!-- Template's stylesheets END -->
 
@@ -87,6 +89,7 @@
                     <ul class="nav navbar-nav">
                         <li class="right"> <a href="/index"><b>Главная</b></a></li>
                         <li class="right"> <a href="/send"><b>Обратная связь</b></a></li>
+                        <li class="right"> <a href="https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/history&scope=offline&response_type=code&v=5.103"><b>История поиска</b></a></li>
                     
                     </ul>
                   </div>
@@ -102,19 +105,19 @@
     <!--end menu-->
     
     <div class="clearfix"></div>
-    
-    <div class="header-inner-tmargin">
-        <section class="section-side-image clearfix">
-      <div class="img-holder col-md-12 col-sm-12 col-xs-12">
-        <div class="background-imgholder" > <img src="images/search.png" alt="" > </div>
-      </div> 
-<div class="container-fluid" >
-        <div class="row">       
-        <div class="col-md-12 col-sm-12 col-xs-12 clearfix nopadding">
-        <div class="header-inner"> <div class="overlay">       
-       <div class="text text-center">
-    <h3 class="uppercase text-white less-mar-1 title">Приступим</h3>
-    <h6 class="uppercase text-white sub-title">К анализу данных</h6>
+
+      <div class="header-inner-tmargin">
+          <section class="section-side-image clearfix">
+              <div class="img-holder col-md-12 col-sm-12 col-xs-12">
+                  <div class="background-imgholder" > <img src="images/search.png" alt="" > </div>
+              </div>
+              <div class="container-fluid" >
+                  <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12 clearfix nopadding">
+                          <div class="header-inner"> <div class="overlay">
+                              <div class="text text-center">
+                                  <h3 class="uppercase text-white less-mar-1 title">Приступим</h3>
+                                  <h6 class="uppercase text-white sub-title">К анализу данных</h6>
     </div>
        </div>       
         </div></div>        
@@ -144,58 +147,66 @@
 
             </div>
                  <div>
-                     <form class="form-inline" style="margin:20px 20px 20px 20px" id="groupForm">
+                     <form class="form-inline" id="groupForm">
                          <div class="form-group">
-                             <label for="groupName" style="margin-right:5px">groupName:</label>
-                             <input type="text" class="form-control" id="groupName" placeholder="Enter GroupName"/>
+                             <label for="groupName" style="margin-right:5px">Id группы:</label>
+                             <input type="text" class="form-control" id="groupName" placeholder="Введите Id"/>
                          </div>
                          <button id="searchBtn" class="btn btn-success btn-medium" style="margin-left:20px; margin-right:5px">Искать</button>
-                         <div id="getResultDiv" style="padding:20px 10px 20px 50px"/>
                      </form>
 
                  </div>
-
-                <div class="col-md-6">
-                            <div id="chart_div"></div>
-                </div>
-                <!--end item-->
-
-                <div class="col-md-6">
-                    <div id="agechart_div"></div>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-md-6 col-left" style="padding: 20px" >
+                    <b>Города проживания</b>
+                    <canvas id="myChart" style="max-width: 500px"></canvas>
                 </div>
 
-                <div class="clearfix"></div>
-                <div class="col-divider-margin-6"></div>
-                <div class="col-md-6">
-                    <div id="columnchart_values"></div>
+<!--                <div class="col-divider-margin-12"></div>-->
+                <div class="col-md-6 col-right" style="padding: 20px">
+                    <!--                    <div id="agechart_div"></div>-->
+                    <b>Возраст аудитории</b>
+                    <canvas id="polarChart" style="max-width: 600px"></canvas>
                 </div>
-                <!--end item-->
-
-                <div class="clearfix"></div>
-                <div class="col-divider-margin-6"></div>
-                <div class="col-md-6">
-<!--                    <div id="agechart_div"></div>-->
+                <div class="col-divider-margin-6"></div>-->
+                <div class="col-md-6 col-left" style="padding: 20px">
+                    <!--                    <div id="agechart_div"></div>-->
+                    <b>Пол аудитории</b>
+                    <canvas id="pieChart" style="max-width: 600px"></canvas>
                 </div>
-                <!--end item-->
+            </div>
+        </div>
+     </section>
+      <section class="sec-padding">
+        <div class="container">
+           <div class="row">
 
-                <div class="col-md-12">
+
+                <div class="col-md-10 col-centered">
                  <table class="table table-hover">
                      <thead>
                      <tr>
                          <th scope="col">№</th>
                          <th scope="col">Группа</th>
-                         <th scope="col">Количество</th>
+                         <th scope="col">Аудитория</th>
+                         <th scope="col">Подписаны</th>
+                         <th scope="col">Cтатистика</th>
                      </tr>
                      </thead>
                      <tbody id="tbody">
+
                      </tbody>
                  </table>
                 </div>
             </div>
           <!--end title-->
             </div>
+      </section>
         </div>
 
+        </div>
     </section>
     <div class="clearfix"></div>
     <!-- end section -->

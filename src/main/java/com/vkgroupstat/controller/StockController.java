@@ -1,40 +1,49 @@
 package com.vkgroupstat.controller;
 
-import com.vkgroupstat.model.AjaxResponseBody;
-import com.vkgroupstat.model.Group;
-import com.vkgroupstat.model.SearchCriteria;
-import com.vkgroupstat.service.FeedbackService;
-import com.vkgroupstat.service.GroupService;
-import org.apache.commons.io.IOUtils;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
-
-
-
-
+import com.vkgroupstat.model.AjaxResponseBody;
+import com.vkgroupstat.model.Group;
+import com.vkgroupstat.model.SearchCriteria;
+import com.vkgroupstat.model.User;
+import com.vkgroupstat.service.FeedbackService;
+import com.vkgroupstat.service.GroupService;
+import com.vkgroupstat.service.UserService;
 
 @RestController
 @RequestMapping("/api")
 public class StockController {
+	
+	private static final Logger LOG = LogManager.getLogger(StockController.class);
+	
 	@Autowired
 	private MailSender mailSender;
+
 //
 //	@Value("checkins.tracker@gmail.com")
 //	String email="checkins.tracker@gmail.com";
 	private final GroupService service;
+	private final UserService uService;
 
-	public StockController(GroupService service) {
+	public StockController(GroupService service, UserService uService) {
 		this.service = service;
+		this.uService = uService;
 	}
 
 
@@ -55,6 +64,12 @@ public class StockController {
 		result.setGroup(group);
 		return ResponseEntity.ok(group);
 
+	}
+	@PostMapping("/showhistory")
+	public ResponseEntity<?> getHistory() {
+		User user = uService.getUser(WebController.USER_ID);
+		LinkedList<Group> list = service.findListById(user.getListGroupsId());
+		return ResponseEntity.ok(list);
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)

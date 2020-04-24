@@ -5,12 +5,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.JsonArray;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 
 public class SubscriberParser implements VkSdkObjHolder{
+	
+	private static final Logger LOG = LogManager.getLogger(SubscriberParser.class);
 	
 	private String groupName;	
 	private Integer count;
@@ -32,7 +37,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				System.err.println("interrupt!");
+				LOG.error(e.getMessage());
 			}
 		}
 		
@@ -41,7 +46,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 			try {
 				executor.awaitTermination(500, TimeUnit.MILLISECONDS);
 			} catch (Exception e) {
-				System.err.println(e);
+				LOG.error(e.getMessage());
 			}
 		}
 		return response;
@@ -54,7 +59,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 		int execeptionCount = 0;
 		while (flag) {
 			try {
-				response = VK_U.execute()
+				response = VK.execute()
 							   .storageFunction(U_ACTOR, "getGroupSubsInfo")
 							   .unsafeParam("offset", offset)
 							   .unsafeParam("count", count)
@@ -64,10 +69,10 @@ public class SubscriberParser implements VkSdkObjHolder{
 				response.forEach(item -> userInfoList.add(new Subscriber(item.getAsJsonObject())));
 				flag = false;
 			} catch (ClientException | ApiException e) {
-				System.err.println(e.getMessage());
+				LOG.error(e.getMessage());
 				execeptionCount++;
 				try {
-					System.err.println("The request didn't fit in the timing!!! " + execeptionCount + "try.");
+					LOG.error("The request didn't fit in the timing!!! " + execeptionCount + "try.");
 					Thread.sleep(3000);//!!
 				} catch (InterruptedException e1) {}
 			} 
