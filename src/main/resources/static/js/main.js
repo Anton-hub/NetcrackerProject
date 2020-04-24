@@ -76,44 +76,43 @@ function fire_ajax() {
                 chart.draw(dataGender, options);
             }
 
-            google.charts.load('current', {'packages': ['corechart']});
-            google.charts.setOnLoadCallback(drawColumnChart);
-
-            function drawColumnChart() {
-
-
-                // Set a callback to run when the Google Visualization API is loaded.
-
-
-                var dataCity = new google.visualization.DataTable();
-                dataCity.addColumn('string', 'Сity');
-                dataCity.addColumn('number', 'Number');
-                ;
-                // dataCity.addColumn({ role: "style" });
-
-                dataCity.addRows([
-                    [arrCity[0], arrNumber[0]],
-                    [arrCity[1], arrNumber[1]],
-                    [arrCity[2], arrNumber[2]],
-                    [arrCity[3], arrNumber[3]],
-                    [arrCity[4], arrNumber[4]],
-                    [arrCity[5], arrNumber[5]]
-                ]);
-
-                // Set chart options
-                var options = {
-                    'title': 'Подписчики по городам',
-                    colors: ['#660BAB','#de1f1f','#0bacb8','#d3d60b','#d60b9d','#168235'],
-                    is3D: true,
-                    'width': 400,
-                    'height': 300
-                };
-
-
-                // Instantiate and draw our chart, passing in some options.
-                var chart = new google.visualization.PieChart(document.getElementById("citychart_values"));
-                chart.draw(dataCity, options);
-            }
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: [arrCity[0], arrCity[1], arrCity[2], arrCity[3], arrCity[4], arrCity[5]],
+                    datasets: [{
+                        label: '# Количество',
+                        data: [arrNumber[0], arrNumber[1], arrNumber[2], arrNumber[3], arrNumber[4], arrNumber[5]],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
 
             // Load the Visualization API and the corechart package.
             google.charts.load('current', {'packages':['corechart']});
@@ -156,6 +155,25 @@ function fire_ajax() {
                 chart.draw(dataAge, options);
             }
 
+            var ctxPA = document.getElementById("polarChart").getContext('2d');
+            var myPolarChart = new Chart(ctxPA, {
+                type: 'polarArea',
+                data: {
+                    labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50','60 и более','Не указан'],
+                    datasets: [{
+                        data: [statAge["менее 10"], statAge["10 - 20"], statAge["20 - 30"], statAge["30 - 40"], statAge["40 - 50"], statAge["60 и более"], statAge["Не указан"]],
+                        backgroundColor: ["rgba(219, 0, 0, 0.1)", "rgba(0, 165, 2, 0.1)", "rgba(255, 195, 15, 0.2)",
+                            "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)"
+                        ],
+                        hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
+                            "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)", "rgba(90, 50, 219, 0.9)", "rgba(30, 200, 219, 1)"
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
 
 
 
