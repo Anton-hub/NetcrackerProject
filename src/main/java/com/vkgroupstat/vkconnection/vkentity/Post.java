@@ -42,7 +42,7 @@ public class Post {
 		return date;
 	}
 	
-	public void initLikersIdList(List<Integer> list) {
+	public void initLikersIdList(LinkedList<Integer> list) {
 		likersIdList = new LinkedList<Integer>(list);
 	}
 	

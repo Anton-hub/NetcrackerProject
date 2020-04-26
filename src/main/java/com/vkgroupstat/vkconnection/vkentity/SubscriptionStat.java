@@ -71,11 +71,7 @@ public class SubscriptionStat {
 			cityStat.put("Не указан", cityStat.get(null));
 			cityStat.remove(null);
 		}
-		cityStat = cityStat.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-							.collect(Collectors
-							.toMap(Map.Entry::getKey
-							,Map.Entry::getValue
-							,(oldValue, newValue) -> oldValue, LinkedHashMap::new));
+		cityStat = sortedByValue(cityStat);
 		int cityInChartCount = 5;
 		int otherCityCount = 0;
 		Iterator<Integer> iterator = cityStat.values().iterator();
@@ -87,7 +83,8 @@ public class SubscriptionStat {
 				iterator.remove();
 			}			
 		}
-		cityStat.put("Другие", otherCityCount);			
+		cityStat.put("Другие", otherCityCount);	
+		cityStat = sortedByValue(cityStat);
 	}
 
 	public LinkedHashMap<String, Integer> getSexStat() {
@@ -106,4 +103,11 @@ public class SubscriptionStat {
 					+ ageStat + "<br>";
 	}
 	
+	private LinkedHashMap<String, Integer> sortedByValue(LinkedHashMap<String, Integer> map) {
+		return map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+				.collect(Collectors
+				.toMap(Map.Entry::getKey
+				,Map.Entry::getValue
+				,(oldValue, newValue) -> oldValue, LinkedHashMap::new));
+	}
 }

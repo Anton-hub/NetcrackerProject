@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
@@ -31,10 +32,8 @@ public class GroupCollector {
 		LinkedList<Subscription> slicedSubscriptionList = new LinkedList<Subscription>(subscriptionList
 				.stream().limit(20).collect(Collectors.toList()));
 
-		slicedSubscriptionList.stream().forEach(item -> item.countUp());
-		
-		fillNameField(slicedSubscriptionList);	
-		fillSubsCount(slicedSubscriptionList);
+		slicedSubscriptionList.stream().forEach(item -> item.countUp());		
+		fillInfoField(slicedSubscriptionList);
 		
 		GroupFull baseGrInf = ParsingMethodHolder.getGroupInfo(groupName);
 		GroupStat groupStat = new GroupStat(subscriberList
@@ -46,23 +45,29 @@ public class GroupCollector {
 		return new Group(baseGrInf.getId()
 						, groupName
 						, baseGrInf.getName()
+						, baseGrInf.getDescription()
 						, groupStat
 						, slicedSubscriptionList);
 	}
 
-	private void fillNameField(LinkedList<Subscription> handledList) {
-		LinkedList<Integer> listId = handledList.stream().collect(LinkedList<Integer>::new,
-				(l, item) -> l.add(item.getId()), (list1, list2) -> list1.addAll(list2));
+	private void fillInfoField(LinkedList<Subscription> handledList) {
+		LinkedList<Integer> listId = handledList
+									.stream()
+									.collect(LinkedList<Integer>::new
+											,(l, item) -> l.add(item.getId())
+											,(list1, list2) -> list1.addAll(list2));
 		LinkedList<GroupFull> groupInfoHolder = new LinkedList<GroupFull>(ParsingMethodHolder.getGroupsInfo(listId));
+		
 		Iterator<GroupFull> iterator = groupInfoHolder.iterator();
 		for (Subscription item : handledList) {
 			GroupFull itemGF = iterator.next();
 			item.setStringName(itemGF.getName());
 			item.setUrlName(itemGF.getScreenName());
 			item.setPhotoUrl(itemGF.getPhoto50());
+			item.setThisGroupSubsCount(itemGF.getMembersCount());
+			item.setDescription(itemGF.getDescription());
 		}
-	}
-	
+	}	
 	private Integer getBannedCount(LinkedList<Subscriber> list) {
 		Integer count = 0;
 		for (Subscriber item : list) {
@@ -70,10 +75,5 @@ public class GroupCollector {
 				count++;
 		}			
 		return count;
-	}
-	
-	private void fillSubsCount(LinkedList<Subscription> handledList) {
-		for (Subscription item : handledList)
-			item.setThisGroupSubsCount(ParsingMethodHolder.getGroupSubsCount(item.getUrlName()));
 	}
 }

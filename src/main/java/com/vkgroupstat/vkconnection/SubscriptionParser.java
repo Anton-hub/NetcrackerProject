@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
-public class SubscriptionParser implements VkSdkObjHolder{
+public class SubscriptionParser {
 	
 	private static final Logger LOG = LogManager.getLogger(Subscription.class);
 	

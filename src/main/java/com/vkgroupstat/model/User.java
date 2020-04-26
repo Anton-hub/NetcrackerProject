@@ -10,8 +10,6 @@ public class User {
     @Id
     String id;
     Integer userId;
-//    @DBRef
-//    private List<Group> listGroups;
     LinkedList<String> listGroupsId = new LinkedList<String>();
     
 

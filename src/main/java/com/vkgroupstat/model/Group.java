@@ -18,6 +18,7 @@ public class Group {
 	String urlName;
 	String stringName;
 	
+	String description;
 	GroupStat groupStat;
 	LinkedList<Subscription> rangeList;
 	Date createDate = new Date();
@@ -25,12 +26,13 @@ public class Group {
 	public Group(Integer clubId
 				,String urlName
 				,String stringName
+				,String description
 				,GroupStat groupStat
-				,LinkedList<Subscription> rangeList) {
-		
+				,LinkedList<Subscription> rangeList) {		
 		this.clubId = clubId;
 		this.urlName = urlName;
 		this.stringName = stringName;
+		this.description = description;
 		this.groupStat = groupStat;
 		this.rangeList = rangeList;
 	}
@@ -46,6 +48,9 @@ public class Group {
 	}
 	public String getStringName() {
 		return stringName;
+	}	
+	public String getDescription() {
+		return description;
 	}
 	public GroupStat getGroupStat() {
 		return groupStat;
@@ -56,7 +61,6 @@ public class Group {
 	public Date getCreateDate() {
 		return createDate;
 	}
-
 	
 	public void setId(String id) {
 		this.id = id;
