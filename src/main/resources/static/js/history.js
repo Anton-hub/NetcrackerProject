@@ -23,6 +23,11 @@ function fire_ajax() {
             const table = document.getElementById('tbody');
 
 
+            const tableHead = document.getElementById('thead');
+            let tableHtml = document.createElement('tr');
+            tableHtml.innerHTML = ' <th scope="col">№</th>\n' +
+                '            <th scope="col">Группа</th>\n';
+            tableHead.appendChild(tableHtml);
             for (let i = 0; i <  data.length; i++) {
                 console.log(data)
                 let row = document.createElement('tr');

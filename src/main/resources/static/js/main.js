@@ -97,6 +97,9 @@ function fire_ajax() {
                     }]
                 },
                 options: {
+                    legend: {
+                        position: 'left'
+                    },
                     responsive: true
                 }
             });
@@ -104,14 +107,17 @@ function fire_ajax() {
             var myPieChart = new Chart(ctxP, {
                 type: 'pie',
                 data: {
-                    labels: ["Женщин", "Мужчин", "Не указано"],
+                    labels: ["Женщин", "Мужчин", "Не указан"],
                     datasets: [{
-                        data: [statGender["Женщин"], statGender["Мужчин"], statGender["Не указано"]],
+                        data: [statGender["Женщин"], statGender["Мужчин"], statGender["Не указан"]],
                         backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
                         hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
                     }]
                 },
                 options: {
+                    legend: {
+                        position: 'left'
+                    },
                     responsive: true
                 }
             });
@@ -128,10 +134,25 @@ function fire_ajax() {
                     }]
                 },
                 options: {
+                    legend: {
+                        position: 'left'
+                    },
                     responsive: true
                 }
             });
-
+            document.getElementById('sostav').innerHTML = '<b>Состав аудитории</b>';
+            document.getElementById('city').innerHTML = '<b>Города проживания</b>';
+            document.getElementById('gender').innerHTML = '<b>Пол аудитории</b>';
+            document.getElementById('age').innerHTML = '<b>Возраст аудитории</b>';
+            const tableHead = document.getElementById('thead');
+            let tableHtml = document.createElement('tr');
+            tableHtml.innerHTML = '       <th scope="col">№</th>\n' +
+                '                         <th scope="col">Группа</th>\n' +
+                '                         <th scope="col"></th>\n' +
+                '                         <th scope="col">Аудитория</th>\n' +
+                '                         <th scope="col">Подписаны</th>\n' +
+                '                         <th scope="col">Cтатистика</th>\n';
+            tableHead.appendChild(tableHtml);
             const table = document.getElementById('tbody');
             var arrmodal = [];
             var statGenderModal = [];
@@ -224,9 +245,9 @@ function fire_ajax() {
                 dataGenderModal[i] = new Chart(chartModalGender[i], {
                     type: 'pie',
                     data: {
-                        labels: ["Женщин", "Мужчин", "Не указано"],
+                        labels: ["Женщин", "Мужчин", "Не указан"],
                         datasets: [{
-                            data: [CurrentGender["Женщин"], CurrentGender["Мужчин"], CurrentGender["Не указано"]],
+                            data: [CurrentGender["Женщин"], CurrentGender["Мужчин"], CurrentGender["Не указан"]],
                             backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
                             hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
                         }]
@@ -301,8 +322,6 @@ function fire_ajax() {
 
             }
 
-            console.log("SUCCESS : ", data);
-            // $('#getResultDiv').html(data.result);
             // $("#btn-search").prop("disabled", false);
         },
         error: function (e) {
