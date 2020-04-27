@@ -13,6 +13,7 @@ import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vk.api.sdk.objects.wall.WallPostFull;
 import com.vk.api.sdk.queries.groups.GroupField;
+import com.vk.api.sdk.queries.likes.LikesType;
 import com.vk.api.sdk.queries.wall.WallGetFilter;
 
 public class ParsingMethodHolder implements VkSdkObjHolder{
@@ -88,6 +89,40 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 						.getItems();
 		} catch (ApiException | ClientException e) {
 			LOG.error(e.getMessage());
+			return null;
+		}
+	}
+	
+	public static List<Integer> getLikersList(Integer ownerId, Integer postId, Integer offset){
+		try {
+			return VK.likes()
+						.getList(S_ACTOR, LikesType.POST)
+						.itemId(postId)
+						.ownerId(ownerId)
+						.offset(offset)
+						.count(1000)
+						.execute()
+						.getItems();
+		} catch (ApiException | ClientException e) {
+			LOG.error(e);
+			return null;
+		}
+	}
+	
+	public static String getCommentsJson(Integer ownerId,Integer postId, Integer offset){
+		try {
+			return VK
+					.wall()
+					.getComments(S_ACTOR, postId)
+					.ownerId(ownerId)
+					.count(100)
+					.offset(offset)
+					.previewLength(1)
+					.unsafeParam("thread_items_count", 10)
+					.unsafeParam("v", "5.103")
+					.executeAsString();
+		} catch (ClientException e) {
+			LOG.error(e);
 			return null;
 		}
 	}
