@@ -109,7 +109,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static String getCommentsJson(Integer ownerId,Integer postId, Integer offset){
+	public static String getCommentsJson(Integer ownerId, Integer postId, Integer offset){
 		try {
 			return VK
 					.wall()

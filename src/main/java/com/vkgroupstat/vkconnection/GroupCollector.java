@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vkgroupstat.model.Group;
+import com.vkgroupstat.vkconnection.parsers.SubscriberParser;
+import com.vkgroupstat.vkconnection.parsers.SubscriptionParser;
 import com.vkgroupstat.vkconnection.vkentity.GroupStat;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;

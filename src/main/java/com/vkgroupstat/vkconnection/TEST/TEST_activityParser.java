@@ -19,7 +19,9 @@ import com.vk.api.sdk.objects.users.UserXtrCounters;
 import com.vk.api.sdk.objects.wall.WallComment;
 import com.vk.api.sdk.queries.likes.LikesType;
 import static com.vkgroupstat.vkconnection.ParsingMethodHolder.*;
+
 import com.vkgroupstat.vkconnection.VkSdkObjHolder;
+import com.vkgroupstat.vkconnection.parsers.PostParser;
 import com.vkgroupstat.vkconnection.vkentity.Post;
 
 public class TEST_activityParser implements VkSdkObjHolder{
@@ -28,14 +30,16 @@ public class TEST_activityParser implements VkSdkObjHolder{
 	
 	public static String wallGet() {
 //		LinkedList<Post> list = new LinkedList<Post>();
-//		ParsingMethodHolder.getWallPosts("molodoipeterburg", 0)
+//		getWallPosts("molodoipeterburg", 0)
 //			.forEach(item -> list.add(new Post(item)));
 //		list.forEach(item -> item.initLikersIdList(getLikersList(item.getOwnerId(), item.getPostId(), item.getLikesCount())));
-		
-		LOG.info("end!");
-		return test();
-		//return list.toString();
+//		
+//		LOG.info("end!");
+//		//return test();
+//		return list.toString();
 		//return getPartCommentsString(-189492672, 2266, 0);
+		LinkedList<Post> list = new PostParser("pikabu").pasre();
+		return list.toString() + "<br>" + list.size();
 	}
 	
 	public static LinkedHashMap<String, Integer> keyIntToString(LinkedHashMap<Integer, Integer> inMap){
@@ -103,39 +107,3 @@ public class TEST_activityParser implements VkSdkObjHolder{
 	
 
 }
-/*
-	public static HashMap<Integer, Integer> getUsersComment(Integer ownerId, Integer postId){
-		HashMap<Integer, Integer> map = new HashMap<Integer,Integer>();
-		LinkedList<WallComment> listComments = new LinkedList<WallComment>();
-		List<WallComment> temp;
-		Integer offset = 0;
-		do{
-			temp = getPartComments(ownerId, postId, offset);
-			if (temp != null)
-				listComments.addAll(temp);
-			offset += 100;
-		} while (temp.size() > 0);
-		for (WallComment item : listComments) {
-			map.merge(item.getFromId(), 1, (oldV, newV) -> oldV + newV);
-		}
-		return null;
-	}
-		public static List<WallComment> getPartComments(Integer ownerId,Integer postId, Integer offset){
-		try {
-			return VK
-					.wall()
-					.getComments(S_ACTOR, postId)
-					.ownerId(ownerId)
-					.count(2)
-					.offset(offset)
-					.previewLength(1)
-					.unsafeParam("thread_items_count", 10)
-					.unsafeParam("v", "5.103")
-					.execute()
-					.getItems();
-		} catch (ApiException | ClientException e) {
-			LOG.error(e);
-			return null;
-		}
-	}
- * */

@@ -1,13 +1,16 @@
 package com.vkgroupstat.vkconnection.vkentity;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import com.vk.api.sdk.objects.wall.WallPostFull;
+import com.vkgroupstat.vkconnection.VkSdkObjHolder;
+import com.vkgroupstat.vkconnection.TEST.TEST_StringOutPost;
 
-public class Post {
+public class Post implements VkSdkObjHolder{
 	private Integer postId = null;
 	private Integer ownerId = null;
 	private Integer likesCount = null;
@@ -15,6 +18,7 @@ public class Post {
 	private Date date = null;
 	
 	private LinkedList<Integer> likersIdList = null;
+	private LinkedHashMap<Integer, Integer> commentsMap = null;
 	
 	public Post() {}
 	public Post(WallPostFull post) {
@@ -40,17 +44,27 @@ public class Post {
 	}
 	public Date getDate() {
 		return date;
+	}	
+	public LinkedList<Integer> getLikersIdList() {
+		return likersIdList;
+	}
+	public LinkedHashMap<Integer, Integer> getCommentsMap() {
+		return commentsMap;
 	}
 	
-	public void initLikersIdList(LinkedList<Integer> list) {
+	
+	public void initLikersIdList(List<Integer> list) {
 		likersIdList = new LinkedList<Integer>(list);
+	}
+	public void initCommentsMap(Map<Integer, Integer> map) {
+		commentsMap = new LinkedHashMap<Integer, Integer>(map);
 	}
 	
 	
 	@Override
 	public String toString() {
+//		return TEST_StringOutPost.out(this);
 		return "<br>[POST]   id = " + postId + " // date = " + date + " // likes = " + likesCount 
-				+ " // comments = " + commentsCount + " // likers = " 
-				+ likersIdList.stream().limit(5).map(Object::toString).collect(Collectors.joining(",")) + " ...";
+				+ " // comments = " + commentsCount;
 	}
 }

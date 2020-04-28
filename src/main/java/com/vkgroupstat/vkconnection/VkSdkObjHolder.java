@@ -12,7 +12,7 @@ public interface VkSdkObjHolder {
 	String S_TOKEN = "b8188fe1b8188fe1b8188fe1ffb868d748bb818b8188fe1e6699966a9d9035f1e14fbda";
 	ServiceActor S_ACTOR = new ServiceActor(APPID, S_TOKEN);	
 
-	String U_TOKEN = "0beff462ff88aca5ab1346124d5a674209bf8a168ea278bb416727d384392b90f3cdb22c654ffe11c34ac";
+	String U_TOKEN = "64f86cf6747cd6cc6bec34b2cfb6e5dbc3261f6c6d84344b0dff462d6e57527fceef2bb30a4191886126a";
 	UserActor U_ACTOR = new UserActor(APPID, U_TOKEN);	
 
 	VkApiClient VK = new VkApiClient(HttpTransportClient.getInstance());

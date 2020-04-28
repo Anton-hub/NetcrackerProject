@@ -17,11 +17,9 @@ public class GroupService {
 	private static final Logger LOG = LogManager.getLogger(GroupService.class);
 	
 	private final UserService service;
-	private final GroupCollector collcetor;
 	private final GroupRepository repository;	
-	public GroupService(UserService service, GroupRepository repository, GroupCollector collector) {
+	public GroupService(UserService service, GroupRepository repository) {
 		this.repository = repository;
-		this.collcetor = collector;
 		this.service = service;
 	}
 

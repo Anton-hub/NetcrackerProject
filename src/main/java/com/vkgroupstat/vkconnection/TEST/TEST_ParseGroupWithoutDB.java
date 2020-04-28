@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vkgroupstat.vkconnection.ParsingMethodHolder;
-import com.vkgroupstat.vkconnection.SubscriberParser;
-import com.vkgroupstat.vkconnection.SubscriptionParser;
 import com.vkgroupstat.vkconnection.TEST.TEST_StringOut;
+import com.vkgroupstat.vkconnection.parsers.SubscriberParser;
+import com.vkgroupstat.vkconnection.parsers.SubscriptionParser;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
