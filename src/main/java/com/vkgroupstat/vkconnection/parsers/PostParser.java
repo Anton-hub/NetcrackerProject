@@ -9,8 +9,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.apache.catalina.core.ApplicationContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vk.api.sdk.objects.wall.WallPostFull;
 import com.vkgroupstat.vkconnection.vkentity.Post;
@@ -18,7 +22,7 @@ import com.vkgroupstat.vkconnection.vkentity.Post;
 public class PostParser {
 	
 	private static final Logger LOG = LogManager.getLogger(PostParser.class);
-	private ActivityParser activity = new ActivityParser();//временно вместо зависимости
+	private ActivityParser activity = new ActivityParser();
 	
 	private String groupName;
 	private LinkedList<Post> response = new LinkedList<Post>();
@@ -35,6 +39,8 @@ public class PostParser {
 	 */
 	public LinkedList<Post> pasre(){
 		LinkedList<Post> beforeFill = initPostsList();
+		if (beforeFill.size() == 0)
+			return null;
 		ExecutorService executor = Executors.newCachedThreadPool();
 		while (beforeFill.size()> 0) {
 			LinkedList<Post> transferArg = new LinkedList<Post>();

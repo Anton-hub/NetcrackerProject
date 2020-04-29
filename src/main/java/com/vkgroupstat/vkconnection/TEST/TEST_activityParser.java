@@ -38,7 +38,7 @@ public class TEST_activityParser implements VkSdkObjHolder{
 //		//return test();
 //		return list.toString();
 		//return getPartCommentsString(-189492672, 2266, 0);
-		LinkedList<Post> list = new PostParser("pikabu").pasre();
+		LinkedList<Post> list = new PostParser("molodoipeterburg").pasre();
 		return list.toString() + "<br>" + list.size();
 	}
 	
@@ -75,9 +75,9 @@ public class TEST_activityParser implements VkSdkObjHolder{
 		if (json.has("items")) {
 			listJsonComments = json.get("items").getAsJsonArray();
 			for (JsonElement item : listJsonComments) {
-				LOG.info("mark");
 				JsonObject temp = item.getAsJsonObject();
-				commentCountMap.merge(temp.get("from_id").getAsInt(), 1, (o, n) -> o + n);
+				if (temp.has("from_id"))
+					commentCountMap.merge(temp.get("from_id").getAsInt(), 1, (o, n) -> o + n);
 				JsonArray answerList = temp.get("thread").getAsJsonObject().get("items").getAsJsonArray();
 				if (answerList.size() > 0) {
 					for (JsonElement answerItem : answerList) {
@@ -85,7 +85,7 @@ public class TEST_activityParser implements VkSdkObjHolder{
 								(o, n) -> o + n);
 					}
 				}
-			} 
+			}
 		} else {
 			return null;
 		}

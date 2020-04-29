@@ -62,6 +62,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 							   .unsafeParam("offset", offset)
 							   .unsafeParam("count", count)
 							   .unsafeParam("groupName", groupName)
+							   .unsafeParam("token", U_TOKEN)
 							   .execute()
 							   .getAsJsonArray();
 				response.forEach(item -> userInfoList.add(new Subscriber(item.getAsJsonObject())));

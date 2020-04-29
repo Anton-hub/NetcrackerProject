@@ -11,12 +11,16 @@ public class SubscriptionStat {
 	protected LinkedHashMap<String, Integer> sexStat = new LinkedHashMap<String, Integer>();
 	protected LinkedHashMap<String, Integer> cityStat = new LinkedHashMap<String, Integer>();
 	protected LinkedHashMap<String, Integer> ageStat = new LinkedHashMap<String, Integer>();
+	protected LinkedHashMap<String, Integer> activityStat = new LinkedHashMap<String, Integer>();
 	{
 		ageStat.put("менее 10", 0);
 		for (int i = 10; i < 50; i += 10)
 			ageStat.put((i + " - " + (i + 10)).toString(), 0);
 		ageStat.put("60 и более", 0);
 		ageStat.put("Не указан", 0);
+		
+		activityStat.put("1 лайк или более", 0);
+		activityStat.put("1 лайк и 1 коммент или более", 0);
 	}
 	
 	public SubscriptionStat() {}	
@@ -26,8 +30,20 @@ public class SubscriptionStat {
 	
 	public void countUp(LinkedList<Subscriber> subsList) {			
 		for (Subscriber subscriber : subsList) {
+			
+			if (subscriber.getLikeCount() > 0) {
+				activityStat.merge("1 лайк или более", 1, (oldValue ,newValue) -> oldValue + newValue);
+				if (subscriber.getCommentCount() > 0)
+					activityStat.merge("1 лайк и 1 коммент или более", 1, (oldValue, newValue) -> oldValue + newValue);
+			}
+			
 			sexStat.merge(subscriber.getSex(), 1, (value, inc) -> value + inc);
-			cityStat.merge(subscriber.getCity(), 1, (value, inc) -> value + inc);
+
+			if ((subscriber.getCity() != null)&&(subscriber.getCity().contains("."))) {
+				cityStat.merge(subscriber.getCity().replaceAll(".", " "), 1, (value, inc) -> value + inc);
+			}else {
+				cityStat.merge(subscriber.getCity(), 1, (value, inc) -> value + inc);
+			}			
 			
 			if (subscriber.getAge() == null) {
 				ageStat.merge("Не указан", 1, (oldValue, newValue) -> oldValue + newValue);
@@ -100,7 +116,7 @@ public class SubscriptionStat {
 	@Override
 	public String toString() {
 		return "sexStat =  " + sexStat + "<br>cityStat = " + cityStat + "<br>ageStat = " 
-					+ ageStat + "<br>";
+					+ ageStat + "<br> activityStat = " + activityStat + "<br>";
 	}
 	
 	private LinkedHashMap<String, Integer> sortedByValue(LinkedHashMap<String, Integer> map) {

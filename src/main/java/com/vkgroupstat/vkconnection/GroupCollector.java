@@ -1,23 +1,25 @@
-package com.vkgroupstat.vkconnection;
+ package com.vkgroupstat.vkconnection;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vkgroupstat.model.Group;
+import com.vkgroupstat.vkconnection.parsers.PostParser;
 import com.vkgroupstat.vkconnection.parsers.SubscriberParser;
 import com.vkgroupstat.vkconnection.parsers.SubscriptionParser;
 import com.vkgroupstat.vkconnection.vkentity.GroupStat;
+import com.vkgroupstat.vkconnection.vkentity.Post;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
-import com.vkgroupstat.vkconnection.vkentity.SubscriptionStat;
 
 @Service
 public class GroupCollector {
@@ -30,6 +32,8 @@ public class GroupCollector {
 		LinkedList<Subscriber> subscriberList = new SubscriberParser(groupName).parse();		
 		LinkedList<Subscription> subscriptionList = new SubscriptionParser(subscriberList, groupName).parse();	
 //													new TEST_SimpleSubscriptionParser(subscriberList, groupName).parse();
+		
+		fillActivityField(subscriberList, new PostParser(groupName).pasre());		
 		
 		LinkedList<Subscription> slicedSubscriptionList = new LinkedList<Subscription>(subscriptionList
 				.stream().limit(20).collect(Collectors.toList()));
@@ -51,6 +55,29 @@ public class GroupCollector {
 						, groupStat
 						, slicedSubscriptionList);
 	}
+	
+	private void fillActivityField(LinkedList<Subscriber> subscribers, LinkedList<Post> activity) {
+		if (activity == null)
+			return;
+		HashMap<Integer, Integer> baseLikeCount = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> baseCommentCount = new HashMap<Integer, Integer>();
+		
+		for (Post post : activity) {
+			for (Integer likerId : post.getLikersIdList()) {
+				baseLikeCount.merge(likerId, 1, (o, n) -> o + n);
+			}
+			for (Map.Entry<Integer, Integer> comment : post.getCommentsMap().entrySet()) {
+				baseCommentCount.merge(comment.getKey(), comment.getValue(), (o, n) -> o + n);
+			}
+		}
+		
+		for (Subscriber sub : subscribers) {
+			if (baseLikeCount.containsKey(sub.getId()))
+				sub.setLikeCount(baseLikeCount.get(sub.getId()));
+			if (baseCommentCount.containsKey(sub.getId()))
+				sub.setCommentCount(baseCommentCount.get(sub.getId()));
+		}
+	}
 
 	private void fillInfoField(LinkedList<Subscription> handledList) {
 		LinkedList<Integer> listId = handledList
@@ -70,6 +97,7 @@ public class GroupCollector {
 			item.setDescription(itemGF.getDescription());
 		}
 	}	
+	
 	private Integer getBannedCount(LinkedList<Subscriber> list) {
 		Integer count = 0;
 		for (Subscriber item : list) {

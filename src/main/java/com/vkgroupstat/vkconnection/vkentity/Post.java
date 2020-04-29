@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.vk.api.sdk.objects.wall.WallPostFull;
-import com.vkgroupstat.vkconnection.VkSdkObjHolder;
-import com.vkgroupstat.vkconnection.TEST.TEST_StringOutPost;
 
-public class Post implements VkSdkObjHolder{
+public class Post{
 	private Integer postId = null;
 	private Integer ownerId = null;
 	private Integer likesCount = null;
