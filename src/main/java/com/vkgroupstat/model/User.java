@@ -21,6 +21,7 @@ public class User {
     private boolean enabled;
     @DBRef
     private Set<Role> roles;
+
     LinkedList<String> listGroupsId = new LinkedList<String>();
 
     public User() {

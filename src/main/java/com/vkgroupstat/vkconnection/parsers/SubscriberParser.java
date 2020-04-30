@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection;
+package com.vkgroupstat.vkconnection.parsers;
 
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonArray;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.vkgroupstat.vkconnection.ParsingMethodHolder;
+import com.vkgroupstat.vkconnection.VkSdkObjHolder;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 
 public class SubscriberParser implements VkSdkObjHolder{
@@ -42,13 +44,9 @@ public class SubscriberParser implements VkSdkObjHolder{
 		}
 		
 		executor.shutdown();
-		while (!executor.isTerminated()) {//??
-			try {
-				executor.awaitTermination(500, TimeUnit.MILLISECONDS);
-			} catch (Exception e) {
-				LOG.error(e.getMessage());
-			}
-		}
+		try {
+			executor.awaitTermination(3, TimeUnit.MINUTES); // ДОРАБОТАТЬ
+		} catch (InterruptedException e) {LOG.error(e.getMessage());}
 		return response;
 	}
 	
@@ -64,6 +62,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 							   .unsafeParam("offset", offset)
 							   .unsafeParam("count", count)
 							   .unsafeParam("groupName", groupName)
+							   .unsafeParam("token", U_TOKEN)
 							   .execute()
 							   .getAsJsonArray();
 				response.forEach(item -> userInfoList.add(new Subscriber(item.getAsJsonObject())));

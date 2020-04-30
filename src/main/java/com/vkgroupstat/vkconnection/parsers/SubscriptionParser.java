@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection;
+package com.vkgroupstat.vkconnection.parsers;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -13,10 +13,11 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vkgroupstat.vkconnection.ParsingMethodHolder;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
-public class SubscriptionParser implements VkSdkObjHolder{
+public class SubscriptionParser {
 	
 	private static final Logger LOG = LogManager.getLogger(Subscription.class);
 	
@@ -36,7 +37,7 @@ public class SubscriptionParser implements VkSdkObjHolder{
 			executor.execute(new Request());		
 		executor.shutdown();
 		try {
-			executor.awaitTermination(3, TimeUnit.MINUTES);
+			executor.awaitTermination(3, TimeUnit.MINUTES); // ДОРАБОТАТЬ
 		} catch (InterruptedException e) {LOG.error(e.getMessage());}
 		
 		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
