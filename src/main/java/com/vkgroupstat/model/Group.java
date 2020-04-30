@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.vkgroupstat.vkconnection.vkentity.GroupStat;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
-import com.vkgroupstat.vkconnection.vkentity.SubscriptionStat;
 
 @Document
 public class Group {
@@ -37,32 +36,14 @@ public class Group {
 		this.rangeList = rangeList;
 	}
 
-	public String getId() {
-		return id;
-	}	
-	public Integer getClubId() {
-		return clubId;
-	}
-	public String getUrlName() {
-		return urlName;
-	}
-	public String getStringName() {
-		return stringName;
-	}	
-	public String getDescription() {
-		return description;
-	}
-	public GroupStat getGroupStat() {
-		return groupStat;
-	}
-	public LinkedList<Subscription> getRangeList() {
-		return rangeList;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
+	public String getId() {	return id; }	
+	public Integer getClubId() { return clubId; }
+	public String getUrlName() { return urlName; }
+	public String getStringName() {	return stringName; }	
+	public String getDescription() { return description; }
+	public GroupStat getGroupStat() { return groupStat;	}
+	public LinkedList<Subscription> getRangeList() { return rangeList; }
+	public Date getCreateDate() { return createDate; }
 	
-	public void setId(String id) {
-		this.id = id;
-	}	
+	public void setId(String id) { this.id = id; }	
 }

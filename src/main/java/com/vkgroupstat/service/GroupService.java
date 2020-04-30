@@ -7,9 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
-import com.vkgroupstat.vkconnection.GroupCollector;
 
 @Service
 public class GroupService {
@@ -23,7 +23,7 @@ public class GroupService {
 		this.service = service;
 	}
 
-	public Group groupRequestHandler(String groupName) {		
+	public Group groupRequestHandler(String groupName) throws NoDataAccessException{		
 		Group group = repository.findOrParse(groupName);		
 		service.addGroup(group.getId());		
 		if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l)

@@ -11,8 +11,9 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonArray;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.vkgroupstat.constants.VkSdkObjHolder;
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.vkconnection.ParsingMethodHolder;
-import com.vkgroupstat.vkconnection.VkSdkObjHolder;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 
 public class SubscriberParser implements VkSdkObjHolder{
@@ -27,9 +28,13 @@ public class SubscriberParser implements VkSdkObjHolder{
 		this.groupName = groupName;
 		count = ParsingMethodHolder.getGroupSubsCount(groupName);
 	}
-	public LinkedList<Subscriber> parse(){
+	public LinkedList<Subscriber> parse() throws NoDataAccessException{
 		Integer offset = 0;
 		ExecutorService executor = Executors.newCachedThreadPool();
+		
+		response.addAll(getInfoRequest(0));
+		offset += 8000;
+		try { Thread.sleep(350); } catch (InterruptedException e) {}	
 		
 		while(offset < count) {
 			for (int i = 0; (i < 3)&&(offset < count); i++) {
@@ -50,7 +55,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 		return response;
 	}
 	
-	public LinkedList<Subscriber> getInfoRequest(Integer offset) {
+	public LinkedList<Subscriber> getInfoRequest(Integer offset) throws NoDataAccessException{
 		LinkedList<Subscriber> userInfoList = new LinkedList<Subscriber>();
 		JsonArray response = null;
 		boolean flag = true;
@@ -67,7 +72,10 @@ public class SubscriberParser implements VkSdkObjHolder{
 							   .getAsJsonArray();
 				response.forEach(item -> userInfoList.add(new Subscriber(item.getAsJsonObject())));
 				flag = false;
-			} catch (ClientException | ApiException e) {
+			} catch ( ApiException e) {
+				LOG.error("Нет доступа к парсингу подписчиков, возможно, в группе, закрыт список подписчиков");
+				throw new NoDataAccessException();
+			} catch (ClientException e) {
 				LOG.error(e.getMessage());
 				execeptionCount++;
 				try {
@@ -85,8 +93,11 @@ public class SubscriberParser implements VkSdkObjHolder{
 			this.offset = offset;
 		}
 		@Override
-		public void run() {
-			LinkedList<Subscriber> userInfoMap = getInfoRequest(offset);
+		public void run(){
+			LinkedList<Subscriber> userInfoMap;
+			try {
+				userInfoMap = getInfoRequest(offset);
+			} catch (NoDataAccessException e) {	return; }
 			synchronized (response) {
 				response.addAll(userInfoMap);
 			}

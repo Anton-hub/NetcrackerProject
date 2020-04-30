@@ -1,7 +1,5 @@
 package com.vkgroupstat.vkconnection.vkentity;
 
-import java.util.LinkedList;
-
 public class GroupStat extends SubscriptionStat{
 	
 	private Integer memberCount;
@@ -10,8 +8,8 @@ public class GroupStat extends SubscriptionStat{
 	public GroupStat(){
 		super();
 	}
-	public GroupStat(LinkedList<Subscriber> subsList, Integer memberCount, Integer bannedCount) {
-		super(subsList);
+	public GroupStat(Integer memberCount, Integer bannedCount) {
+		super();
 		this.memberCount = memberCount;
 		this.bannedCount = bannedCount;
 	}

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.vk.api.sdk.objects.users.UserXtrCounters;
-import com.vkgroupstat.vkconnection.VkSdkObjHolder;
+import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.vkconnection.vkentity.Post;
 
 public class TEST_StringOutPost implements VkSdkObjHolder {

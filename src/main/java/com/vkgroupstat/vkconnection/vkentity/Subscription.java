@@ -2,6 +2,8 @@ package com.vkgroupstat.vkconnection.vkentity;
 
 import java.util.LinkedList;
 
+import com.vkgroupstat.vkconnection.fillers.SubscriptionStatFiller;
+
 public class Subscription implements Comparable<Subscription>{
 	
 	protected Integer id = null;
@@ -35,7 +37,8 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	public void countUp() {
 		if (subsList.size() > 0) {
-			statistics = new SubscriptionStat(subsList);
+			statistics = new SubscriptionStatFiller(subsList)
+								.fillStat(new SubscriptionStat());
 			targetSubsCount = sizeList();
 			subsList.clear();
 		}

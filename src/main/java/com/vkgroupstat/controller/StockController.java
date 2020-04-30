@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
@@ -62,7 +61,12 @@ public class StockController {
 			return ResponseEntity.badRequest().body(result);
 
 		}
-		Group group = service.groupRequestHandler(search.getGroupName());
+		Group group;
+		try {
+			group = service.groupRequestHandler(search.getGroupName());
+		} catch (NoDataAccessException e) {
+			group = null; //добавить сюда обработку ошибки
+		}
 		result.setGroup(group);
 		return ResponseEntity.ok(group);
 

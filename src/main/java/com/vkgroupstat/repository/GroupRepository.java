@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.vkgroupstat.controller.WebController;
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.User;
 import com.vkgroupstat.vkconnection.GroupCollector;
@@ -28,7 +29,7 @@ public class GroupRepository {
 		mongoTemplate.remove(group, "group");
 	}
 	
-	public Group refresh(Group group) {
+	public Group refresh(Group group) throws NoDataAccessException{
 		String id = group.getId();
 		group = collector.collect(group.getUrlName());
 		group.setId(id);
@@ -36,7 +37,7 @@ public class GroupRepository {
 		return group;
 	}
 	
-	public Group findOrParse(String groupName) {
+	public Group findOrParse(String groupName) throws NoDataAccessException{
 		Group group = findByurlName(groupName);
 		if (group == null) {
 			group = collector.collect(groupName);

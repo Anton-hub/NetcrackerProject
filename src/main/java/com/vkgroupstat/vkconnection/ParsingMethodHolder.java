@@ -15,6 +15,8 @@ import com.vk.api.sdk.objects.wall.WallPostFull;
 import com.vk.api.sdk.queries.groups.GroupField;
 import com.vk.api.sdk.queries.likes.LikesType;
 import com.vk.api.sdk.queries.wall.WallGetFilter;
+import com.vkgroupstat.constants.VkSdkObjHolder;
+import com.vkgroupstat.exception.NoDataAccessException;
 
 public class ParsingMethodHolder implements VkSdkObjHolder{
 	
@@ -76,7 +78,8 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static List<WallPostFull> getWallPosts(String groupName, Integer offset){
+	public static List<WallPostFull> getWallPosts(String groupName, Integer offset)
+		throws NoDataAccessException{
 		try {
 			return VK.wall()
 						.get(S_ACTOR)
@@ -87,9 +90,11 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 						.unsafeParam("extended", 0)
 						.execute()
 						.getItems();
-		} catch (ApiException | ClientException e) {
+		} catch (ClientException e) {
 			LOG.error(e.getMessage());
 			return null;
+		} catch (ApiException e) {
+			throw new NoDataAccessException();
 		}
 	}
 	

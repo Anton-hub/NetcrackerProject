@@ -9,14 +9,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vk.api.sdk.objects.wall.WallPostFull;
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.vkconnection.vkentity.Post;
 
 public class PostParser {
@@ -38,9 +35,12 @@ public class PostParser {
 	 * @return
 	 */
 	public LinkedList<Post> pasre(){
-		LinkedList<Post> beforeFill = initPostsList();
-		if (beforeFill.size() == 0)
+		LinkedList<Post> beforeFill;
+		try {
+			beforeFill = initPostsList();
+		} catch (NoDataAccessException e) {
 			return null;
+		}
 		ExecutorService executor = Executors.newCachedThreadPool();
 		while (beforeFill.size()> 0) {
 			LinkedList<Post> transferArg = new LinkedList<Post>();
@@ -67,7 +67,7 @@ public class PostParser {
 	 * function that gets a list of group posts 
 	 * (with posts no later than a month ago)
 	 */
-	private LinkedList<Post> initPostsList(){
+	private LinkedList<Post> initPostsList() throws NoDataAccessException{
 		LinkedList<Post> postsList = new LinkedList<Post>();
 		Boolean flag = true;
 		Integer offset = 0;
