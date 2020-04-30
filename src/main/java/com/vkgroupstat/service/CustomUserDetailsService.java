@@ -5,6 +5,7 @@
  */
 package com.vkgroupstat.service;
 
+
 import com.vkgroupstat.model.Role;
 import com.vkgroupstat.model.User;
 import com.vkgroupstat.repository.RoleRepository;
@@ -20,7 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-
+/**
+ *
+ * @author didin
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

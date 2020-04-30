@@ -12,7 +12,7 @@ public interface VkSdkObjHolder {
 	String S_TOKEN = "b8188fe1b8188fe1b8188fe1ffb868d748bb818b8188fe1e6699966a9d9035f1e14fbda";
 	ServiceActor S_ACTOR = new ServiceActor(APPID, S_TOKEN);	
 
-	String U_TOKEN = "e4af633fe63d3fb85050854b948d06d09240bc4f110bc1def6fbd90de94de4667a3171c3010d8d5c47f09";
+	String U_TOKEN = "ecf0df1b6593e6b4c6d9ab53d6ebfb732fa6a7beab5bfc40bcdc265b07807b743e5507bd1eb190a6e66f9";
 
 	UserActor U_ACTOR = new UserActor(APPID, U_TOKEN);	
 

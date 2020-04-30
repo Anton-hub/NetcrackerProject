@@ -23,11 +23,11 @@ public class WebController{
         return "redirect:/index";
     }
 
-//    @GetMapping("/index")
-//    public String getIndex() {
-//
-//        return "index";
-//    }
+    @GetMapping("/index")
+    public String getIndex() {
+
+        return "index";
+    }
 
 
     @RequestMapping("/search")
