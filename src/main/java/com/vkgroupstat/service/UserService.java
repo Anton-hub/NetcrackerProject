@@ -1,7 +1,11 @@
 package com.vkgroupstat.service;
 
 import org.apache.logging.log4j.LogManager;
+
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.vk.api.sdk.objects.UserAuthResponse;
@@ -24,12 +28,26 @@ public class UserService {
 	public Integer userRequestHandler(String code) {
 
 		UserAuthResponse userInfo = ParsingMethodHolder.getUserAuthInfo(code);
-		User user = userRep.findByuserId(userInfo.getUserId());
-		if (user == null) {
-			user = new User(userInfo.getUserId());
-			userRep.save(user);
-		}
-		return user.getUserId();
+//		User vkUser = userRep.findByuserId(userInfo.getUserId());
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails)
+		{
+			String username = ((UserDetails)principal).getUsername();
+			User user = userRep.findByEmail(username);
+			userRep.refresh(user,userInfo.getUserId());
+			}
+//		}
+//		else
+//		{
+//			String username = principal.toString();
+//			if (user == null) {
+//				user = new User(userInfo.getUserId(), username);
+//				userRep.refresh(user,userInfo.getUserId());
+//			}
+//		}
+
+		return userInfo.getUserId();
 		
 	}
 

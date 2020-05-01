@@ -27,8 +27,9 @@ public class User {
     public User() {
     }
 
-    public User(Integer userId) {
+    public User(Integer userId, String email) {
         this.userId = userId;
+        this.email = email;
     }
     public String getId() {
         return id;

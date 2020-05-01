@@ -24,13 +24,12 @@ function fire_ajax() {
         dataType: 'json',
         cache: false,
         success: function (data) {
-            console.log(data);
             const statGender = data.groupStat.sexStat;
             const statCity = data.groupStat.cityStat;
             const statAge = data.groupStat.ageStat;
             console.log(statAge);
             const statBan = data.groupStat.bannedCount;
-            const statActive = data;
+            const statActive = data.groupStat.activityStat;
             console.log(statActive);
             const desc = data.description;
             var arrCity = [];
@@ -42,24 +41,24 @@ function fire_ajax() {
                 arrNumber[i] = value;
                 i = i + 1;
             }
-            // var ctxpActive = document.getElementById("activeChart").getContext('2d');
-            // var myActiveChart = new Chart(ctxpActive, {
-            //     type: 'pie',
-            //     data: {
-            //         labels: ["1 или более лайков", "1 лайк и 1 комментарии или более"],
-            //         datasets: [{
-            //             data: [statActive["1 лайк или более"], statActive["1 лайк и 1 коммент или более"]],
-            //             backgroundColor: ["#32a84e", "#4f52d1"],
-            //             hoverBackgroundColor: ["#32a84e", "#4f52d1"]
-            //         }]
-            //     },
-            //     options: {
-            //         legend: {
-            //             position: 'left'
-            //         },
-            //         responsive: true
-            //     }
-            // });
+            var ctxActive = document.getElementById("activeChart").getContext('2d');
+            var myActiveChart = new Chart(ctxActive, {
+                type: 'pie',
+                data: {
+                    labels: ["1 и  более лайков", "минимум 1 лайк и 1 комментарий"],
+                    datasets: [{
+                        data: [statActive["1 лайк или более"], statActive["1 лайк и 1 коммент или более"]],
+                        backgroundColor: ["#32a84e", "#4f52d1"],
+                        hoverBackgroundColor: ["#32a84e", "#4f52d1"]
+                    }]
+                },
+                options: {
+                    legend: {
+                        position: 'left'
+                    },
+                    responsive: true
+                }
+            });
             var ctx = document.getElementById("myChart").getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'horizontalBar',
@@ -158,6 +157,7 @@ function fire_ajax() {
                 }
             });
             document.getElementById('description').innerHTML = desc;
+            document.getElementById('active').innerHTML = '<b>Активность аудитории</b>';
             document.getElementById('sostav').innerHTML = '<b>Состав аудитории</b>';
             document.getElementById('city').innerHTML = '<b>Города проживания</b>';
             document.getElementById('gender').innerHTML = '<b>Пол аудитории</b>';
@@ -176,11 +176,14 @@ function fire_ajax() {
             var statGenderModal = [];
             var statCityModal = [];
             var statAgeModal = [];
+            var statActiveModal = [];
             var arrCityModal = [];
             var arrNumberModal = [];
+            var dataActiveModal = [];
             var dataAgeModal = [];
             var dataCityModal = [];
             var dataGenderModal= [];
+            var chartModalActive = [];
             var chartModalAge = [];
             var chartModalCity = [];
             var chartModalGender = [];
@@ -207,12 +210,16 @@ function fire_ajax() {
                     '<b>Пол аудитории</b>'+
                     '<canvas id="pieChart_modal'+i+'"style="padding: 10px"></canvas>'+
                     '     </div>' +
+                    '<div class="col-md-10 ">'+
+                    '<b>Активность аудитории</b>'+
+                    '<canvas id="activeChart_modal'+i+'"style="padding: 10px"></canvas>'+
+                    '     </div>' +
                     '<div class="col-divider-margin-3"></div>'+
                     '<div class="col-md-10 ">'+
                     '<b>Возраст аудитории</b>'+
 
                     '<canvas id="polarChart_modal'+i+'" style="padding: 10px"></canvas>'+
-                    '       </div>'+
+                    '     </div>' +
                     '<div class="col-divider-margin-3"></div>'+
                     '<div class="col-md-12 ">'+
                     '<b>Города проживания</b>'+
@@ -244,11 +251,12 @@ function fire_ajax() {
                 const group = data.rangeList[i];
                 statGenderModal[i] = group.statistics.sexStat;
                 statCityModal[i] = group.statistics.cityStat;
+                statActiveModal[i] = group.statistics.activityStat;
                 statAgeModal[i] = group.statistics.ageStat;
-
                 let CurrentGender = statGenderModal[i];
                 let CurrentCity = statCityModal[i];
                 let CurrentAge = statAgeModal[i];
+                let CurrentActive = statActiveModal[i];
                 let j = 0;
 
                 for ( let key in CurrentCity ) {
@@ -257,6 +265,24 @@ function fire_ajax() {
                     arrNumber[j] = value;
                     j = j+1;
                 }
+                chartModalActive[i] = document.getElementById("activeChart_modal"+i).getContext('2d');
+                dataActiveModal[i] = new Chart(chartModalActive[i], {
+                    type: 'pie',
+                    data: {
+                        labels: ["1 и  более лайков", "минимум 1 лайк и 1 комментарий"],
+                        datasets: [{
+                            data: [CurrentActive["1 лайк или более"], CurrentActive["1 лайк и 1 коммент или более"]],
+                            backgroundColor: ["#32a84e", "#4f52d1"],
+                            hoverBackgroundColor: ["#32a84e", "#4f52d1"]
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            position: 'left'
+                        },
+                        responsive: true
+                    }
+                });
                 chartModalGender[i] = document.getElementById("pieChart_modal"+i).getContext('2d');
                 dataGenderModal[i] = new Chart(chartModalGender[i], {
                     type: 'pie',
