@@ -1,26 +1,20 @@
 package com.vkgroupstat.controller;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
@@ -49,21 +43,11 @@ public class StockController {
 	}
 
 
-		LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
+
 
 	@PostMapping("/findgroup")
-	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
-
-		AjaxResponseBody result = new AjaxResponseBody();
-
-		if (errors.hasErrors()) {
-
-			result.setMsg(errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
-			return ResponseEntity.badRequest().body(result);
-
-		}
+	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search) {
 		Group group = service.groupRequestHandler(search.getGroupName());
-		result.setGroup(group);
 		return ResponseEntity.ok(group);
 
 	}

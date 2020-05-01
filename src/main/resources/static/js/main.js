@@ -24,10 +24,15 @@ function fire_ajax() {
         dataType: 'json',
         cache: false,
         success: function (data) {
+            console.log(data);
             const statGender = data.groupStat.sexStat;
             const statCity = data.groupStat.cityStat;
             const statAge = data.groupStat.ageStat;
+            console.log(statAge);
             const statBan = data.groupStat.bannedCount;
+            const statActive = data;
+            console.log(statActive);
+            const desc = data.description;
             var arrCity = [];
             var arrNumber = [];
             var i = 0;
@@ -37,12 +42,24 @@ function fire_ajax() {
                 arrNumber[i] = value;
                 i = i + 1;
             }
-            var countSubs = 0;
-            for (var key in statGender) {
-
-                let value = statGender[key];
-                countSubs = countSubs + value;
-            }
+            // var ctxpActive = document.getElementById("activeChart").getContext('2d');
+            // var myActiveChart = new Chart(ctxpActive, {
+            //     type: 'pie',
+            //     data: {
+            //         labels: ["1 или более лайков", "1 лайк и 1 комментарии или более"],
+            //         datasets: [{
+            //             data: [statActive["1 лайк или более"], statActive["1 лайк и 1 коммент или более"]],
+            //             backgroundColor: ["#32a84e", "#4f52d1"],
+            //             hoverBackgroundColor: ["#32a84e", "#4f52d1"]
+            //         }]
+            //     },
+            //     options: {
+            //         legend: {
+            //             position: 'left'
+            //         },
+            //         responsive: true
+            //     }
+            // });
             var ctx = document.getElementById("myChart").getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'horizontalBar',
@@ -121,7 +138,7 @@ function fire_ajax() {
                     responsive: true
                 }
             });
-            var activeCount = countSubs - statBan;
+            var activeCount = data.groupStat.memberCount - statBan;
             var ctxpB = document.getElementById("banChart").getContext('2d');
             var myBanChart = new Chart(ctxpB, {
                 type: 'pie',
@@ -140,6 +157,7 @@ function fire_ajax() {
                     responsive: true
                 }
             });
+            document.getElementById('description').innerHTML = desc;
             document.getElementById('sostav').innerHTML = '<b>Состав аудитории</b>';
             document.getElementById('city').innerHTML = '<b>Города проживания</b>';
             document.getElementById('gender').innerHTML = '<b>Пол аудитории</b>';
@@ -184,9 +202,7 @@ function fire_ajax() {
                     '<div class="container-fluid">'+
                     '     <div class="modal-body">' +
                     '<div class="col-md-6 col-right">'+
-                    '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit. Suspendisse et justo. augue.+' +
-                    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit.</p>'+
-                    '     </div>' +
+                    '  ' + group.description +'     </div>' +
                     '<div class="col-md-6 col-left">'+
                     '<b>Пол аудитории</b>'+
                     '<canvas id="pieChart_modal'+i+'"style="padding: 10px"></canvas>'+

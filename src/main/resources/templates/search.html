@@ -48,9 +48,6 @@
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
-<!-- Style Customizer's stylesheets -->
-
-<link rel="stylesheet/less" type="text/css" href="less/skin.less">
 <!-- Style Customizer's stylesheets END -->
 
 <!-- Skin stylesheet -->
@@ -159,7 +156,15 @@
             </div>
         </div>
           <div class="collapseSearch">
-            <div class="row">
+              <div class="row">
+                  <div class="col-md-4 col-left" style="padding: 20px" >
+                      <div id="description"></div>
+                  </div>
+                  <div class="col-md-8 col-right" style="padding: 20px">
+                      <div id="active"></div>
+                      <canvas id="activeChart" style="max-width: 700px"></canvas>
+                  </div>
+
                 <div class="col-md-6 col-left" style="padding: 20px" >
                     <div id="city"></div>
                     <canvas id="myChart" style="max-width: 500px"></canvas>
