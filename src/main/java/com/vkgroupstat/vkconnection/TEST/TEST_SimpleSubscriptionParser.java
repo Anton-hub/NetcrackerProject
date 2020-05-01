@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.vkconnection.ParsingMethodHolder;
-import com.vkgroupstat.vkconnection.VkSdkObjHolder;
 import com.vkgroupstat.vkconnection.vkentity.SimpleSubscription;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;

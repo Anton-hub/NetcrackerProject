@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
 import com.vkgroupstat.vkconnection.GroupCollector;
@@ -28,7 +29,11 @@ public class TestController {
 	
 	@RequestMapping("/parse/{groupName}")
 	public String parseWihoutDb(@PathVariable String groupName) {
-		return TEST_StringOut.groupToString(collector.collect(groupName));
+		try {
+			return TEST_StringOut.groupToString(collector.collect(groupName));
+		} catch (NoDataAccessException e) {
+			return e.toString();
+		}
 	}
 	
 	@RequestMapping("/stat")

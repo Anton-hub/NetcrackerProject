@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection;
+package com.vkgroupstat.constants;
 
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.ServiceActor;

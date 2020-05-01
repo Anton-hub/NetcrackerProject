@@ -1,9 +1,10 @@
 package com.vkgroupstat.vkconnection.TEST;
 
-import java.util.HashMap;
+import static com.vkgroupstat.vkconnection.ParsingMethodHolder.getCommentsJson;
+import static com.vkgroupstat.vkconnection.ParsingMethodHolder.getLikersList;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +14,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
-import com.vk.api.sdk.objects.wall.WallComment;
-import com.vk.api.sdk.queries.likes.LikesType;
-import static com.vkgroupstat.vkconnection.ParsingMethodHolder.*;
-
-import com.vkgroupstat.vkconnection.VkSdkObjHolder;
+import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.vkconnection.parsers.PostParser;
 import com.vkgroupstat.vkconnection.vkentity.Post;
 

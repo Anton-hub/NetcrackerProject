@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.vkgroupstat.exception.NoDataAccessException;
+import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
@@ -44,10 +46,21 @@ public class StockController {
 
 
 
-
 	@PostMapping("/findgroup")
 	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search) {
 		Group group = service.groupRequestHandler(search.getGroupName());
+
+			result.setMsg(errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
+			return ResponseEntity.badRequest().body(result);
+
+		}
+		Group group;
+		try {
+			group = service.groupRequestHandler(search.getGroupName());
+		} catch (NoDataAccessException e) {
+			group = null; //добавить сюда обработку ошибки
+		}
+		result.setGroup(group);
 		return ResponseEntity.ok(group);
 
 	}
