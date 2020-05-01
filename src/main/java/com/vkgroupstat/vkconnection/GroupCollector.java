@@ -17,9 +17,9 @@ import com.vkgroupstat.vkconnection.fillers.SubscriptionStatFiller;
 import com.vkgroupstat.vkconnection.parsers.PostParser;
 import com.vkgroupstat.vkconnection.parsers.SubscriberParser;
 import com.vkgroupstat.vkconnection.parsers.SubscriptionParser;
-import com.vkgroupstat.vkconnection.vkentity.GroupStat;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
+import com.vkgroupstat.vkconnection.vkentity.stat.GroupStat;
 
 @Service
 public class GroupCollector {
@@ -56,6 +56,7 @@ public class GroupCollector {
 						, groupName
 						, baseGrInf.getName()
 						, baseGrInf.getDescription()
+						, baseGrInf.getPhoto200()
 						, groupStat
 						, slicedSubscriptionList);
 	}
