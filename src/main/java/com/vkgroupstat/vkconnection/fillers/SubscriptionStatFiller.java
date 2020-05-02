@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.vkgroupstat.constants.StatNameConstant;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
+import com.vkgroupstat.vkconnection.vkentity.stat.StatItem;
 import com.vkgroupstat.vkconnection.vkentity.stat.SubscriptionStat;
 
 public class SubscriptionStatFiller implements StatNameConstant{
@@ -134,10 +135,10 @@ public class SubscriptionStatFiller implements StatNameConstant{
 		cityStat = sortedByValue(cityStat);		
 	}
 	
-	private LinkedHashMap<String, StatItem> fill(LinkedHashMap<String, Integer> map){
-		LinkedHashMap<String, StatItem> response = new LinkedHashMap<String, StatItem>();
+	private LinkedList<StatItem> fill(LinkedHashMap<String, Integer> map){
+		LinkedList<StatItem> response = new LinkedList<StatItem>();
 		for (Map.Entry<String, Integer> item : map.entrySet())
-			response.put(item.getKey(), new StatItem(item.getValue(), subsCount));
+			response.add(new StatItem(item.getKey(), item.getValue(), subsCount));
 		return response;
 	}
 	

@@ -1,26 +1,24 @@
 package com.vkgroupstat.vkconnection.vkentity.stat;
 
-import java.util.LinkedHashMap;
-
-import com.vkgroupstat.vkconnection.fillers.StatItem;
+import java.util.LinkedList;
 
 public class SubscriptionStat {
-	protected LinkedHashMap<String, StatItem> sexStat = null;
-	protected LinkedHashMap<String, StatItem> cityStat = null;
-	protected LinkedHashMap<String, StatItem> ageStat = null;
-	protected LinkedHashMap<String, StatItem> activityStat = null;
+	protected LinkedList<StatItem> sexStat = null;
+	protected LinkedList<StatItem> cityStat = null;
+	protected LinkedList<StatItem> ageStat = null;
+	protected LinkedList< StatItem> activityStat = null;
 	
 	public SubscriptionStat() {}
 
-	public LinkedHashMap<String, StatItem> getSexStat() { return sexStat; }
-	public LinkedHashMap<String, StatItem> getCityStat() { return cityStat; }
-	public LinkedHashMap<String, StatItem> getAgeStat() { return ageStat; }
-	public LinkedHashMap<String, StatItem> getActivityStat() { return activityStat; }
+	public LinkedList<StatItem> getSexStat() { return sexStat; }
+	public LinkedList<StatItem> getCityStat() { return cityStat; }
+	public LinkedList<StatItem> getAgeStat() { return ageStat; }
+	public LinkedList<StatItem> getActivityStat() { return activityStat; }
 
-	public void setSexStat(LinkedHashMap<String, StatItem> sexStat) { this.sexStat = sexStat; }
-	public void setCityStat(LinkedHashMap<String, StatItem> cityStat) { this.cityStat = cityStat; }
-	public void setAgeStat(LinkedHashMap<String, StatItem> ageStat) { this.ageStat = ageStat; }
-	public void setActivityStat(LinkedHashMap<String, StatItem> activityStat) { this.activityStat = activityStat; }
+	public void setSexStat(LinkedList<StatItem> sexStat) { this.sexStat = sexStat; }
+	public void setCityStat(LinkedList<StatItem> cityStat) { this.cityStat = cityStat; }
+	public void setAgeStat(LinkedList<StatItem> ageStat) { this.ageStat = ageStat; }
+	public void setActivityStat(LinkedList<StatItem> activityStat) { this.activityStat = activityStat; }
 
 	@Override
 	public String toString() {
