@@ -1,7 +1,5 @@
 package com.vkgroupstat.vkconnection.parsers;
 
-import static com.vkgroupstat.vkconnection.ParsingMethodHolder.getWallPosts;
-
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
@@ -13,18 +11,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.vk.api.sdk.objects.wall.WallPostFull;
+import com.vkgroupstat.Context;
 import com.vkgroupstat.exception.NoDataAccessException;
+import com.vkgroupstat.vkconnection.ParsingMethodHolder;
 import com.vkgroupstat.vkconnection.vkentity.Post;
 
 public class PostParser {
 	
 	private static final Logger LOG = LogManager.getLogger(PostParser.class);
-	private ActivityParser activity = new ActivityParser();
+	private final ActivityParser activity;
+	private final ParsingMethodHolder pmh;
 	
 	private String groupName;
 	private LinkedList<Post> response = new LinkedList<Post>();
 	
 	public PostParser(String groupName) {
+		activity = Context.getBean(ActivityParser.class);
+		pmh = Context.getBean(ParsingMethodHolder.class);
 		this.groupName = groupName;
 	}
 	
@@ -72,7 +75,7 @@ public class PostParser {
 		Boolean flag = true;
 		Integer offset = 0;
 		while (flag) {
-			LinkedList<WallPostFull> postFullList = new LinkedList<WallPostFull>(getWallPosts(groupName, offset));
+			LinkedList<WallPostFull> postFullList = new LinkedList<WallPostFull>(pmh.getWallPosts(groupName, offset));
 			for (WallPostFull post : postFullList) {
 				postsList.add(new Post(post));
 			}

@@ -1,21 +1,27 @@
 package com.vkgroupstat.vkconnection.parsers;
 
-import static com.vkgroupstat.vkconnection.ParsingMethodHolder.getCommentsJson;
-import static com.vkgroupstat.vkconnection.ParsingMethodHolder.getLikersList;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.vkgroupstat.vkconnection.ParsingMethodHolder;
 import com.vkgroupstat.vkconnection.vkentity.Post;
 
-
+@Component
 public class ActivityParser {
 	
-	public ActivityParser() {}
+	private final ParsingMethodHolder pmh;
+	
+	@Autowired
+	public ActivityParser(ParsingMethodHolder pmh) {
+		this.pmh = pmh;
+	}
 	
 	/**
 	 * a function that initializes a field (in Post) that stores information about like
@@ -25,7 +31,7 @@ public class ActivityParser {
 		LinkedList<Integer> likersList = new LinkedList<Integer>();
 		Integer offset = 0;
 		while (post.getLikesCount() > offset) {
-			likersList.addAll(getLikersList(post.getOwnerId(), post.getPostId(), offset));
+			likersList.addAll(pmh.getLikersList(post.getOwnerId(), post.getPostId(), offset));
 			offset += 1000;
 		}
 		post.initLikersIdList(likersList);
@@ -49,7 +55,7 @@ public class ActivityParser {
 		Integer offset = 0;
 		Boolean flag = true;
 		while (flag) {
-			String stringJson = getCommentsJson(post.getOwnerId(), post.getPostId(), offset);
+			String stringJson = pmh.getCommentsJson(post.getOwnerId(), post.getPostId(), offset);
 			JsonObject json = new JsonParser().parse(stringJson).getAsJsonObject().get("response").getAsJsonObject();
 			JsonArray listJsonComments = null;
 			

@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection.TEST;
+package com.vkgroupstat.TEST;
 
 import java.util.Comparator;
 import java.util.Date;

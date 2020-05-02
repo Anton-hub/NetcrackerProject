@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonArray;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.vkgroupstat.Context;
 import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.vkconnection.ParsingMethodHolder;
@@ -19,14 +20,16 @@ import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 public class SubscriberParser implements VkSdkObjHolder{
 	
 	private static final Logger LOG = LogManager.getLogger(SubscriberParser.class);
+	private final ParsingMethodHolder pmh;
 	
 	private String groupName;	
 	private Integer count;
 	private LinkedList<Subscriber> response = new LinkedList<Subscriber>();
 	
 	public SubscriberParser(String groupName) {
+		pmh = Context.getBean(ParsingMethodHolder.class);
 		this.groupName = groupName;
-		count = ParsingMethodHolder.getGroupSubsCount(groupName);
+		count = pmh.getGroupSubsCount(groupName);
 	}
 	public LinkedList<Subscriber> parse() throws NoDataAccessException{
 		Integer offset = 0;

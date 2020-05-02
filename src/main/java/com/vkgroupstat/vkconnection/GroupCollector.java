@@ -26,10 +26,12 @@ public class GroupCollector {
 	
 	private static final Logger LOG = LogManager.getLogger(GroupCollector.class);
 	private final GroupFiledFiller fieldFiller;
+	private final ParsingMethodHolder pmh;
 	
 	@Autowired
-	public GroupCollector (GroupFiledFiller fieldField) {
+	public GroupCollector (GroupFiledFiller fieldField, ParsingMethodHolder pmh) {
 		this.fieldFiller = fieldField;
+		this.pmh = pmh;
 	}
 	public Group collect(String groupName) throws NoDataAccessException{
 		long startTime = new Date().getTime();		
@@ -46,7 +48,7 @@ public class GroupCollector {
 		slicedSubscriptionList.stream().forEach(item -> item.countUp());		
 		fieldFiller.fillInfoField(slicedSubscriptionList);
 		
-		GroupFull baseGrInf = ParsingMethodHolder.getGroupInfo(groupName);
+		GroupFull baseGrInf = pmh.getGroupInfo(groupName);
 		GroupStat groupStat = (GroupStat)new SubscriptionStatFiller(subscriberList).fillStat(
 								new GroupStat(baseGrInf.getMembersCount(), fieldFiller.getBannedCount(subscriberList)));		
 		
