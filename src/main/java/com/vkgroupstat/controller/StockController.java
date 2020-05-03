@@ -47,12 +47,10 @@ public class StockController {
 	}
 
 
-	LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
+	//LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
 	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
-
-
 		Group group;
 		try {
 			group = service.groupRequestHandler(search.getGroupName());
@@ -60,8 +58,8 @@ public class StockController {
 			group = null; //добавить сюда обработку ошибки
 		}
 		return ResponseEntity.ok(group);
-
 	}
+	
 	@PostMapping("/showhistory")
 	public ResponseEntity<?> getHistory() {
 		User user = uService.getUser(WebController.USER_ID);
@@ -70,9 +68,9 @@ public class StockController {
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-	public	@ResponseBody	String sendEmail(@RequestParam("email") String emailUser,
-												@RequestParam("subject") String subject,
-												@RequestParam("message") String message) {
+	public	@ResponseBody String sendEmail(@RequestParam("email") String emailUser,
+											@RequestParam("subject") String subject,
+											@RequestParam("message") String message) {
 
 		FeedbackService feedbackService = new FeedbackService(mailSender);
 
