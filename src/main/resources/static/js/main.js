@@ -27,27 +27,17 @@ function fire_ajax() {
             const statGender = data.groupStat.sexStat;
             const statCity = data.groupStat.cityStat;
             const statAge = data.groupStat.ageStat;
-            console.log(statAge);
+            console.log(data);
             const statBan = data.groupStat.bannedCount;
             const statActive = data.groupStat.activityStat;
-            console.log(statActive);
             const desc = data.description;
-            var arrCity = [];
-            var arrNumber = [];
-            var i = 0;
-            for (var key in statCity) {
-                arrCity[i] = key;
-                let value = statCity[key];
-                arrNumber[i] = value;
-                i = i + 1;
-            }
             var ctxActive = document.getElementById("activeChart").getContext('2d');
             var myActiveChart = new Chart(ctxActive, {
                 type: 'pie',
                 data: {
                     labels: ["1 и  более лайков", "минимум 1 лайк и 1 комментарий"],
                     datasets: [{
-                        data: [statActive["1 лайк или более"], statActive["1 лайк и 1 коммент или более"]],
+                        data: [statActive[0]["count"], statActive[1]["count"]],
                         backgroundColor: ["#32a84e", "#4f52d1"],
                         hoverBackgroundColor: ["#32a84e", "#4f52d1"]
                     }]
@@ -63,10 +53,10 @@ function fire_ajax() {
             var myChart = new Chart(ctx, {
                 type: 'horizontalBar',
                 data: {
-                    labels: [arrCity[0], arrCity[1], arrCity[2], arrCity[3], arrCity[4], arrCity[5]],
+                    labels: [statCity[0]["name"], statCity[1]["name"], statCity[2]["name"], statCity[3]["name"], statCity[4]["name"], statCity[5]["name"]],
                     datasets: [{
                         label: '# Количество',
-                        data: [arrNumber[0], arrNumber[1], arrNumber[2], arrNumber[3], arrNumber[4], arrNumber[5]],
+                        data: [statCity[0]["count"], statCity[1]["count"], statCity[2]["count"], statCity[3]["count"], statCity[4]["count"], statCity[5]["count"]],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -103,7 +93,7 @@ function fire_ajax() {
                 data: {
                     labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50','60 и более','Не указан'],
                     datasets: [{
-                        data: [statAge["менее 10"], statAge["10 - 20"], statAge["20 - 30"], statAge["30 - 40"], statAge["40 - 50"], statAge["60 и более"], statAge["Не указан"]],
+                        data: [statAge[1]["count"], statAge[2]["count"], statAge[3]["count"], statAge[4]["count"], statAge[5]["count"], statAge[6]["count"], statAge[7]["count"]],
                         backgroundColor: ["rgba(219, 0, 0, 0.1)", "rgba(0, 165, 2, 0.1)", "rgba(255, 195, 15, 0.2)",
                             "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)"
                         ],
@@ -125,7 +115,7 @@ function fire_ajax() {
                 data: {
                     labels: ["Женщин", "Мужчин", "Не указан"],
                     datasets: [{
-                        data: [statGender["Женщин"], statGender["Мужчин"], statGender["Не указан"]],
+                        data: [statGender[0]["count"], statGender[1]["count"], statGender[2]["count"]],
                         backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
                         hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
                     }]
@@ -177,8 +167,6 @@ function fire_ajax() {
             var statCityModal = [];
             var statAgeModal = [];
             var statActiveModal = [];
-            var arrCityModal = [];
-            var arrNumberModal = [];
             var dataActiveModal = [];
             var dataAgeModal = [];
             var dataCityModal = [];
@@ -257,21 +245,14 @@ function fire_ajax() {
                 let CurrentCity = statCityModal[i];
                 let CurrentAge = statAgeModal[i];
                 let CurrentActive = statActiveModal[i];
-                let j = 0;
 
-                for ( let key in CurrentCity ) {
-                    arrCity[j] = key;
-                    let value = CurrentCity[key];
-                    arrNumber[j] = value;
-                    j = j+1;
-                }
                 chartModalActive[i] = document.getElementById("activeChart_modal"+i).getContext('2d');
                 dataActiveModal[i] = new Chart(chartModalActive[i], {
                     type: 'pie',
                     data: {
                         labels: ["1 и  более лайков", "минимум 1 лайк и 1 комментарий"],
                         datasets: [{
-                            data: [CurrentActive["1 лайк или более"], CurrentActive["1 лайк и 1 коммент или более"]],
+                            data: [CurrentActive[0]["count"], CurrentActive[1]["count"]],
                             backgroundColor: ["#32a84e", "#4f52d1"],
                             hoverBackgroundColor: ["#32a84e", "#4f52d1"]
                         }]
@@ -287,9 +268,9 @@ function fire_ajax() {
                 dataGenderModal[i] = new Chart(chartModalGender[i], {
                     type: 'pie',
                     data: {
-                        labels: ["Женщин", "Мужчин", "Не указан"],
+                        labels: ["Женщин", "Мужчин"],
                         datasets: [{
-                            data: [CurrentGender["Женщин"], CurrentGender["Мужчин"], CurrentGender["Не указан"]],
+                            data: [group.statistics.sexStat[0]["count"], group.statistics.sexStat[1]["count"]],
                             backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
                             hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870"]
                         }]
@@ -308,7 +289,7 @@ function fire_ajax() {
                     data: {
                         labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50','60 и более','Не указан'],
                         datasets: [{
-                            data: [CurrentAge["менее 10"], CurrentAge["10 - 20"], CurrentAge["20 - 30"], CurrentAge["30 - 40"], CurrentAge["40 - 50"], CurrentAge["60 и более"], CurrentAge["Не указан"]],
+                            data: [CurrentAge[0]["count"], CurrentAge[1]["count"], CurrentAge[2]["count"], CurrentAge[3]["count"], CurrentAge[4]["count"], CurrentAge[5]["count"], CurrentAge[6]["count"]],
                             backgroundColor: ["rgba(219, 0, 0, 0.1)", "rgba(0, 165, 2, 0.1)", "rgba(255, 195, 15, 0.2)",
                                 "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)"
                             ],
@@ -328,10 +309,10 @@ function fire_ajax() {
                 dataCityModal[i] = new Chart(chartModalCity[i], {
                     type: 'horizontalBar',
                     data: {
-                        labels: [arrCity[0], arrCity[1], arrCity[2], arrCity[3], arrCity[4], arrCity[5]],
+                        labels: [CurrentCity[0]["name"], CurrentCity[1]["name"], CurrentCity[2]["name"], CurrentCity[3]["name"], CurrentCity[4]["name"], CurrentCity[5]["name"]],
                         datasets: [{
                             label: 'количество человек',
-                            data: [arrNumber[0], arrNumber[1], arrNumber[2], arrNumber[3], arrNumber[4], arrNumber[5]],
+                            data: [CurrentCity[0]["count"], CurrentCity[0]["count"], CurrentCity[2]["count"], CurrentCity[3]["count"], CurrentCity[4]["count"], CurrentCity[5]["count"]],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',

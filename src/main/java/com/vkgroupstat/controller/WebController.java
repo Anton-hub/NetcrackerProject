@@ -25,13 +25,12 @@ public class WebController{
 
     @GetMapping("/index")
     public String getIndex() {
-
         return "index";
     }
 
 
     @RequestMapping("/search")
-    public String getSearch( @RequestParam String code){
+    public String getSearch() {
         return "search";
     }
     @RequestMapping("/dashboard")

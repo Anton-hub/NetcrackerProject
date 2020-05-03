@@ -3,6 +3,7 @@ package com.vkgroupstat.service;
 import org.apache.logging.log4j.LogManager;
 
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +31,7 @@ public class UserService {
 
 	public Integer userRequestHandler(String code) {
 
-		UserAuthResponse userInfo = ParsingMethodHolder.getUserAuthInfo(code);
+		UserAuthResponse userInfo = pmh.getUserAuthInfo(code);
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails)
