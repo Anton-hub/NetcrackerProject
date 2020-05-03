@@ -1,6 +1,8 @@
 package com.vkgroupstat.controller;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vkgroupstat.exception.NoDataAccessException;
-import com.vkgroupstat.model.AjaxResponseBody;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
@@ -27,13 +29,13 @@ import com.vkgroupstat.service.UserService;
 @Controller
 @RequestMapping("/api")
 public class StockController {
-	
+
 	private static final Logger LOG = LogManager.getLogger(StockController.class);
-	
+
 	@Autowired
 	private MailSender mailSender;
 
-//
+	//
 //	@Value("checkins.tracker@gmail.com")
 //	String email="checkins.tracker@gmail.com";
 	private final GroupService service;
@@ -45,22 +47,18 @@ public class StockController {
 	}
 
 
+	LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
-	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search) {
-		Group group = service.groupRequestHandler(search.getGroupName());
+	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
 
-			result.setMsg(errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
-			return ResponseEntity.badRequest().body(result);
 
-		}
 		Group group;
 		try {
 			group = service.groupRequestHandler(search.getGroupName());
 		} catch (NoDataAccessException e) {
 			group = null; //добавить сюда обработку ошибки
 		}
-		result.setGroup(group);
 		return ResponseEntity.ok(group);
 
 	}
@@ -73,8 +71,8 @@ public class StockController {
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
 	public	@ResponseBody	String sendEmail(@RequestParam("email") String emailUser,
-					 @RequestParam("subject") String subject,
-					 @RequestParam("message") String message) {
+												@RequestParam("subject") String subject,
+												@RequestParam("message") String message) {
 
 		FeedbackService feedbackService = new FeedbackService(mailSender);
 
