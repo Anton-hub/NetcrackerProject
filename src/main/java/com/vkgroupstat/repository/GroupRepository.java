@@ -1,5 +1,6 @@
 package com.vkgroupstat.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -13,9 +14,11 @@ import com.vkgroupstat.vkconnection.GroupCollector;
 
 @Repository
 public class GroupRepository {
-	
-	private final GroupCollector collector;
+
 	private final MongoTemplate mongoTemplate;
+	private final GroupCollector collector;
+	
+	@Autowired
 	public GroupRepository(MongoTemplate mongoTemplate, GroupCollector collcetor) {
 		this.mongoTemplate = mongoTemplate;
 		this.collector = collcetor;

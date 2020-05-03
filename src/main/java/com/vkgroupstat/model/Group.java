@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.vkgroupstat.vkconnection.vkentity.GroupStat;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
+import com.vkgroupstat.vkconnection.vkentity.stat.GroupStat;
 
 @Document
 public class Group {
@@ -18,6 +18,8 @@ public class Group {
 	String stringName;
 	
 	String description;
+	String photoUrl;
+	
 	GroupStat groupStat;
 	LinkedList<Subscription> rangeList;
 	Date createDate = new Date();
@@ -26,12 +28,14 @@ public class Group {
 				,String urlName
 				,String stringName
 				,String description
+				,String photoUrl
 				,GroupStat groupStat
 				,LinkedList<Subscription> rangeList) {		
 		this.clubId = clubId;
 		this.urlName = urlName;
 		this.stringName = stringName;
 		this.description = description;
+		this.photoUrl = photoUrl;
 		this.groupStat = groupStat;
 		this.rangeList = rangeList;
 	}
@@ -40,7 +44,8 @@ public class Group {
 	public Integer getClubId() { return clubId; }
 	public String getUrlName() { return urlName; }
 	public String getStringName() {	return stringName; }	
-	public String getDescription() { return description; }
+	public String getDescription() { return description; }	
+	public String getPhotoUrl() { return photoUrl; }
 	public GroupStat getGroupStat() { return groupStat;	}
 	public LinkedList<Subscription> getRangeList() { return rangeList; }
 	public Date getCreateDate() { return createDate; }

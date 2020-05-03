@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -18,11 +19,12 @@ import com.vk.api.sdk.queries.wall.WallGetFilter;
 import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.exception.NoDataAccessException;
 
+@Component
 public class ParsingMethodHolder implements VkSdkObjHolder{
 	
 	private static final Logger LOG = LogManager.getLogger(ParsingMethodHolder.class);
 	
-	public static List<Integer> getUserSubscriptions(Integer userId) {
+	public List<Integer> getUserSubscriptions(Integer userId) {
 		try {
 			return VK.users()
 					   .getSubscriptions(S_ACTOR)
@@ -36,7 +38,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static Integer getGroupSubsCount(String groupName) {
+	public Integer getGroupSubsCount(String groupName) {
 		try {
 			return VK.groups()
 					   .getMembers(S_ACTOR)
@@ -50,7 +52,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static List<GroupFull> getGroupsInfo(LinkedList<Integer> litsId) {
+	public List<GroupFull> getGroupsInfo(LinkedList<Integer> litsId) {
 		List<String> stringList = litsId.stream().map(Object::toString).collect(Collectors.toList());
 		try {
 			return VK.groups()
@@ -64,7 +66,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static GroupFull getGroupInfo(String groupSreenName) {
+	public GroupFull getGroupInfo(String groupSreenName) {
 		try {
 			return VK.groups()
 					   .getById(S_ACTOR)
@@ -78,7 +80,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static List<WallPostFull> getWallPosts(String groupName, Integer offset)
+	public List<WallPostFull> getWallPosts(String groupName, Integer offset)
 		throws NoDataAccessException{
 		try {
 			return VK.wall()
@@ -98,7 +100,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static List<Integer> getLikersList(Integer ownerId, Integer postId, Integer offset){
+	public List<Integer> getLikersList(Integer ownerId, Integer postId, Integer offset){
 		try {
 			return VK.likes()
 						.getList(S_ACTOR, LikesType.POST)
@@ -114,7 +116,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static String getCommentsJson(Integer ownerId, Integer postId, Integer offset){
+	public String getCommentsJson(Integer ownerId, Integer postId, Integer offset){
 		try {
 			return VK
 					.wall()
@@ -132,7 +134,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static UserAuthResponse getUserAuthInfo(String code) {
+	public UserAuthResponse getUserAuthInfo(String code) {
 		try {
 			return VK.oauth()
 						.userAuthorizationCodeFlow(APPID, PROTECTEDKEY, "http://localhost:8080/dashboard", code)

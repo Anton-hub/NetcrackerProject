@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection.TEST;
+package com.vkgroupstat.TEST;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import com.vkgroupstat.Context;
 import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.vkconnection.ParsingMethodHolder;
 import com.vkgroupstat.vkconnection.vkentity.SimpleSubscription;
@@ -19,12 +20,15 @@ import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
 public class TEST_SimpleSubscriptionParser implements VkSdkObjHolder{
 	
+	private final ParsingMethodHolder pmh;
+	
 	Integer batchSize;
 	String baseGroupName;
 	LinkedList<Subscriber> in; 
 	LinkedHashMap<Integer, SimpleSubscription> out = new LinkedHashMap<Integer, SimpleSubscription>(); 
 	
 	public TEST_SimpleSubscriptionParser(Collection<Subscriber> subscriberSet, String baseGroupName) {
+		pmh = Context.getBean(ParsingMethodHolder.class);
 		this.baseGroupName = baseGroupName;
 		in = new LinkedList<Subscriber>(subscriberSet);
 		batchSize = in.size() / 100;
@@ -38,7 +42,7 @@ public class TEST_SimpleSubscriptionParser implements VkSdkObjHolder{
 		try {
 			executor.awaitTermination(3, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {System.err.println(e);}
-		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
+		out.remove(pmh.getGroupInfo(baseGroupName).getId());
 		
 		LinkedList<SimpleSubscription> SSList = new LinkedList<SimpleSubscription>(out.values());
 		Collections.sort(SSList, (o1, o2) -> o2.getTargetSubsCount().compareTo(o1.getTargetSubsCount()));
@@ -63,7 +67,7 @@ public class TEST_SimpleSubscriptionParser implements VkSdkObjHolder{
 					Subscriber subscriber = threadIn.remove();
 					if (subscriber.getClosed()||subscriber.getIsBanned())
 						continue;	
-					temp = ParsingMethodHolder.getUserSubscriptions(subscriber.getId());
+					temp = pmh.getUserSubscriptions(subscriber.getId());
 					if (temp == null)
 						continue;	
 					while(temp.size() > 0) {

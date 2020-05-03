@@ -3,6 +3,7 @@ package com.vkgroupstat.vkconnection.vkentity;
 import java.util.LinkedList;
 
 import com.vkgroupstat.vkconnection.fillers.SubscriptionStatFiller;
+import com.vkgroupstat.vkconnection.vkentity.stat.SubscriptionStat;
 
 public class Subscription implements Comparable<Subscription>{
 	

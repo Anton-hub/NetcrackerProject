@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection.vkentity;
+package com.vkgroupstat.vkconnection.vkentity.stat;
 
 public class GroupStat extends SubscriptionStat{
 	

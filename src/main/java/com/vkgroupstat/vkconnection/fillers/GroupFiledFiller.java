@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vk.api.sdk.objects.groups.GroupFull;
@@ -15,6 +16,14 @@ import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
 @Component
 public class GroupFiledFiller {
+	
+	private final ParsingMethodHolder pmh;
+	
+	@Autowired
+	public GroupFiledFiller(ParsingMethodHolder pmh) {
+		this.pmh = pmh;
+	}
+	
 	public void fillActivityField(LinkedList<Subscriber> subscribers, LinkedList<Post> activity) {
 		if (activity == null)
 			return;
@@ -44,7 +53,7 @@ public class GroupFiledFiller {
 									.collect(LinkedList<Integer>::new
 											,(l, item) -> l.add(item.getId())
 											,(list1, list2) -> list1.addAll(list2));
-		LinkedList<GroupFull> groupInfoHolder = new LinkedList<GroupFull>(ParsingMethodHolder.getGroupsInfo(listId));
+		LinkedList<GroupFull> groupInfoHolder = new LinkedList<GroupFull>(pmh.getGroupsInfo(listId));
 		
 		Iterator<GroupFull> iterator = groupInfoHolder.iterator();
 		for (Subscription item : handledList) {

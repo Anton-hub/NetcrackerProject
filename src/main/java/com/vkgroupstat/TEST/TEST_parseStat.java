@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection.TEST;
+package com.vkgroupstat.TEST;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

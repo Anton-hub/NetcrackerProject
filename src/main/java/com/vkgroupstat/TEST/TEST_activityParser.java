@@ -1,7 +1,4 @@
-package com.vkgroupstat.vkconnection.TEST;
-
-import static com.vkgroupstat.vkconnection.ParsingMethodHolder.getCommentsJson;
-import static com.vkgroupstat.vkconnection.ParsingMethodHolder.getLikersList;
+package com.vkgroupstat.TEST;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -15,13 +12,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
+import com.vkgroupstat.Context;
 import com.vkgroupstat.constants.VkSdkObjHolder;
+import com.vkgroupstat.vkconnection.ParsingMethodHolder;
 import com.vkgroupstat.vkconnection.parsers.PostParser;
 import com.vkgroupstat.vkconnection.vkentity.Post;
 
 public class TEST_activityParser implements VkSdkObjHolder{
 	
 	private static final Logger LOG = LogManager.getLogger(TEST_activityParser.class);
+	private static final ParsingMethodHolder pmh = Context.getBean(ParsingMethodHolder.class);
 	
 	public static String wallGet() {
 //		LinkedList<Post> list = new LinkedList<Post>();
@@ -56,7 +56,7 @@ public class TEST_activityParser implements VkSdkObjHolder{
 	}
 	
 	public static String test() {
-		LinkedHashMap<String, Integer> map = keyIntToString(foo(getCommentsJson(-189492672, 2359, 0)));
+		LinkedHashMap<String, Integer> map = keyIntToString(foo(pmh.getCommentsJson(-189492672, 2359, 0)));
 		return map.toString();
 		//return foo(getPartCommentsString(-189492672, 2266, 0)).toString();
 	}
@@ -94,7 +94,7 @@ public class TEST_activityParser implements VkSdkObjHolder{
 		LinkedList<Integer> likersList = new LinkedList<Integer>();
 		Integer offset = 0;
 		while (count > offset) {
-			likersList.addAll(getLikersList(ownerId, postId, offset));
+			likersList.addAll(pmh.getLikersList(ownerId, postId, offset));
 			offset += 1000;
 		}
 		return likersList;

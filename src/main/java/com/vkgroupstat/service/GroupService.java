@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vkgroupstat.exception.NoDataAccessException;
@@ -17,7 +18,9 @@ public class GroupService {
 	private static final Logger LOG = LogManager.getLogger(GroupService.class);
 	
 	private final UserService service;
-	private final GroupRepository repository;	
+	private final GroupRepository repository;
+	
+	@Autowired
 	public GroupService(UserService service, GroupRepository repository) {
 		this.repository = repository;
 		this.service = service;

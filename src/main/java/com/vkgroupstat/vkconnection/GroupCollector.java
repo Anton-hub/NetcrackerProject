@@ -17,19 +17,21 @@ import com.vkgroupstat.vkconnection.fillers.SubscriptionStatFiller;
 import com.vkgroupstat.vkconnection.parsers.PostParser;
 import com.vkgroupstat.vkconnection.parsers.SubscriberParser;
 import com.vkgroupstat.vkconnection.parsers.SubscriptionParser;
-import com.vkgroupstat.vkconnection.vkentity.GroupStat;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
+import com.vkgroupstat.vkconnection.vkentity.stat.GroupStat;
 
 @Service
 public class GroupCollector {
 	
 	private static final Logger LOG = LogManager.getLogger(GroupCollector.class);
 	private final GroupFiledFiller fieldFiller;
+	private final ParsingMethodHolder pmh;
 	
 	@Autowired
-	public GroupCollector (GroupFiledFiller fieldField) {
+	public GroupCollector (GroupFiledFiller fieldField, ParsingMethodHolder pmh) {
 		this.fieldFiller = fieldField;
+		this.pmh = pmh;
 	}
 	public Group collect(String groupName) throws NoDataAccessException{
 		long startTime = new Date().getTime();		
@@ -46,7 +48,7 @@ public class GroupCollector {
 		slicedSubscriptionList.stream().forEach(item -> item.countUp());		
 		fieldFiller.fillInfoField(slicedSubscriptionList);
 		
-		GroupFull baseGrInf = ParsingMethodHolder.getGroupInfo(groupName);
+		GroupFull baseGrInf = pmh.getGroupInfo(groupName);
 		GroupStat groupStat = (GroupStat)new SubscriptionStatFiller(subscriberList).fillStat(
 								new GroupStat(baseGrInf.getMembersCount(), fieldFiller.getBannedCount(subscriberList)));		
 		
@@ -56,6 +58,7 @@ public class GroupCollector {
 						, groupName
 						, baseGrInf.getName()
 						, baseGrInf.getDescription()
+						, baseGrInf.getPhoto200()
 						, groupStat
 						, slicedSubscriptionList);
 	}
