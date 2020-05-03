@@ -24,13 +24,6 @@ public class VkGroupStatApplication {
 				newAdminRole.setRole("ADMIN");
 				roleRepository.save(newAdminRole);
 			}
-
-			Role userRole = roleRepository.findByRole("USER");
-			if (userRole == null) {
-				Role newUserRole = new Role();
-				newUserRole.setRole("USER");
-				roleRepository.save(newUserRole);
-			}
 		};
 	}
 }

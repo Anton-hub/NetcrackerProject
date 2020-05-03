@@ -28,8 +28,9 @@ public class UserRepository {
 		mongoTemplate.remove(user, "user");
 	}
 
-	public User refresh(User user, Integer vkUser)  {
+	public User refresh(User user, Integer vkUser, String accesToken)  {
 		user.setUserId(vkUser);
+		user.setAccessToken(accesToken);
 		save(user);
 		return user;
 	}

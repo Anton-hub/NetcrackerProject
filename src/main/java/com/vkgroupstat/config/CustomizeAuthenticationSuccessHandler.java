@@ -24,7 +24,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
 
         for (GrantedAuthority auth : authentication.getAuthorities()) {
             if ("ADMIN".equals(auth.getAuthority())) {
-                response.sendRedirect("https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/search&scope=offline&response_type=code&v=5.103");
+                response.sendRedirect("https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/dashboard&scope=offline&response_type=code&v=5.103");
             }
         }
     }

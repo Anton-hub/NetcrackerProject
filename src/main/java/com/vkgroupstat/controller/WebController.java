@@ -31,10 +31,15 @@ public class WebController{
 
 
     @RequestMapping("/search")
-    public String getCode( @RequestParam String code){
-        USER_ID = service.userRequestHandler(code);
+    public String getSearch( @RequestParam String code){
         return "search";
     }
+    @RequestMapping("/dashboard")
+    public String getCode( @RequestParam String code){
+        USER_ID = service.userRequestHandler(code);
+        return "dashboard";
+    }
+
     @GetMapping("/send")
     public String getSend() {
 

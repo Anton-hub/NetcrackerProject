@@ -28,14 +28,13 @@ public class UserService {
 	public Integer userRequestHandler(String code) {
 
 		UserAuthResponse userInfo = ParsingMethodHolder.getUserAuthInfo(code);
-//		User vkUser = userRep.findByuserId(userInfo.getUserId());
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails)
 		{
 			String username = ((UserDetails)principal).getUsername();
 			User user = userRep.findByEmail(username);
-			userRep.refresh(user,userInfo.getUserId());
+			userRep.refresh(user,userInfo.getUserId(),userInfo.getAccessToken());
 			}
 //		}
 //		else
