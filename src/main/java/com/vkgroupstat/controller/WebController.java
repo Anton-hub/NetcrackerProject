@@ -35,7 +35,11 @@ public class WebController{
         return "search";
     }
     @RequestMapping("/dashboard")
-    public String getCode(@RequestParam String code){
+    public String getDash() {
+        return "dashboard";
+    }
+    @RequestMapping("/dash")
+    public String getCode( @RequestParam String code){
         USER_ID = service.userRequestHandler(code);
         return "dashboard";
     }
@@ -50,6 +54,4 @@ public class WebController{
 
         return "history";
     }
-
-
 }

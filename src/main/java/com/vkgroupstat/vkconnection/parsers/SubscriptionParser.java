@@ -31,12 +31,12 @@ public class SubscriptionParser {
 		pmh = Context.getBean(ParsingMethodHolder.class);
 		this.baseGroupName = baseGroupName;
 		in = new LinkedList<Subscriber>(subscriberSet);
-		batchSize = in.size() / 50;
+		batchSize = in.size() / 100;
 	}
 	
 	public LinkedList<Subscription> parse() {
 		ExecutorService executor = Executors.newCachedThreadPool();		
-		for (int i = 0 ; i < 50 ; i++)
+		for (int i = 0 ; i < 100 ; i++)
 			executor.execute(new Request());		
 		executor.shutdown();
 		try {
