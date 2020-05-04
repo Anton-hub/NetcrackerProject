@@ -13,7 +13,6 @@ public interface VkSdkObjHolder {
 	ServiceActor S_ACTOR = new ServiceActor(APPID, S_TOKEN);	
 
 	String U_TOKEN = "5919a60722a9a994e020a586305755f137304276573cc1b956efc501d83a162d74cce11dbdc214ec3ed70";
-
 	UserActor U_ACTOR = new UserActor(APPID, U_TOKEN);	
 
 	VkApiClient VK = new VkApiClient(HttpTransportClient.getInstance());

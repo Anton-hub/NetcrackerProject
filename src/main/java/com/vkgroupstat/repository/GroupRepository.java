@@ -60,22 +60,4 @@ public class GroupRepository {
 		query.addCriteria(Criteria.where("urlName").is(groupName));
 		return mongoTemplate.findOne(query, Group.class);		 
 	}
-	
-	
-	
-	//Users, in future, when repository will base
-	
-	public User findUserById(Integer userId) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("userId").is(userId));
-		return mongoTemplate.findOne(query, User.class);
-	}
-	
-	public void groupAddinUser(String groupId) {
-		User user = findUserById(WebController.USER_ID);
-		user.addGroupId(groupId);
-		mongoTemplate.save(user, "user");
-	}
-	
-	
 }

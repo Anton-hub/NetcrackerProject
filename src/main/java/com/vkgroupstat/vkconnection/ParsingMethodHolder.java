@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.JsonElement;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.UserAuthResponse;
@@ -18,11 +19,29 @@ import com.vk.api.sdk.queries.likes.LikesType;
 import com.vk.api.sdk.queries.wall.WallGetFilter;
 import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.exception.NoDataAccessException;
+import com.vkgroupstat.exception.TooManyRequestException;
 
 @Component
 public class ParsingMethodHolder implements VkSdkObjHolder{
 	
 	private static final Logger LOG = LogManager.getLogger(ParsingMethodHolder.class);
+	
+	public JsonElement getSubscribersInfo(String groupName, Integer offset, Integer count) 
+		throws NoDataAccessException, TooManyRequestException {
+		try {
+			return VK.execute()
+					   .storageFunction(U_ACTOR, "getGroupSubsInfo")
+					   .unsafeParam("offset", offset)
+					   .unsafeParam("count", count)
+					   .unsafeParam("groupName", groupName)
+					   .unsafeParam("token", U_TOKEN)
+					   .execute();
+		} catch (ApiException e) {
+			throw new NoDataAccessException();
+		} catch (ClientException e) {
+			throw new TooManyRequestException();
+		}
+	}
 	
 	public List<Integer> getUserSubscriptions(Integer userId) {
 		try {
