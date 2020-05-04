@@ -34,6 +34,10 @@ public class WebController{
         return "search";
     }
     @RequestMapping("/dashboard")
+    public String getDash() {
+        return "dashboard";
+    }
+    @RequestMapping("/dash")
     public String getCode( @RequestParam String code){
         USER_ID = service.userRequestHandler(code);
         return "dashboard";
