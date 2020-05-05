@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.vkgroupstat.model.AjaxResponseBody;
+import com.vkgroupstat.exception.NoDataAccessException;
+
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
@@ -26,16 +27,16 @@ import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
 import com.vkgroupstat.service.UserService;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 public class StockController {
-	
+
 	private static final Logger LOG = LogManager.getLogger(StockController.class);
-	
+
 	@Autowired
 	private MailSender mailSender;
 
-//
+	//
 //	@Value("checkins.tracker@gmail.com")
 //	String email="checkins.tracker@gmail.com";
 	private final GroupService service;
@@ -47,24 +48,19 @@ public class StockController {
 	}
 
 
-		LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
+	//LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
 	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
-
-		AjaxResponseBody result = new AjaxResponseBody();
-
-		if (errors.hasErrors()) {
-
-			result.setMsg(errors.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.joining(",")));
-			return ResponseEntity.badRequest().body(result);
-
+		Group group;
+		try {
+			group = service.groupRequestHandler(search.getGroupName());
+		} catch (NoDataAccessException e) {
+			group = null; //добавить сюда обработку ошибки
 		}
-		Group group = service.groupRequestHandler(search.getGroupName());
-		result.setGroup(group);
 		return ResponseEntity.ok(group);
-
 	}
+	
 	@PostMapping("/showhistory")
 	public ResponseEntity<?> getHistory() {
 		User user = uService.getUser(WebController.USER_ID);
@@ -73,9 +69,9 @@ public class StockController {
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-	public	@ResponseBody	String sendEmail(@RequestParam("email") String emailUser,
-					 @RequestParam("subject") String subject,
-					 @RequestParam("message") String message) {
+	public	@ResponseBody String sendEmail(@RequestParam("email") String emailUser,
+											@RequestParam("subject") String subject,
+											@RequestParam("message") String message) {
 
 		FeedbackService feedbackService = new FeedbackService(mailSender);
 

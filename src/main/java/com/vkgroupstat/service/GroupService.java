@@ -5,11 +5,12 @@ import java.util.LinkedList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
-import com.vkgroupstat.vkconnection.GroupCollector;
 
 @Service
 public class GroupService {
@@ -17,15 +18,15 @@ public class GroupService {
 	private static final Logger LOG = LogManager.getLogger(GroupService.class);
 	
 	private final UserService service;
-	private final GroupCollector collcetor;
-	private final GroupRepository repository;	
-	public GroupService(UserService service, GroupRepository repository, GroupCollector collector) {
+	private final GroupRepository repository;
+	
+	@Autowired
+	public GroupService(UserService service, GroupRepository repository) {
 		this.repository = repository;
-		this.collcetor = collector;
 		this.service = service;
 	}
 
-	public Group groupRequestHandler(String groupName) {		
+	public Group groupRequestHandler(String groupName) throws NoDataAccessException{		
 		Group group = repository.findOrParse(groupName);		
 		service.addGroup(group.getId());		
 		if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l)

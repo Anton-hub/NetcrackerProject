@@ -1,9 +1,9 @@
-package com.vkgroupstat.vkconnection.TEST;
+package com.vkgroupstat.TEST;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vk.api.sdk.exceptions.ClientException;
-import com.vkgroupstat.vkconnection.VkSdkObjHolder;
+import com.vkgroupstat.constants.VkSdkObjHolder;
 
 public class TEST_parseStat implements VkSdkObjHolder{
 	public static String statGet(String groupId) {

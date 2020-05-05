@@ -48,9 +48,6 @@
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
-<!-- Style Customizer's stylesheets -->
-
-<link rel="stylesheet/less" type="text/css" href="less/skin.less">
 <!-- Style Customizer's stylesheets END -->
 
 <!-- Skin stylesheet -->
@@ -89,7 +86,7 @@
                     <ul class="nav navbar-nav">
                         <li class="right"> <a href="/index"><b>Главная</b></a></li>
                         <li class="right"> <a href="/send"><b>Обратная связь</b></a></li>
-                        <li class="right"> <a href="https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/history&scope=offline&response_type=code&v=5.103"><b>История поиска</b></a></li>
+                        <li class="right"> <a href="/history"><b>История поиска</b></a></li>
                     
                     </ul>
                   </div>
@@ -152,55 +149,65 @@
                              <label for="groupName" style="margin-right:5px">Id группы:</label>
                              <input type="text" class="form-control" id="groupName" placeholder="Введите Id"/>
                          </div>
-                         <button id="searchBtn" class="btn btn-success btn-medium" style="margin-left:20px; margin-right:5px">Искать</button>
+                         <button id="searchBtn" class="btn btn-success btn-medium" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="margin-left:20px; margin-right:5px">Искать</button>
                      </form>
 
                  </div>
             </div>
         </div>
-            <div class="row">
-                <div class="col-md-6 col-left" style="padding: 20px" >
-                    <b>Города проживания</b>
-                    <canvas id="myChart" style="max-width: 500px"></canvas>
+          <div class="collapseSearch">
+              <div class="row">
+                  <div class="col-md-12 col-centered" style="padding: 30px" >
+                      <div id="description"></div>
+                  </div>
+                  <div class="col-md-6 col-right" style="padding: 30px">
+                      <div id="active"></div>
+                      <canvas id="activeChart" style="max-width: 600px"></canvas>
+                  </div>
+                  <div class="col-md-6 col-right" style="padding: 30px">
+                      <div id="age"></div>
+                      <canvas id="polarChart" style="max-width: 600px"></canvas>
+                  </div>
+                  <div class="col-divider-margin-6"></div>
+                <div class="col-md-10 col-centered" style="padding: 30px" >
+                    <div id="city"></div>
+                    <canvas id="myChart" style="max-width: 800px"></canvas>
                 </div>
-
-<!--                <div class="col-divider-margin-12"></div>-->
-                <div class="col-md-6 col-right" style="padding: 20px">
-                    <!--                    <div id="agechart_div"></div>-->
-                    <b>Возраст аудитории</b>
-                    <canvas id="polarChart" style="max-width: 600px"></canvas>
-                </div>
-                <div class="col-divider-margin-6"></div>-->
-                <div class="col-md-6 col-left" style="padding: 20px">
-                    <!--                    <div id="agechart_div"></div>-->
-                    <b>Пол аудитории</b>
+                  <div class="col-divider-margin-6"></div>
+                <div class="col-md-4 col-left" style="padding: 30px">
+                    <div id="gender"></div>
                     <canvas id="pieChart" style="max-width: 600px"></canvas>
+                </div>
+                <div class="col-md-6 col-right" style="padding: 30px">
+                    <div id="sostav"></div>
+                    <canvas id="banChart" style="max-width: 600px"></canvas>
                 </div>
             </div>
         </div>
-     </section>
-      <section class="sec-padding">
+
         <div class="container">
            <div class="row">
 
 
                 <div class="col-md-10 col-centered">
                  <table class="table table-hover">
-                     <thead>
-                     <tr>
-                         <th scope="col">№</th>
-                         <th scope="col">Группа</th>
-                         <th scope="col">Аудитория</th>
-                         <th scope="col">Подписаны</th>
-                         <th scope="col">Cтатистика</th>
-                     </tr>
+                     <thead id="thead">
+<!--                     <tr>-->
+<!--                         <th scope="col">№</th>-->
+<!--                         <th scope="col">Группа</th>-->
+<!--                         <th scope="col"></th>-->
+<!--                         <th scope="col">Аудитория</th>-->
+<!--                         <th scope="col">Подписаны</th>-->
+<!--                         <th scope="col">Cтатистика</th>-->
+<!--                     </tr>-->
                      </thead>
                      <tbody id="tbody">
 
                      </tbody>
                  </table>
                 </div>
-            </div>
+           </div>
+           </div>
           <!--end title-->
             </div>
       </section>

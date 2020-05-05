@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Login</title>
+    <title>Dashboard</title>
     <meta name="keywords" content="" />
     <meta name="description" content="">
     <meta name="author" content="">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/send.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <script src="/js/main.js"></script>
 
 
     <!-- Mobile view -->
@@ -37,14 +40,13 @@
     <link href="js/owl-carousel/owl.theme.css" rel="stylesheet">
     <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
     <link rel="stylesheet" href="js/parallax/main.css">
+    <link rel="stylesheet" href="css/mdb.min.css">
 
     <!-- Template's stylesheets END -->
 
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!-- Style Customizer's stylesheets -->
 
     <!-- Style Customizer's stylesheets END -->
 
@@ -67,7 +69,7 @@
 
 
 <div class="wrapper-boxed">
-    <div class="site-wrapper">
+    <section class="site-wrapper">
         <div class="col-md-12 nopadding">
             <div class="header-section style1 pin-style">
                 <div class="container">
@@ -82,9 +84,9 @@
                                     </ul>
                                     <div id="menu" class="collapse">
                                         <ul class="nav navbar-nav">
-                                            <li> <a href= "/index"><b>Главная</b></a> </li>
-                                            <li class="right"> <a href="/search"><b>К поиску</b></a></li>
-
+                                            <li class="right"> <a href="/index"><b>Главная</b></a></li>
+                                            <li class="right"> <a href="/send"><b>Обратная связь</b></a></li>
+                                            <li class="right"> <a href="/logout"><b>Выход</b></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -108,92 +110,65 @@
                 <div class="container-fluid" >
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 clearfix nopadding">
-                            <div class="header-inner"> 
-                            	<div class="overlay">
-	                                <div class="text text-center">
-	                                    <h3 class="uppercase text-white less-mar-1 title">Связаться</h3>
-	                                    <h6 class="uppercase text-white sub-title">с разработчиками</h6>
-	                                </div>
-                            	</div>
-                       		</div>
-                    	</div>
+                            <div class="header-inner"> <div class="overlay">
+                                <div class="text text-center">
+                                    <h3 class="uppercase text-white less-mar-1 title">Приступим</h3>
+                                    <h6 class="uppercase text-white sub-title">К анализу данных</h6>
+                                </div>
+                            </div>
+                            </div></div>
                     </div>
                 </div>
             </section>
             <div class=" clearfix"></div>
             <!--end section-->
         </div>
-        <div class="clearfix"></div>
-        <!--end header inner-->
-
-        <!--end section-->
-
-
-        <!--end map-->
         <section class="sec-padding">
             <div class="container">
                 <div class="row">
-                    <div class="clearfix"></div>
-                    <div class="col-md-10 col-centered">
-                    <h3>Contact Form</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit. Suspendisse et justo. augue.</p>
-                    <br/>
-                    <div class="col-md-6 col-centered">
-                    <div layout:fragment="content">
-                        <form class="form-signin" th:action="@{/login}" method="post">
-                            <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
-                            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                            <div th:if="${param.error}">
-                                Invalid email and password.
-                            </div>
-                            <div th:if="${param.logout}">
-                                You have been logged out.
-                            </div>
-                            <label for="inputEmail" class="sr-only">Email address</label>
-                            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email" required="" />
-                            <label for="inputPassword" class="sr-only">Password</label>
-                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" />
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                        </form>
-                        <form class="form-signin" th:action="@{/signup}" method="get">
-                            <button class="btn btn-md btn-success btn-block" type="Submit">Signup Here</button>
-                        </form>
+
+                    <div class="col-sm-8 col-centered">
+                        <div class="sec-title-container text-left">
+                            <div class="ce-title-line"></div>
+                            <div class="clearfix"></div>
+                            <h2 class="font-weight-6 less-mar-1 line-height-5">Добро пожаловать</h2>
+                            <!--               <div class="col-md-6 nopadding"> <h6 class="font-weight-3">Praesent mattis commodo augue Aliquam ornare hendrerit augue Cras tellus. <br> </h6></div>-->
+                            <li> <a href= "/search"><b>Поиск сообщества</b></a> </li>
+                            <li> <a href= "/history"><b>История поиска</b></a> </li>
+                            <li> <a href= "/send"><b>Связь с разработчиками</b></a> </li>
+                            <li> <a href= "/logout"><b>Выход</b></a> </li>
+                            <li> <a href= "https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/dash&scope=offline,groups&response_type=code&v=5.103"><b>Подтвердить аккаунт ВК</b></a> </li>
+                        </div>
                     </div>
                 </div>
-                </div>
             </div>
-            </div>
-
         </section>
-        <div class="clearfix"></div>
-    </div>
-    <div class="clearfix"></div>
-    <!-- end section -->
 
-    <div class="sec-padding-5 section-fulldark">
-        <div class="container">
-            <div class="row">
-                <div class=" col-md-12 col-centered text-center">
-                    <div class="clearfix"></div>
 
-                    <ul class="footer-social-icons round">
-                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a class="active" href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                    </ul>
-                    <div class="col-md-12">
-                        <p class="text-gray"> All rights reserved. © 2020 </p>
-                    </div>
+<div class="sec-padding-5 section-fulldark">
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-12 col-centered text-center">
+                <div class="clearfix"></div>
+
+                <ul class="footer-social-icons round">
+                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a class="active" href="#"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                </ul>
+                <div class="col-md-12">
+                    <p class="text-gray"> All rights reserved. © 2020 </p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="clearfix"></div>
-    <!-- end section -->
+</div>
+<div class="clearfix"></div>
+<!-- end section -->
 
-    <a href="#" class="scrollup"></a><!-- end scroll to top of the page-->
+<a href="#" class="scrollup"></a><!-- end scroll to top of the page-->
 
 </div>
 <!--end site wrapper-->
@@ -217,5 +192,11 @@
 <script src="js/loaders/loading-custom.js"></script>
 <script src="js/functions/functions.js"></script>
 
+<!--<script>-->
+<!--    $('#searchBtn').on('click', function(){-->
+<!--        window.location.replace('api/findGroup?groupName=' + $('#groupName').val());-->
+
+<!--    });-->
+<!--</script>-->
 </body>
 </html>

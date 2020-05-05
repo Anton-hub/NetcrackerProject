@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection;
+package com.vkgroupstat.vkconnection.parsers;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -13,33 +13,38 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vkgroupstat.Context;
+import com.vkgroupstat.vkconnection.ParsingMethodHolder;
+import com.vkgroupstat.vkconnection.util.SubscriptionParserConfig;
 import com.vkgroupstat.vkconnection.vkentity.Subscriber;
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 
-public class SubscriptionParser implements VkSdkObjHolder{
+public class SubscriptionParser {
 	
 	private static final Logger LOG = LogManager.getLogger(Subscription.class);
+	private final ParsingMethodHolder pmh;
 	
-	Integer batchSize;
 	String baseGroupName;
+	SubscriptionParserConfig mode;
 	LinkedList<Subscriber> in; 
 	LinkedHashMap<Integer, Subscription> out = new LinkedHashMap<Integer, Subscription>(); 
 	public SubscriptionParser(Collection<Subscriber> subscriberSet, String baseGroupName) {
+		pmh = Context.getBean(ParsingMethodHolder.class);
 		this.baseGroupName = baseGroupName;
 		in = new LinkedList<Subscriber>(subscriberSet);
-		batchSize = in.size() / 50;
+		mode = new SubscriptionParserConfig(in.size());
 	}
 	
 	public LinkedList<Subscription> parse() {
 		ExecutorService executor = Executors.newCachedThreadPool();		
-		for (int i = 0 ; i < 50 ; i++)
+		for (int i = 0 ; i < mode.threadCount() ; i++)
 			executor.execute(new Request());		
 		executor.shutdown();
 		try {
-			executor.awaitTermination(3, TimeUnit.MINUTES);
+			executor.awaitTermination(3, TimeUnit.MINUTES); // ДОРАБОТАТЬ
 		} catch (InterruptedException e) {LOG.error(e.getMessage());}
 		
-		out.remove(ParsingMethodHolder.getGroupInfo(baseGroupName).getId());
+		out.remove(pmh.getGroupInfo(baseGroupName).getId());
 		LinkedList<Subscription> responseList = new LinkedList<Subscription>(out.values());
 		Collections.sort(responseList);
 		return responseList;
@@ -53,7 +58,7 @@ public class SubscriptionParser implements VkSdkObjHolder{
 		public void run() {	
 			while (in.size() > 0) {				
 				synchronized (in) {
-					for (int i = 0; (in.size() > 0)&&(i < batchSize); i++) {
+					for (int i = 0; (in.size() > 0)&&(i < mode.batchSize()); i++) {
 						threadIn.add(in.remove());
 					}
 				}				
@@ -61,7 +66,7 @@ public class SubscriptionParser implements VkSdkObjHolder{
 					Subscriber subscriber = threadIn.remove();
 					if (subscriber.getClosed()||subscriber.getIsBanned())
 						continue;	
-					temp = ParsingMethodHolder.getUserSubscriptions(subscriber.getId());
+					temp = pmh.getUserSubscriptions(subscriber.getId());
 					if (temp == null)
 						continue;	
 					while(temp.size() > 0) {

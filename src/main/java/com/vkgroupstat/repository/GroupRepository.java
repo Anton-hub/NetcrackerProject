@@ -1,20 +1,24 @@
 package com.vkgroupstat.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.vkgroupstat.controller.WebController;
+import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.User;
 import com.vkgroupstat.vkconnection.GroupCollector;
 
 @Repository
 public class GroupRepository {
-	
-	private final GroupCollector collector;
+
 	private final MongoTemplate mongoTemplate;
+	private final GroupCollector collector;
+	
+	@Autowired
 	public GroupRepository(MongoTemplate mongoTemplate, GroupCollector collcetor) {
 		this.mongoTemplate = mongoTemplate;
 		this.collector = collcetor;
@@ -28,7 +32,7 @@ public class GroupRepository {
 		mongoTemplate.remove(group, "group");
 	}
 	
-	public Group refresh(Group group) {
+	public Group refresh(Group group) throws NoDataAccessException{
 		String id = group.getId();
 		group = collector.collect(group.getUrlName());
 		group.setId(id);
@@ -36,7 +40,7 @@ public class GroupRepository {
 		return group;
 	}
 	
-	public Group findOrParse(String groupName) {
+	public Group findOrParse(String groupName) throws NoDataAccessException{
 		Group group = findByurlName(groupName);
 		if (group == null) {
 			group = collector.collect(groupName);
@@ -56,22 +60,4 @@ public class GroupRepository {
 		query.addCriteria(Criteria.where("urlName").is(groupName));
 		return mongoTemplate.findOne(query, Group.class);		 
 	}
-	
-	
-	
-	//Users, in future, when repository will base
-	
-	public User findUserById(Integer userId) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("userId").is(userId));
-		return mongoTemplate.findOne(query, User.class);
-	}
-	
-	public void groupAddinUser(String groupId) {
-		User user = findUserById(WebController.USER_ID);
-		user.addGroupId(groupId);
-		mongoTemplate.save(user, "user");
-	}
-	
-	
 }

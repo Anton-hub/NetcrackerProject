@@ -1,4 +1,4 @@
-package com.vkgroupstat.vkconnection;
+package com.vkgroupstat.constants;
 
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.ServiceActor;
@@ -11,9 +11,14 @@ public interface VkSdkObjHolder {
 	
 	String S_TOKEN = "b8188fe1b8188fe1b8188fe1ffb868d748bb818b8188fe1e6699966a9d9035f1e14fbda";
 	ServiceActor S_ACTOR = new ServiceActor(APPID, S_TOKEN);	
-
-	String U_TOKEN = "39ce2c88d1fc73d93a6e7889ab674b9e3c60a81acf041ddacf9d044b62cdba9ae815062cf78da72bf8925";
-
+	
+	/**
+	 * здесь должен быть стоковый токен с какого нить фейка,
+	 * для работы пртложения без подтверждения вк,
+	 * но пока тут мой токен))
+	 * P.S. скорей всего когда ты это читаешь он уже просрочен
+	 */
+	String U_TOKEN = "3ed0937e338a2c2eed2c9d78c56f918ca59f3e99ef10af14c9c88928dc4d67c017cd967d53e801b0b5012";
 	UserActor U_ACTOR = new UserActor(APPID, U_TOKEN);	
 
 	VkApiClient VK = new VkApiClient(HttpTransportClient.getInstance());

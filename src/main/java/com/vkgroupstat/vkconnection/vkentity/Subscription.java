@@ -2,6 +2,9 @@ package com.vkgroupstat.vkconnection.vkentity;
 
 import java.util.LinkedList;
 
+import com.vkgroupstat.vkconnection.fillers.SubscriptionStatFiller;
+import com.vkgroupstat.vkconnection.vkentity.stat.SubscriptionStat;
+
 public class Subscription implements Comparable<Subscription>{
 	
 	protected Integer id = null;
@@ -11,6 +14,8 @@ public class Subscription implements Comparable<Subscription>{
 	protected Integer targetSubsCount = null;
 	protected Integer thisGroupSubsCount = null;
 	
+	protected String description = null;
+	
 	protected SubscriptionStat statistics= null;
 	protected LinkedList<Subscriber> subsList = new LinkedList<Subscriber>();
 	
@@ -19,12 +24,6 @@ public class Subscription implements Comparable<Subscription>{
 	public Subscription(Integer id, Subscriber firstSub) {
 		this.id = id;
 		addSub(firstSub);
-	}	
-	public Subscription(Integer id, String stringName, String urlName, LinkedList<Subscriber> subsList) {
-		this.id = id;
-		this.stringName = stringName;
-		this.urlName = urlName;
-		this.subsList = subsList;
 	}
 
 
@@ -39,7 +38,8 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	public void countUp() {
 		if (subsList.size() > 0) {
-			statistics = new SubscriptionStat(subsList);
+			statistics = new SubscriptionStatFiller(subsList)
+								.fillStat(new SubscriptionStat());
 			targetSubsCount = sizeList();
 			subsList.clear();
 		}
@@ -63,7 +63,10 @@ public class Subscription implements Comparable<Subscription>{
 	}	
 	public Integer getThisGroupSubsCount() {
 		return thisGroupSubsCount;
-	}
+	}	
+	public String getDescription() {
+		return description;
+	}	
 	public LinkedList<Subscriber> getSubsList() {
 		return subsList;
 	}	
@@ -83,6 +86,9 @@ public class Subscription implements Comparable<Subscription>{
 	}
 	public void setThisGroupSubsCount(Integer thisGroupSubsCount) {
 		this.thisGroupSubsCount = thisGroupSubsCount;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

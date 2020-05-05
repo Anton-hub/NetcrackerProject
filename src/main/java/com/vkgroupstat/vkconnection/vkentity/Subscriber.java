@@ -14,6 +14,9 @@ public class Subscriber{
 	private String sex;
 	private Boolean isBanned = false;
 	
+	private Integer likeCount = 0;
+	private Integer commentCount = 0;
+	
 	public Subscriber() {}
 	public Subscriber(JsonObject json) {
 		Pattern pattern = Pattern.compile("\\d\\d\\d\\d");
@@ -58,6 +61,21 @@ public class Subscriber{
 	}
 	public String getCity() {
 		return city;
+	}
+	
+	public Integer getLikeCount() {
+		return likeCount;
+	}
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+	
+	
+	public void setLikeCount(Integer likeCount) {
+		this.likeCount = likeCount;
+	}
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
 	}
 	@Override
 	public String toString() {

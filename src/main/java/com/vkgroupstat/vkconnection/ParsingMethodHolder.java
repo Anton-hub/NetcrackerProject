@@ -6,19 +6,52 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.google.gson.JsonElement;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vk.api.sdk.objects.wall.WallPostFull;
+import com.vk.api.sdk.queries.groups.GroupField;
+import com.vk.api.sdk.queries.likes.LikesType;
 import com.vk.api.sdk.queries.wall.WallGetFilter;
+import com.vkgroupstat.constants.VkSdkObjHolder;
+import com.vkgroupstat.exception.NoDataAccessException;
+import com.vkgroupstat.exception.TooManyRequestException;
+import com.vkgroupstat.service.TokenService;
 
+@Component
 public class ParsingMethodHolder implements VkSdkObjHolder{
 	
 	private static final Logger LOG = LogManager.getLogger(ParsingMethodHolder.class);
+	private final TokenService tk;
 	
-	public static List<Integer> getUserSubscriptions(Integer userId) {
+	@Autowired
+	public ParsingMethodHolder(TokenService tk) {
+		this.tk = tk;
+	}
+	
+	public JsonElement getSubscribersInfo(String groupName, Integer offset, Integer count) 
+		throws NoDataAccessException, TooManyRequestException {
+		try {
+			return VK.execute()
+					   .storageFunction(tk.takeActor(), "getGroupSubsInfo")
+					   .unsafeParam("offset", offset)
+					   .unsafeParam("count", count)
+					   .unsafeParam("groupName", groupName)
+					   .unsafeParam("token", tk.takeToken())
+					   .execute();
+		} catch (ApiException e) {
+			throw new NoDataAccessException();
+		} catch (ClientException e) {
+			throw new TooManyRequestException();
+		}
+	}
+	
+	public List<Integer> getUserSubscriptions(Integer userId) {
 		try {
 			return VK.users()
 					   .getSubscriptions(S_ACTOR)
@@ -32,7 +65,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static Integer getGroupSubsCount(String groupName) {
+	public Integer getGroupSubsCount(String groupName) {
 		try {
 			return VK.groups()
 					   .getMembers(S_ACTOR)
@@ -46,12 +79,13 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static List<GroupFull> getGroupsInfo(LinkedList<Integer> litsId) {
+	public List<GroupFull> getGroupsInfo(LinkedList<Integer> litsId) {
 		List<String> stringList = litsId.stream().map(Object::toString).collect(Collectors.toList());
 		try {
 			return VK.groups()
 					   .getById(S_ACTOR)
 					   .groupIds(stringList.toArray(new String[0]))
+					   .fields(GroupField.MEMBERS_COUNT, GroupField.DESCRIPTION)
 					   .execute();
 		} catch (ApiException | ClientException e) {
 			LOG.error(e.getMessage());
@@ -59,11 +93,12 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static GroupFull getGroupInfo(String groupSreenName) {
+	public GroupFull getGroupInfo(String groupSreenName) {
 		try {
 			return VK.groups()
 					   .getById(S_ACTOR)
 					   .groupId(groupSreenName)
+					   .fields(GroupField.MEMBERS_COUNT, GroupField.DESCRIPTION)
 					   .execute()
 					   .get(0);
 		} catch (ApiException | ClientException e) {
@@ -72,7 +107,8 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 		}
 	}
 	
-	public static List<WallPostFull> getWallPosts(String groupName, Integer offset){
+	public List<WallPostFull> getWallPosts(String groupName, Integer offset)
+		throws NoDataAccessException{
 		try {
 			return VK.wall()
 						.get(S_ACTOR)
@@ -83,16 +119,52 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 						.unsafeParam("extended", 0)
 						.execute()
 						.getItems();
-		} catch (ApiException | ClientException e) {
+		} catch (ClientException e) {
 			LOG.error(e.getMessage());
+			return null;
+		} catch (ApiException e) {
+			throw new NoDataAccessException();
+		}
+	}
+	
+	public List<Integer> getLikersList(Integer ownerId, Integer postId, Integer offset){
+		try {
+			return VK.likes()
+						.getList(S_ACTOR, LikesType.POST)
+						.itemId(postId)
+						.ownerId(ownerId)
+						.offset(offset)
+						.count(1000)
+						.execute()
+						.getItems();
+		} catch (ApiException | ClientException e) {
+			LOG.error(e);
 			return null;
 		}
 	}
 	
-	public static UserAuthResponse getUserAuthInfo(String code) {
+	public String getCommentsJson(Integer ownerId, Integer postId, Integer offset){
+		try {
+			return VK
+					.wall()
+					.getComments(S_ACTOR, postId)
+					.ownerId(ownerId)
+					.count(100)
+					.offset(offset)
+					.previewLength(1)
+					.unsafeParam("thread_items_count", 10)
+					.unsafeParam("v", "5.103")
+					.executeAsString();
+		} catch (ClientException e) {
+			LOG.error(e);
+			return null;
+		}
+	}
+	
+	public UserAuthResponse getUserAuthInfo(String code) {
 		try {
 			return VK.oauth()
-						.userAuthorizationCodeFlow(APPID, PROTECTEDKEY, "http://localhost:8080/search", code)
+						.userAuthorizationCodeFlow(APPID, PROTECTEDKEY, "http://localhost:8080/dash", code)
 						.execute();
 		} catch (ClientException | ApiException e) {
 			LOG.error(e);
