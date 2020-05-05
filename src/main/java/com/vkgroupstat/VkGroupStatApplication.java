@@ -17,7 +17,6 @@ public class VkGroupStatApplication {
 	CommandLineRunner init(RoleRepository roleRepository) {
 
 		return args -> {
-
 			Role adminRole = roleRepository.findByRole("ADMIN");
 			if (adminRole == null) {
 				Role newAdminRole = new Role();
