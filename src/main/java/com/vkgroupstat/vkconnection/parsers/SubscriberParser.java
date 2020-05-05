@@ -35,7 +35,7 @@ public class SubscriberParser implements VkSdkObjHolder{
 		ExecutorService executor = Executors.newCachedThreadPool();
 		
 		try {
-			pmh.getSubscribersInfo(groupName, offset, offset)
+			pmh.getSubscribersInfo(groupName, offset, count)
 				.getAsJsonArray()
 				.forEach(item -> response.add(new Subscriber(item.getAsJsonObject())));
 		} catch (TooManyRequestException e) {}

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonElement;
@@ -20,21 +21,28 @@ import com.vk.api.sdk.queries.wall.WallGetFilter;
 import com.vkgroupstat.constants.VkSdkObjHolder;
 import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.exception.TooManyRequestException;
+import com.vkgroupstat.service.TokenService;
 
 @Component
 public class ParsingMethodHolder implements VkSdkObjHolder{
 	
 	private static final Logger LOG = LogManager.getLogger(ParsingMethodHolder.class);
+	private final TokenService tk;
+	
+	@Autowired
+	public ParsingMethodHolder(TokenService tk) {
+		this.tk = tk;
+	}
 	
 	public JsonElement getSubscribersInfo(String groupName, Integer offset, Integer count) 
 		throws NoDataAccessException, TooManyRequestException {
 		try {
 			return VK.execute()
-					   .storageFunction(U_ACTOR, "getGroupSubsInfo")
+					   .storageFunction(tk.takeActor(), "getGroupSubsInfo")
 					   .unsafeParam("offset", offset)
 					   .unsafeParam("count", count)
 					   .unsafeParam("groupName", groupName)
-					   .unsafeParam("token", U_TOKEN)
+					   .unsafeParam("token", tk.takeToken())
 					   .execute();
 		} catch (ApiException e) {
 			throw new NoDataAccessException();
