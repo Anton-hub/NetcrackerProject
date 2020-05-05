@@ -259,7 +259,7 @@ function fire_ajax() {
                     },
                     options: {
                         legend: {
-                            position: 'left'
+                            position: 'right'
                         },
                         responsive: true
                     }
