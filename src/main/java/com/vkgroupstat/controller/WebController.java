@@ -27,6 +27,10 @@ public class WebController{
     public String getIndex() {
         return "index";
     }
+    @GetMapping("/default")
+    public String getDef() {
+        return "default";
+    }
 
 
     @RequestMapping("/search")

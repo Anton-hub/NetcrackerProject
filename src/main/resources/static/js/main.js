@@ -11,7 +11,8 @@ $(document).ready(function () {
 function fire_ajax() {
 
     var search = {};
-    search["groupName"] =  $('#groupName').val();;
+    search["groupName"] = $('#groupName').val();
+    ;
 
 
     $('#searchBtn').prop("disabled", true);
@@ -31,6 +32,7 @@ function fire_ajax() {
             const statBan = data.groupStat.bannedCount;
             const statActive = data.groupStat.activityStat;
             const desc = data.description;
+
             var ctxActive = document.getElementById("activeChart").getContext('2d');
             var myActiveChart = new Chart(ctxActive, {
                 type: 'pie',
@@ -91,14 +93,14 @@ function fire_ajax() {
             var myPolarChart = new Chart(ctxPA, {
                 type: 'pie',
                 data: {
-                    labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50','60 и более','Не указан'],
+                    labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50', '50 - 60', '60 и более', 'Не указан'],
                     datasets: [{
-                        data: [statAge[1]["count"], statAge[2]["count"], statAge[3]["count"], statAge[4]["count"], statAge[5]["count"], statAge[6]["count"], statAge[7]["count"]],
+                        data: [statAge[0]["count"], statAge[1]["count"], statAge[2]["count"], statAge[3]["count"], statAge[4]["count"], statAge[5]["count"], statAge[6]["count"], statAge[7]["count"]],
                         backgroundColor: ["rgba(219, 0, 0, 0.1)", "rgba(0, 165, 2, 0.1)", "rgba(255, 195, 15, 0.2)",
-                            "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)"
+                            "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)", "rgba(133, 129, 89, 1)"
                         ],
                         hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
-                            "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)", "rgba(90, 50, 219, 0.9)", "rgba(30, 200, 219, 1)"
+                            "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)", "rgba(90, 50, 219, 0.9)", "rgba(30, 200, 219, 1)", "rgba(133, 129, 89, 1.1)"
                         ]
                     }]
                 },
@@ -146,6 +148,7 @@ function fire_ajax() {
                     responsive: true
                 }
             });
+            document.getElementById('downloadBtn').innerHTML = '<button id="downloadBtn" class="btn btn-outline-primary btn-medium" aria-expanded="false" style="margin-left:15px; margin-right:5px">Скачать отчет .xls</button>';
             document.getElementById('description').innerHTML = desc;
             document.getElementById('active').innerHTML = '<b>Активность аудитории</b>';
             document.getElementById('sostav').innerHTML = '<b>Состав аудитории</b>';
@@ -170,72 +173,73 @@ function fire_ajax() {
             var dataActiveModal = [];
             var dataAgeModal = [];
             var dataCityModal = [];
-            var dataGenderModal= [];
+            var dataGenderModal = [];
             var chartModalActive = [];
             var chartModalAge = [];
             var chartModalCity = [];
             var chartModalGender = [];
 
-            for (let i = 0; i <  20; i++) {
+            for (let i = 0; i < 20; i++) {
                 const group = data.rangeList[i];
                 arrmodal[i] =
 
-                    '   <button class="btn btn-info btn-small"" data-toggle="modal" data-target="#Modal'+i+'">Показать</button>' +
-                    '    <div class="modal fade bd-example-modal-lg" id="Modal'+i+'">' +
-                    '    <div class="modal-dialog">' +
+                    '   <button class="btn btn-info btn-small" data-toggle="modal" data-target="#Modal' + i + '">Показать</button>' +
+                    '    <div class="modal fade bd-example-modal-lg" id="Modal' + i + '">' +
+                    '    <div class="modal-dialog modal-lg modal-dialog-scrollable">' +
                     '     <div class="modal-content">' +
                     '     <div class="modal-header">' +
-                    '     <h5 class="modal-title"> <b>Статистика сообщества ' + group.stringName +'</b> </h5>' +
+                    '     <h5 class="modal-title"> <b>Статистика сообщества ' + group.stringName + '</b> </h5>' +
                     '     <button class="close" data-dismiss="modal">×</button>' +
                     '     </div>' +
-                    '     <div class="col-centered">'+
+                    '     <div class="col-centered">' +
                     '     </div>' +
-                    '<div class="container-fluid">'+
                     '     <div class="modal-body">' +
-                    '<div class="col-md-6 col-right">'+
-                    '  ' + group.description +'     </div>' +
-                    '<div class="col-md-6 col-left">'+
-                    '<b>Пол аудитории</b>'+
-                    '<canvas id="pieChart_modal'+i+'"style="padding: 10px"></canvas>'+
+                    '<div class="container-fluid">' +
+                    '<div class="row">' +
+                    '<div class="col-md-6 col-right">' +
+                    '  ' + group.description + '     </div>' +
+                    '<div class="col-md-6 col-left">' +
+                    '<b>Пол аудитории</b>' +
+                    '<canvas id="pieChart_modal' + i + '"style="padding: 10px"></canvas>' +
                     '     </div>' +
-                    '<div class="col-md-10 ">'+
-                    '<b>Активность аудитории</b>'+
-                    '<canvas id="activeChart_modal'+i+'"style="padding: 10px"></canvas>'+
+                    '<div class="col-md-10 ">' +
+                    '<b>Активность аудитории</b>' +
+                    '<canvas id="activeChart_modal' + i + '"style="padding: 10px"></canvas>' +
                     '     </div>' +
-                    '<div class="col-divider-margin-3"></div>'+
-                    '<div class="col-md-10 ">'+
-                    '<b>Возраст аудитории</b>'+
+                    '<div class="col-divider-margin-3"></div>' +
+                    '<div class="col-md-10 ">' +
+                    '<b>Возраст аудитории</b>' +
 
-                    '<canvas id="polarChart_modal'+i+'" style="padding: 10px"></canvas>'+
+                    '<canvas id="polarChart_modal' + i + '" style="padding: 10px"></canvas>' +
                     '     </div>' +
-                    '<div class="col-divider-margin-3"></div>'+
-                    '<div class="col-md-12 ">'+
-                    '<b>Города проживания</b>'+
-                    '<canvas id="myChart'+i+'" style="padding: 10px"></canvas>'+
+                    '<div class="col-divider-margin-3"></div>' +
+                    '<div class="col-md-12 ">' +
+                    '<b>Города проживания</b>' +
+                    '<canvas id="myChart' + i + '" style="padding: 10px"></canvas>' +
                     '     </div>' +
-                    '</div>'+
+                    '</div>' +
+                    '</div>' +
 
 
-                    '</div>'+
-                    '</div>'+
+                    '</div>' +
+                    '</div>' +
                     '     </div>' +
                     '     </div>' +
                     // '     <div class="modal-footer">' +
                     // '     <button class="btn btn-primary " data-dismiss="modal">Закрыть</button     >' +
                     // '     </div>' +
                     '     </div>' +
-                    '</div>'+
+                    '</div>' +
                     '    </div>' +
-
 
 
                     '</div>';
 
                 let row = document.createElement('tr');
-                row.innerHTML = `<td>${i+1}</td><td><img src=${group.photoUrl} class="img-responsive"></td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.thisGroupSubsCount}</td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
+                row.innerHTML = `<td>${i + 1}</td><td><img src=${group.photoUrl} class="img-responsive"></td><td><a href="https://vk.com/club${group.id}">${group.stringName}</a></td><td>${group.thisGroupSubsCount}</td><td>${group.targetSubsCount}</td><td>${arrmodal[i]}</td>`;
                 table.appendChild(row);
             }
-            for (let i = 0; i <  20; i++) {
+            for (let i = 0; i < 20; i++) {
                 const group = data.rangeList[i];
                 statGenderModal[i] = group.statistics.sexStat;
                 statCityModal[i] = group.statistics.cityStat;
@@ -246,7 +250,7 @@ function fire_ajax() {
                 let CurrentAge = statAgeModal[i];
                 let CurrentActive = statActiveModal[i];
 
-                chartModalActive[i] = document.getElementById("activeChart_modal"+i).getContext('2d');
+                chartModalActive[i] = document.getElementById("activeChart_modal" + i).getContext('2d');
                 dataActiveModal[i] = new Chart(chartModalActive[i], {
                     type: 'pie',
                     data: {
@@ -264,7 +268,7 @@ function fire_ajax() {
                         responsive: true
                     }
                 });
-                chartModalGender[i] = document.getElementById("pieChart_modal"+i).getContext('2d');
+                chartModalGender[i] = document.getElementById("pieChart_modal" + i).getContext('2d');
                 dataGenderModal[i] = new Chart(chartModalGender[i], {
                     type: 'pie',
                     data: {
@@ -283,18 +287,18 @@ function fire_ajax() {
                     }
                 });
 
-                chartModalAge[i] = document.getElementById("polarChart_modal"+i).getContext('2d');
+                chartModalAge[i] = document.getElementById("polarChart_modal" + i).getContext('2d');
                 dataAgeModal[i] = new Chart(chartModalAge[i], {
                     type: 'pie',
                     data: {
-                        labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50','60 и более','Не указан'],
+                        labels: ['менее 10', '10 - 20', '20 - 30', '30 - 40', '40 - 50', '50 - 60', '60 и более', 'Не указан'],
                         datasets: [{
-                            data: [CurrentAge[0]["count"], CurrentAge[1]["count"], CurrentAge[2]["count"], CurrentAge[3]["count"], CurrentAge[4]["count"], CurrentAge[5]["count"], CurrentAge[6]["count"]],
+                            data: [CurrentAge[0]["count"], CurrentAge[1]["count"], CurrentAge[2]["count"], CurrentAge[3]["count"], CurrentAge[4]["count"], CurrentAge[5]["count"], CurrentAge[6]["count"], CurrentAge[7]["count"]],
                             backgroundColor: ["rgba(219, 0, 0, 0.1)", "rgba(0, 165, 2, 0.1)", "rgba(255, 195, 15, 0.2)",
-                                "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)"
+                                "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.3)", "rgba(90, 50, 219, 0.8)", "rgba(30, 200, 219, 0.9)","rgba(133, 129, 89, 1)"
                             ],
                             hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
-                                "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)", "rgba(90, 50, 219, 0.9)", "rgba(30, 200, 219, 1)"
+                                "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)", "rgba(90, 50, 219, 0.9)", "rgba(30, 200, 219, 1)", "rgba(133, 129, 89, 1.1)"
                             ]
                         }]
                     },
@@ -305,7 +309,7 @@ function fire_ajax() {
                         }
                     }
                 });
-                chartModalCity[i] = document.getElementById("myChart"+i).getContext('2d');
+                chartModalCity[i] = document.getElementById("myChart" + i).getContext('2d');
                 dataCityModal[i] = new Chart(chartModalCity[i], {
                     type: 'horizontalBar',
                     data: {
@@ -353,5 +357,29 @@ function fire_ajax() {
 
         }
     });
+    $('#downloadBtn').on('click', function (event) {
+        event.preventDefault();
+        fire_ajax_2();
+    });
 
+    function fire_ajax_2() {
+
+        // var search = {};
+        // search["groupName"] =  $('#groupName').val();;
+
+
+        $('#downloadBtn').prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/api/downloadXLS",
+            data: JSON.stringify(search),
+            dataType: 'json',
+            cache: false,
+            success: function () {
+                console.log("Success");
+            }
+        });
+    }
 }
