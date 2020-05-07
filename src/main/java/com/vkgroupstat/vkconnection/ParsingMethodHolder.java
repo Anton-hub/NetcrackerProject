@@ -45,6 +45,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 					   .unsafeParam("token", tk.takeToken())
 					   .execute();
 		} catch (ApiException e) {
+			LOG.error(tk.takeToken());
 			throw new NoDataAccessException();
 		} catch (ClientException e) {
 			throw new TooManyRequestException();

@@ -62,7 +62,7 @@ public class PostParser {
 			LOG.error(e.getMessage());
 			return null;
 		}
-		response = new LinkedList<Post>(response.stream().sorted((o1, o2) -> new Long(o2.getDate().getTime()).compareTo(new Long(o1.getDate().getTime()))).collect(Collectors.toList()));
+//		response = new LinkedList<Post>(response.stream().sorted((o1, o2) -> new Long(o2.getDate().getTime()).compareTo(new Long(o1.getDate().getTime()))).collect(Collectors.toList()));
 		return response;
 	}
 	
@@ -97,15 +97,13 @@ public class PostParser {
 			in = list;
 		}
 		public void run() {
-			Long s = new Date().getTime();
-			for (Post post: in) {		
+			for (Post post : in) {		
 				activity.initLikersList(post);
 				activity.initCommentsMap(post);
 			}
 			synchronized (response) {
 				response.addAll(in);
 			}
-			LOG.info(new Date().getTime() - s);
 		}
 	}
 }
