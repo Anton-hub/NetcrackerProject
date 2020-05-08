@@ -2,9 +2,11 @@
 package com.vkgroupstat.config;
 
 import com.vkgroupstat.service.CustomUserDetailsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,6 +15,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -45,11 +54,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/index").permitAll()
                 .antMatchers("/send").permitAll()
+                .antMatchers("/default").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/history").hasAuthority("ADMIN")
                 .antMatchers("/search").hasAuthority("ADMIN")
                 .antMatchers("/dasboard").hasAuthority("ADMIN")
+                .antMatchers("/api/downloadXLS").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
                 .loginPage("/login").failureUrl("/login?error=true")
@@ -67,5 +78,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**",
                         "/img/**", "/fonts/**", "/less/**", "/libs/**");
     }
+//    @Override
+//    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+//        configurer
+//                .defaultContentType(MediaType.APPLICATION_JSON)
+//                .favorPathExtension(true);
+//    }
+
+    /*
+     * Configure ContentNegotiatingViewResolver
+     */
+//    @Bean
+//    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
+//        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+//        resolver.setContentNegotiationManager(manager);
+//
+//        // Define all possible view resolvers
+//        List<ViewResolver> resolvers = new ArrayList<>();
+//
+//
+//        resolvers.add(excelViewResolver());
+//
+//
+//        resolver.setViewResolvers(resolvers);
+//        return resolver;
+//    }
+
+//    /*
+//     * Configure View resolver to provide XLS output using Apache POI library to
+//     * generate XLS output for an object content
+//     */
+//    @Bean
+//    public ViewResolver excelViewResolver() {
+//        return new ExcelViewResolver();
+//    }
+//
 
 }
