@@ -6,6 +6,7 @@
 package com.vkgroupstat.service;
 
 
+import com.vkgroupstat.controller.WebController;
 import com.vkgroupstat.model.Role;
 import com.vkgroupstat.model.User;
 import com.vkgroupstat.repository.RoleRepository;
@@ -21,10 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-/**
- *
- * @author didin
- */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -43,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
         Role userRole = roleRepository.findByRole("ADMIN");
-        user.setRoles(new HashSet<>(Arrays.asList(userRole)));
+        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
 
@@ -70,6 +67,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
+    	WebController.USER_ID = user.getUserId();
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 

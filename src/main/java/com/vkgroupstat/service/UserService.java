@@ -39,8 +39,7 @@ public class UserService {
 			String username = ((UserDetails)principal).getUsername();
 			User user = userRep.findByEmail(username);
 			userRep.refresh(user,userInfo.getUserId(),userInfo.getAccessToken());
-			}
-//		}
+		}
 //		else
 //		{
 //			String username = principal.toString();

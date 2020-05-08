@@ -49,92 +49,20 @@ public class StockController {
 	}
 
 
-	LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
+	//LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
-	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors, Model model) {
-
+	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
 		Group group;
 		try {
 			group = service.groupRequestHandler(search.getGroupName());
 		} catch (NoDataAccessException e) {
 			group = null; //добавить сюда обработку ошибки
 		}
-//		model.addAttribute(group);
+
 		return ResponseEntity.ok(group);
-
 	}
-//	@RequestMapping("/downloadXLS")
-//	public void downloadXLS( @RequestBody SearchCriteria search) {
-//		HttpServletResponse response = new HttpServletResponse() {
-//
-//		};
-//		Group group;
-//		try {
-//			group = service.groupRequestHandler(search.getGroupName());
-//		} catch (NoDataAccessException e) {
-//			group = null; //добавить сюда обработку ошибки
-//		}
-//		LinkedList <Subscription> groupsList = group.getRangeList();
-//		try {
-////			response.setContentType("text/html; charset=UTF-8");
-////			response.setCharacterEncoding("UTF-8");
-//			response.setContentType("application/vnd.ms-excel");
-//			String reportName =  "GroupList.xls";
-//			response.setHeader("Content-disposition",  "attachment; filename=" +  reportName);
-//			ArrayList< String>  rows =  new ArrayList< String> ( );
-//			rows.add("Vk id");
-//			rows.add("\t");
-//			rows.add( "Group Name");
-//			rows.add("\t");
-//			rows.add( "Target Subs Count");
-//			rows.add("\t");
-//			rows.add( "All Subs Count");
-//			rows.add("\t");
-//			rows.add( "Women");
-//			rows.add("\t");
-//			rows.add( "Men");
-//			rows.add("\t");
-//			rows.add( "> 1 like");
-//			rows.add("\t");
-//			rows.add( "> 1 like and comment");
-//			rows.add("\n");
-//
-//			for(Subscription current : groupsList){
-//				rows.add(current.getId().toString());
-//				rows.add("\t");
-//				rows.add(current.getUrlName());
-//				rows.add("\t");
-//				rows.add(current.getTargetSubsCount().toString());
-//				rows.add("\t");
-//				rows.add(current.getThisGroupSubsCount().toString());
-//				rows.add("\t");
-//				rows.add(current.getStatistics().getSexStat().get(0).getCount().toString());
-//				rows.add("\t");
-//				rows.add(current.getStatistics().getSexStat().get(1).getCount().toString());
-//				rows.add("\t");
-//				rows.add(current.getStatistics().getActivityStat().get(0).getCount().toString());
-//				rows.add("\t");
-//				rows.add(current.getStatistics().getActivityStat().get(1).getCount().toString());
-//				rows.add("\n");
-//			}
-//			Iterator <String> iter = rows.iterator();
-//			while (iter.hasNext()) {
-//				String outputString = (String)iter.next();
-//				response.getOutputStream().print(outputString);
-//			}
-//
-//			response.getOutputStream().flush();
 
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
-//	@GetMapping("/download")
-//	public String download(Model model) {
-//		return "";
-//	}
 	@PostMapping("/showhistory")
 	public ResponseEntity<?> getHistory() {
 		User user = uService.getUser(WebController.USER_ID);
@@ -143,9 +71,9 @@ public class StockController {
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-	public	@ResponseBody	String sendEmail(@RequestParam("email") String emailUser,
-												@RequestParam("subject") String subject,
-												@RequestParam("message") String message) {
+	public	@ResponseBody String sendEmail(@RequestParam("email") String emailUser,
+											@RequestParam("subject") String subject,
+											@RequestParam("message") String message) {
 
 		FeedbackService feedbackService = new FeedbackService(mailSender);
 

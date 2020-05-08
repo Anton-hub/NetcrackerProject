@@ -33,6 +33,7 @@ public class GroupCollector {
 		this.fieldFiller = fieldField;
 		this.pmh = pmh;
 	}
+	
 	public Group collect(String groupName) throws NoDataAccessException{
 		long startTime = new Date().getTime();		
 

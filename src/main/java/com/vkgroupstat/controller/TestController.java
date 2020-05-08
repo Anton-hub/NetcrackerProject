@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vkgroupstat.TEST.TEST_ParseGroupWithoutDB;
 import com.vkgroupstat.TEST.TEST_activityParser;
 import com.vkgroupstat.TEST.TEST_parseStat;
+import com.vkgroupstat.TEST.exprort.TryToExport;
 import com.vkgroupstat.exception.NoDataAccessException;
+import com.vkgroupstat.export.excel.ExcelCollector;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
+import com.vkgroupstat.vkconnection.GroupCollector;
 
 @RestController
 @RequestMapping("/test")
@@ -18,6 +21,10 @@ public class TestController {
 	
 	@Autowired
 	GroupRepository repository;
+	@Autowired
+	ExcelCollector excel;
+	@Autowired
+	GroupCollector collect;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -48,5 +55,13 @@ public class TestController {
 		Group group = repository.findByurlName(groupName);
 		repository.delete(group);
 		return "1";
+	}
+	@RequestMapping("/excel/{groupName}")
+	public void testExcel(@PathVariable String groupName) {
+		try {
+			excel.collect(collect.collect(groupName));
+		} catch (NoDataAccessException e) {
+			System.err.println(e);
+		}
 	}
 }

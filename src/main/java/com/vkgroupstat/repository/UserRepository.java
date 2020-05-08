@@ -1,5 +1,6 @@
 package com.vkgroupstat.repository;
 
+import com.vkgroupstat.controller.WebController;
 import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.User;
@@ -43,6 +44,22 @@ public class UserRepository {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("userId").is(userId));
 		return mongoTemplate.findOne(query, User.class);
+	}
+	
+	public User findUserById(Integer userId) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("userId").is(userId));
+		return mongoTemplate.findOne(query, User.class);
+	}
+	
+	public void groupAddinUser(String groupId) {
+		User user = findUserById(WebController.USER_ID);
+		user.addGroupId(groupId);
+		mongoTemplate.save(user, "user");
+	}
+	
+	public String getUserToken(Integer userId) {
+		return findByuserId(userId).getAccessToken();
 	}
 }
 //@Repository

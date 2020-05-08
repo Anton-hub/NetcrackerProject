@@ -1,5 +1,6 @@
 package com.vkgroupstat.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +11,16 @@ import com.vkgroupstat.service.UserService;
 @Controller
 public class WebController{
 
+    public static Integer USER_ID;
 
     private final UserService service;
-    public static Integer USER_ID;
+    @Autowired
     public WebController(UserService service) {
         this.service = service;
     }
 
     @GetMapping
     public String index() {
-
         return "redirect:/index";
     }
 
@@ -49,14 +50,12 @@ public class WebController{
 
     @GetMapping("/send")
     public String getSend() {
-
         return "send";
     }
+    
     @GetMapping("/history")
     public String getHistory() {
 
         return "history";
     }
-
-
 }
