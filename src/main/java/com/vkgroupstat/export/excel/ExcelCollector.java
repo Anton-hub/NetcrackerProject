@@ -1,8 +1,8 @@
 package com.vkgroupstat.export.excel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vkgroupstat.model.Group;
@@ -20,19 +21,18 @@ import com.vkgroupstat.vkconnection.vkentity.stat.StatItem;
 public class ExcelCollector {
 	
 	private static final Logger LOG = LogManager.getLogger(ExcelCollector.class);
-	private XSSFSheet sheet;
 	
-	public void collect(Group group) {
-		File in = new File("./src/main/resources/exportTemplate.xlsx");
-		File out = new File("./src/main/resources/testOut.xlsx");
-		XSSFWorkbook book;		
-		FileInputStream inputStream;
+	private final ExcelFileHandler fileHandler;	
+	@Autowired
+	public ExcelCollector(ExcelFileHandler fileHandler) {
+		this.fileHandler = fileHandler;
+	}
+	
+	private XSSFSheet sheet; 
+	
+	public File collect(Group group) {	
 		
-		try {			
-			inputStream = new FileInputStream(in);
-			book = new XSSFWorkbook(inputStream);
-		} catch (IOException e) { book = null; inputStream = null;}
-		
+		XSSFWorkbook book = fileHandler.createNewBook();
 		
 		sheet = book.getSheetAt(0);
 		setValue(0, 0, group.getStringName());
@@ -49,12 +49,9 @@ public class ExcelCollector {
 		setValue(35, 11, group.getGroupStat().getBannedCount());
 		setValue(36, 11, group.getGroupStat().getMemberCount());
 		
-		try {
-			inputStream.close();
-			FileOutputStream outputStream = new FileOutputStream(out);
-			book.write(outputStream);
-			outputStream.close();
-		} catch (IOException e) {LOG.error("Ошибка сохранения");}
+		File file = fileHandler.WorkbookToFile(book, group.getUrlName() + "_report");
+		
+		return file;
 	}
 	
 	public void setList(Integer row, Integer column, LinkedList<StatItem> list) {

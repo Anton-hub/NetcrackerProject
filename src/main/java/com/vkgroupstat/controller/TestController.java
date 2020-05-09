@@ -1,6 +1,17 @@
 package com.vkgroupstat.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +35,7 @@ public class TestController {
 	@Autowired
 	ExcelCollector excel;
 	@Autowired
-	GroupCollector collect;
+	GroupCollector group;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -56,12 +67,33 @@ public class TestController {
 		repository.delete(group);
 		return "1";
 	}
+	
+	//https://spring-projects.ru/guides/uploading-files/
+	//https://stackoverflow.com/questions/10186662/how-can-i-convert-poi-hssfworkbook-to-bytes
+	//https://stackoverflow.com/questions/53428354/unable-to-get-excel-file-in-response-entity-in-spring-boot-rest-controller
+	//https://stackoverflow.com/questions/35680932/download-a-file-from-spring-boot-rest-service
 	@RequestMapping("/excel/{groupName}")
-	public void testExcel(@PathVariable String groupName) {
-		try {
-			excel.collect(collect.collect(groupName));
-		} catch (NoDataAccessException e) {
-			System.err.println(e);
-		}
+	public ResponseEntity<Resource> testExcel(@PathVariable String groupName) {
+			File file;
+			try {
+				file = excel.collect(group.collect(groupName));
+			} catch (NoDataAccessException e) {
+				e.printStackTrace();
+				return null;
+			}
+			InputStreamResource resource;
+			try {
+				resource = new InputStreamResource(new FileInputStream(file));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				resource = null;
+			}
+			HttpHeaders header = new HttpHeaders();
+			header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName());
+		    return ResponseEntity.ok()
+		            .headers(header)
+		            .contentLength(file.length())
+		            .contentType(MediaType.parseMediaType("application/octet-stream"))
+		            .body(resource);
 	}
 }
