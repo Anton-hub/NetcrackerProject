@@ -85,7 +85,7 @@ public class TestController {
 			InputStreamResource resource;
 			resource = new InputStreamResource(new ByteArrayInputStream(bytes));
 			HttpHeaders header = new HttpHeaders();
-			header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "1");
+			header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + "1.xlsx");
 		    return ResponseEntity.ok()
 		            .headers(header)
 		            .contentType(MediaType.parseMediaType("application/octet-stream"))
