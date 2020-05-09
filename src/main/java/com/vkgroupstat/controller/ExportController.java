@@ -10,14 +10,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vkgroupstat.export.excel.ExcelCollector;
 import com.vkgroupstat.model.Group;
-import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.service.GroupService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/export")
@@ -33,9 +32,9 @@ public class ExportController {
 	}
     
    
-	@RequestMapping(value = "/downloadXLS", method = RequestMethod.POST)
-	public ResponseEntity<Resource> downloadXLS( @RequestBody SearchCriteria search) {
-		Group group = groupService.findGroupByName(search.getGroupName());
+	@RequestMapping(value = "/downloadXLS", method = RequestMethod.GET)
+	public ResponseEntity<Resource> downloadXLS( @RequestParam String groupName) {
+		Group group = groupService.findGroupByName(groupName);
 		File excelFile = excelCollector.collect(group);
 		InputStreamResource resource;
 		try {
@@ -52,9 +51,4 @@ public class ExportController {
 	            .contentType(MediaType.parseMediaType("application/octet-stream"))
 	            .body(resource);
 	}
-//	@GetMapping("/download")
-//	public String download(Model model) {
-//		return "";
-//	}
-
 }

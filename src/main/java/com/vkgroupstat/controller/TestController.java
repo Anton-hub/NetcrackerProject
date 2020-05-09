@@ -72,28 +72,28 @@ public class TestController {
 	//https://stackoverflow.com/questions/10186662/how-can-i-convert-poi-hssfworkbook-to-bytes
 	//https://stackoverflow.com/questions/53428354/unable-to-get-excel-file-in-response-entity-in-spring-boot-rest-controller
 	//https://stackoverflow.com/questions/35680932/download-a-file-from-spring-boot-rest-service
-	@RequestMapping("/excel/{groupName}")
-	public ResponseEntity<Resource> testExcel(@PathVariable String groupName) {
-			File file;
-			try {
-				file = excel.collect(group.collect(groupName));
-			} catch (NoDataAccessException e) {
-				e.printStackTrace();
-				return null;
-			}
-			InputStreamResource resource;
-			try {
-				resource = new InputStreamResource(new FileInputStream(file));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				resource = null;
-			}
-			HttpHeaders header = new HttpHeaders();
-			header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName());
-		    return ResponseEntity.ok()
-		            .headers(header)
-		            .contentLength(file.length())
-		            .contentType(MediaType.parseMediaType("application/octet-stream"))
-		            .body(resource);
-	}
+//	@RequestMapping("/excel/{groupName}")
+//	public ResponseEntity<Resource> testExcel(@PathVariable String groupName) {
+//			File file;
+//			try {
+//				file = excel.collect(group.collect(groupName));
+//			} catch (NoDataAccessException e) {
+//				e.printStackTrace();
+//				return null;
+//			}
+//			InputStreamResource resource;
+//			try {
+//				resource = new InputStreamResource(new FileInputStream(file));
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//				resource = null;
+//			}
+//			HttpHeaders header = new HttpHeaders();
+//			header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName());
+//		    return ResponseEntity.ok()
+//		            .headers(header)
+//		            .contentLength(file.length())
+//		            .contentType(MediaType.parseMediaType("application/octet-stream"))
+//		            .body(resource);
+//	}
 }
