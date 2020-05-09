@@ -30,7 +30,7 @@ public class ExcelCollector {
 	
 	private XSSFSheet sheet; 
 	
-	public File collect(Group group) {	
+	public byte[] collect(Group group) {	
 		
 		XSSFWorkbook book = fileHandler.createNewBook();
 		
@@ -49,9 +49,9 @@ public class ExcelCollector {
 		setValue(35, 11, group.getGroupStat().getBannedCount());
 		setValue(36, 11, group.getGroupStat().getMemberCount());
 		
-		File file = fileHandler.WorkbookToFile(book, group.getUrlName() + "_report");
+		byte[] bytes = fileHandler.WorkbookToByte(book);
 		
-		return file;
+		return bytes;
 	}
 	
 	public void setList(Integer row, Integer column, LinkedList<StatItem> list) {

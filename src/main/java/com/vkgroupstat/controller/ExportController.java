@@ -1,5 +1,6 @@
 package com.vkgroupstat.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,22 +34,16 @@ public class ExportController {
 	}
     
    
-	@RequestMapping(value = "/downloadXLS", method = RequestMethod.POST)
-	public ResponseEntity<Resource> downloadXLS( @RequestBody SearchCriteria search) {
-		Group group = groupService.findGroupByName(search.getGroupName());
-		File excelFile = excelCollector.collect(group);
+	@RequestMapping(value = "/downloadXLS", method = RequestMethod.GET)
+	public ResponseEntity<Resource> downloadXLS( @RequestBody String groupName) {
+		Group group = groupService.findGroupByName(groupName);
+		byte[] bytes = excelCollector.collect(group);
 		InputStreamResource resource;
-		try {
-			resource = new InputStreamResource(new FileInputStream(excelFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			resource = null;
-		}
+		resource = new InputStreamResource(new ByteArrayInputStream(bytes));
 		HttpHeaders header = new HttpHeaders();
-		header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + excelFile.getName());
+		header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + groupName + "_report.xlsx");
 	    return ResponseEntity.ok()
 	            .headers(header)
-	            .contentLength(excelFile.length())
 	            .contentType(MediaType.parseMediaType("application/octet-stream"))
 	            .body(resource);
 	}

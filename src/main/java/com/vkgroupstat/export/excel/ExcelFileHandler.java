@@ -32,7 +32,7 @@ public class ExcelFileHandler {
 		return book;
 	}
 	
-	public File WorkbookToFile(XSSFWorkbook book, String fileName) {
+	public byte[] WorkbookToByte(XSSFWorkbook book) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		
 		try {
@@ -42,14 +42,7 @@ public class ExcelFileHandler {
 		}
 		
 		byte[] bytes = bos.toByteArray();		
-		File file = new File(fileName + ".xlsx");
 		
-		try {
-			FileUtils.writeByteArrayToFile(file, bytes);
-		} catch (IOException e) {
-			LOG.error("Ошибка записи байтового представления книги в объект File");
-		}
-		
-		return file;
+		return bytes;
 	}
 }
