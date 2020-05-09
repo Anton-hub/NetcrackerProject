@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/history").hasAuthority("ADMIN")
                 .antMatchers("/search").hasAuthority("ADMIN")
                 .antMatchers("/dasboard").hasAuthority("ADMIN")
-                .antMatchers("/api/downloadXLS").hasAuthority("ADMIN")
+                .antMatchers("/export/downloadXLS").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
                 .loginPage("/login").failureUrl("/login?error=true")

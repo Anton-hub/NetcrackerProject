@@ -359,13 +359,13 @@ function fire_ajax() {
     });
     $('#downloadBtn').on('click', function (event) {
         event.preventDefault();
-        fire_ajax_2();
+        fire_ajaxExp();
     });
+    
+    function fire_ajaxExp() {
 
-    function fire_ajax_2() {
-
-        // var search = {};
-        // search["groupName"] =  $('#groupName').val();;
+        var search = {};
+        search["groupName"] =  $('#groupName').val();;
 
 
         $('#downloadBtn').prop("disabled", true);
@@ -373,7 +373,7 @@ function fire_ajax() {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/api/downloadXLS",
+            url: "/export/downloadXLS",
             data: JSON.stringify(search),
             dataType: 'json',
             cache: false,

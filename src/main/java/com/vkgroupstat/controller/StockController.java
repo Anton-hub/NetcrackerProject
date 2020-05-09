@@ -16,7 +16,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import com.vkgroupstat.exception.NoDataAccessException;
-
+import com.vkgroupstat.export.excel.ExcelCollector;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
@@ -49,10 +49,11 @@ public class StockController {
 	}
 
 
-	//LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
+	LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
 	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
+
 		Group group;
 		try {
 			group = service.groupRequestHandler(search.getGroupName());
@@ -61,6 +62,7 @@ public class StockController {
 		}
 
 		return ResponseEntity.ok(group);
+
 	}
 
 	@PostMapping("/showhistory")
@@ -71,9 +73,9 @@ public class StockController {
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-	public	@ResponseBody String sendEmail(@RequestParam("email") String emailUser,
-											@RequestParam("subject") String subject,
-											@RequestParam("message") String message) {
+	public	@ResponseBody	String sendEmail(@RequestParam("email") String emailUser,
+												@RequestParam("subject") String subject,
+												@RequestParam("message") String message) {
 
 		FeedbackService feedbackService = new FeedbackService(mailSender);
 
