@@ -94,4 +94,35 @@ public class ExcelCollector {
 			row++;
 		}
 	}
+	
+	public XSSFWorkbook experementalCollect(Group group) {	
+
+		XSSFWorkbook book = fileHandler.createNewBook();
+		FormulaEvaluator evaluator = book.getCreationHelper()
+				.createFormulaEvaluator();
+
+		XSSFSheet sheet = book.getSheetAt(0);
+
+		setValue(sheet, 0, 0, group.getStringName());
+		setValue(sheet, 1, 2, group.getUrlName());
+		setValue(sheet, 2, 2, group.getCreateDate().toString());
+		setRangeList(sheet, 47, group.getRangeList());
+
+		sheet = book.getSheetAt(1);
+
+		setList(sheet, 2, 1, group.getGroupStat().getSexStat());
+		setList(sheet, 2, 4, group.getGroupStat().getAgeStat());
+		setList(sheet, 2, 7, group.getGroupStat().getCityStat());
+		setList(sheet, 2, 13, group.getGroupStat().getActivityStat());
+		setValue(sheet, 1, 15, group.getGroupStat().getMemberCount());
+		evaluator.evaluateFormulaCell(sheet.getRow(2).getCell(15));
+		evaluator.evaluateFormulaCell(sheet.getRow(3).getCell(15));
+
+		setValue(sheet, 2, 10, "Забаненные");
+		setValue(sheet, 3, 10, "Активные");
+		setValue(sheet, 2, 11, group.getGroupStat().getBannedCount());
+		setValue(sheet, 3, 11, group.getGroupStat().getMemberCount());
+
+		return book;
+	}
 }

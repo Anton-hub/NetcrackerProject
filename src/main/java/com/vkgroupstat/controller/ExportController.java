@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.vkgroupstat.export.excel.ExcelCollector;
+import com.vkgroupstat.export.excel.ExcelView;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.service.GroupService;
@@ -47,6 +49,12 @@ public class ExportController {
 	            .headers(header)
 	            .contentType(MediaType.parseMediaType("application/octet-stream"))
 	            .body(resource);
+	}
+	
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	public ModelAndView getReport() {
+	    ModelAndView mav = new ModelAndView(new ExcelView());
+	    return mav;
 	}
 //	@GetMapping("/download")
 //	public String download(Model model) {
