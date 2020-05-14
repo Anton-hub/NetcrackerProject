@@ -14,13 +14,11 @@ public class User {
     @Id
     String id;
     Integer userId;
-    //@Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String accessToken;
     private String email;
     private String password;
     private String fullname;
     private boolean enabled;
-    //@DBRef
     private Set<Role> roles;
 
     LinkedList<String> listGroupsId = new LinkedList<String>();

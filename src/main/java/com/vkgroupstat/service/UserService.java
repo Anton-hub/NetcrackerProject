@@ -40,27 +40,25 @@ public class UserService {
 			User user = userRep.findByEmail(username);
 			userRep.refresh(user,userInfo.getUserId(),userInfo.getAccessToken());
 		}
-//		else
-//		{
-//			String username = principal.toString();
-//			if (user == null) {
-//				user = new User(userInfo.getUserId(), username);
-//				userRep.refresh(user,userInfo.getUserId());
-//			}
-//		}
 
 		return userInfo.getUserId();
 		
 	}
 
 	public void addGroup(String groupId) {
-		User user = userRep.findByuserId(WebController.USER_ID);
-		user.addGroupId(groupId);
-		userRep.save(user);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails)
+		{
+			String username = ((UserDetails)principal).getUsername();
+			User user = userRep.findByEmail(username);
+//			User user = userRep.findByuserId(WebController.USER_ID);
+			user.addGroupId(groupId);
+			userRep.save(user);
+		}
 	}
 
-	public User getUser(Integer userId){
-		User user = userRep.findByuserId(userId);
+	public User getUser(String username){
+		User user = userRep.findByEmail(username);
 		return user;
 	}
 

@@ -62,9 +62,4 @@ public class UserRepository {
 		return findByuserId(userId).getAccessToken();
 	}
 }
-//@Repository
-//public interface UserRepository extends MongoRepository<User, String> {
-//	public User findByuserId(Integer groupName);
-//	User findByEmail(String email);
-//
-//}
+

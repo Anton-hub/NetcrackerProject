@@ -1,22 +1,19 @@
 package com.vkgroupstat.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
-import com.vkgroupstat.vkconnection.vkentity.Subscription;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import com.vkgroupstat.exception.NoDataAccessException;
-import com.vkgroupstat.export.excel.ExcelCollector;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
@@ -24,9 +21,6 @@ import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
 import com.vkgroupstat.service.UserService;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/api")
@@ -37,9 +31,6 @@ public class StockController {
 	@Autowired
 	private MailSender mailSender;
 
-	//
-//	@Value("checkins.tracker@gmail.com")
-//	String email="checkins.tracker@gmail.com";
 	private final GroupService service;
 	private final UserService uService;
 
@@ -67,7 +58,9 @@ public class StockController {
 
 	@PostMapping("/showhistory")
 	public ResponseEntity<?> getHistory() {
-		User user = uService.getUser(WebController.USER_ID);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ((UserDetails) principal).getUsername();
+		User user = uService.getUser(username);
 		LinkedList<Group> list = service.findListById(user.getListGroupsId());
 		return ResponseEntity.ok(list);
 	}
@@ -91,7 +84,5 @@ public class StockController {
 
 		return "The message has been sent!";
 	}
-	//тестовые методы
-
 
 }

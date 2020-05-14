@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.vkgroupstat.service;
 
-
-import com.vkgroupstat.controller.WebController;
 import com.vkgroupstat.model.Role;
 import com.vkgroupstat.model.User;
 import com.vkgroupstat.repository.RoleRepository;
@@ -67,7 +60,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
-    	WebController.USER_ID = user.getUserId();
+//    	WebController.USER_ID = user.getUserId();
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 

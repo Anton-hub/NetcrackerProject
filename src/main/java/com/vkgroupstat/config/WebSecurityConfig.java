@@ -1,4 +1,3 @@
-
 package com.vkgroupstat.config;
 
 import com.vkgroupstat.service.CustomUserDetailsService;
@@ -53,7 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/search").hasAuthority("ADMIN")
                 .antMatchers("/dasboard").hasAuthority("ADMIN")
                 .antMatchers("/api/downloadXLS").hasAuthority("ADMIN")
-                .antMatchers("/api/download/s.xlsx").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
                 .loginPage("/login").failureUrl("/login?error=true")

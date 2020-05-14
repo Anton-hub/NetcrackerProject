@@ -17,9 +17,4 @@ public class PageConfig implements WebMvcConfigurer {
         return bCryptPasswordEncoder;
     }
 
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/dashboard").setViewName("dashboard");
-//    }
-
 }
