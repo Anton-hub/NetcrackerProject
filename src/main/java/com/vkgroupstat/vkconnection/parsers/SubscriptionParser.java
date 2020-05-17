@@ -41,7 +41,9 @@ public class SubscriptionParser {
 			executor.execute(new Request());		
 		executor.shutdown();
 		try {
-			executor.awaitTermination(3, TimeUnit.MINUTES); // ДОРАБОТАТЬ
+			if (executor.awaitTermination(5, TimeUnit.MINUTES)) {// ДОРАБОТАТЬ
+				 executor.shutdownNow();
+			}
 		} catch (InterruptedException e) {LOG.error(e.getMessage());}
 		
 		out.remove(pmh.getGroupInfo(baseGroupName).getId());

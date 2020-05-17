@@ -57,7 +57,9 @@ public class SubscriberParser implements VkSdkObjHolder{
 		
 		executor.shutdown();
 		try {
-			executor.awaitTermination(3, TimeUnit.MINUTES); // ДОРАБОТАТЬ
+			if (executor.awaitTermination(5, TimeUnit.MINUTES)) {// ДОРАБОТАТЬ
+				 executor.shutdownNow();
+			}
 		} catch (InterruptedException e) {LOG.error(e.getMessage());}
 		return response;
 	}
