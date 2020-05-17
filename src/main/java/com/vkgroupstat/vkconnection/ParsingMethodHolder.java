@@ -165,7 +165,7 @@ public class ParsingMethodHolder implements VkSdkObjHolder{
 	public UserAuthResponse getUserAuthInfo(String code) {
 		try {
 			return VK.oauth()
-						.userAuthorizationCodeFlow(APPID, PROTECTEDKEY, "http://localhost:8080/dash", code)
+						.userAuthorizationCodeFlow(APPID, PROTECTEDKEY, "http://upbase.herokuapp.com/dash", code)
 						.execute();
 		} catch (ClientException | ApiException e) {
 			LOG.error(e);
