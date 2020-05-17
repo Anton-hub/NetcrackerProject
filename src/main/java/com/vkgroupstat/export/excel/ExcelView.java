@@ -26,7 +26,6 @@ public class ExcelView extends AbstractXlsxView {
 		workbook = excelCollector.experementalCollect(group);
 
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + group.getUrlName() + "_report.xlsx");
-		response.setContentType("application/octet-stream");  
-
+		response.setContentType("application/octet-stream");
 	}
 }
