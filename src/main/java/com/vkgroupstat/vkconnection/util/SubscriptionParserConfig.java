@@ -19,9 +19,9 @@ public class SubscriptionParserConfig {
 //		if (count > 10000) {
 //			return MORE10000;
 //		}
-		if (count > 1000) {
-			return MORE1000;
-		}
+//		if (count > 1000) {
+//			return MORE1000;
+//		}
 		if (count > 100) {
 			return MORE100;
 		}
