@@ -22,7 +22,7 @@ function fire_ajaxExp() {
        data: search,
        cache: false,
        success: function () {
-           window.open('http://localhost:8080/export/downloadXLS?groupName='+search["groupName"],'_blank' );
+           window.open('http://upbase.herokuapp.com/export/downloadXLS?groupName='+search["groupName"],'_blank' );
        }
    });
 }
