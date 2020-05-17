@@ -13,12 +13,12 @@ public class SubscriptionParserConfig {
 	}
 	
 	private static SubscriptionParserMode initMode(Integer count) {
-		if (count > 50000) {
-			return MORE50000;
-		}
-		if (count > 10000) {
-			return MORE10000;
-		}
+//		if (count > 50000) {
+//			return MORE50000;
+//		}
+//		if (count > 10000) {
+//			return MORE10000;
+//		}
 		if (count > 1000) {
 			return MORE1000;
 		}

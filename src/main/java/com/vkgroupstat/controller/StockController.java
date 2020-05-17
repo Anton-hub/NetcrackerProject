@@ -1,31 +1,32 @@
 package com.vkgroupstat.controller;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
+import com.vkgroupstat.vkconnection.vkentity.Subscription;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.vkgroupstat.exception.NoDataAccessException;
-
+import com.vkgroupstat.export.excel.ExcelCollector;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
 import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
 import com.vkgroupstat.service.UserService;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/api")
@@ -48,19 +49,22 @@ public class StockController {
 	}
 
 
-	//LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
+	LinkedHashMap<String,Integer> myLinkedHashMap =  new LinkedHashMap<String, Integer>();
 
 	@PostMapping("/findgroup")
-	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors) {
+	public ResponseEntity<?> getSearchResultViaAjax( @RequestBody SearchCriteria search, Errors errors, Model model) {
+
 		Group group;
 		try {
 			group = service.groupRequestHandler(search.getGroupName());
 		} catch (NoDataAccessException e) {
 			group = null; //добавить сюда обработку ошибки
 		}
+//		model.addAttribute(group);
 		return ResponseEntity.ok(group);
+
 	}
-	
+
 	@PostMapping("/showhistory")
 	public ResponseEntity<?> getHistory() {
 		User user = uService.getUser(WebController.USER_ID);
@@ -69,9 +73,9 @@ public class StockController {
 	}
 
 	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-	public	@ResponseBody String sendEmail(@RequestParam("email") String emailUser,
-											@RequestParam("subject") String subject,
-											@RequestParam("message") String message) {
+	public	@ResponseBody	String sendEmail(@RequestParam("email") String emailUser,
+												@RequestParam("subject") String subject,
+												@RequestParam("message") String message) {
 
 		FeedbackService feedbackService = new FeedbackService(mailSender);
 

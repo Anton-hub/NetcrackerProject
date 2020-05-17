@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.vkgroupstat.exception.NoDataAccessException;
 import com.vkgroupstat.model.Group;
 import com.vkgroupstat.repository.GroupRepository;
@@ -32,6 +33,10 @@ public class GroupService {
 		if (new Date().getTime() - group.getCreateDate().getTime() > 2678400000l)
 			repository.refresh(group);
 		return group;
+	}
+	
+	public Group findGroupByName(String groupName) {
+		return repository.findByurlName(groupName);
 	}
 	
 	public LinkedList<Group> findListById(LinkedList<String> listId){

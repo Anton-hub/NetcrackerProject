@@ -1,31 +1,219 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
-    <head>
-        <title>Signup</title>
-    </head>
-    <body>
-        <div layout:fragment="content">
-            <form class="form-signin" th:action="@{/signup}" method="post">
-                <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
-                <h1 class="h3 mb-3 font-weight-normal">Signup Here</h1>
-                <div th:if="${param.error}">
-                    Invalid email and password.
-                </div>
-                <div th:if="${param.logout}">
-                    You have been logged out.
-                </div>
-                <label for="inputUsername" class="sr-only">Username</label>
-                <input type="email" name="email" id="inputEmail" class="form-control" placeholder="E-mail" required="" />
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" />
-                <label for="inputFullname" class="sr-only">Full Name</label>
-                <input type="text" name="fullname" id="inputEmail" class="form-control" placeholder="Fullname" required="" />
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
-            </form>
-<!--             <form class="form-signin" th:action="@{/login}" method="get"> -->
-<!--                 <button class="btn btn-md btn-success btn-block" type="Submit">Sign In</button> -->
-<!--             </form> -->
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/send.js"></script>
+
+
+    <!-- Mobile view -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/fav-icon.ico">
+    <link rel="stylesheet" type="text/css" href="js/bootstrap/bootstrap.min.css">
+
+    <!-- Google fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Yesteryear" rel="stylesheet">
+
+    <!-- Template's stylesheets -->
+    <link rel="stylesheet" href="js/megamenu/stylesheets/screen.css">
+    <link rel="stylesheet" href="css/theme-default.css" type="text/css">
+    <link rel="stylesheet" href="js/loaders/stylesheets/screen.css">
+    <link rel="stylesheet" href="css/corporate.css" type="text/css">
+    <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="fonts/Simple-Line-Icons-Webfont/simple-line-icons.css" media="screen" />
+    <link rel="stylesheet" href="fonts/et-line-font/et-line-font.css">
+    <link href="js/owl-carousel/owl.carousel.css" rel="stylesheet">
+    <link href="js/owl-carousel/owl.theme.css" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css">
+    <link rel="stylesheet" href="js/parallax/main.css">
+
+    <!-- Template's stylesheets END -->
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Style Customizer's stylesheets -->
+
+    <!-- Style Customizer's stylesheets END -->
+
+    <!-- Skin stylesheet -->
+
+</head>
+<body>
+<div class="over-loader loader-live">
+    <div class="loader">
+        <div class="loader-item style5">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
         </div>
-    </body>
+
+    </div>
+</div>
+<!--end loading-->
+
+
+
+<div class="wrapper-boxed">
+    <div class="site-wrapper">
+        <div class="col-md-12 nopadding">
+            <div class="header-section style1 pin-style">
+                <div class="container">
+                    <div class="mod-menu">
+                        <div class="row">
+                            <div class="col-sm-2"> <a href="/index" title="" class="logo mar-4"> <img src="images/logo/logo.png" alt=""> </a> </div>
+                            <div class="col-sm-10">
+                                <div class="main-nav">
+                                    <ul class="nav navbar-nav top-nav">
+
+                                        <li class="visible-xs menu-icon"> <a href="javascript:void(0)" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false"> <i aria-hidden="true" class="fa fa-bars"></i> </a> </li>
+                                    </ul>
+                                    <div id="menu" class="collapse">
+                                        <ul class="nav navbar-nav">
+                                            <li class="right"> <a href="/index"><b>Главная</b></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end menu-->
+
+        </div>
+        <!--end menu-->
+
+        <div class="clearfix"></div>
+
+        <div class="header-inner-tmargin">
+            <section class="section-side-image clearfix">
+                <div class="img-holder col-md-12 col-sm-12 col-xs-12">
+                    <div class="background-imgholder" > <img src="images/search.png" alt="" > </div>
+                </div>
+                <div class="container-fluid" >
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 clearfix nopadding">
+                            <div class="header-inner"> <div class="overlay">
+                                <div class="text text-center">
+                                    <h3 class="uppercase text-white less-mar-1 title">Регистрация</h3>
+                                    <!--                                    <h6 class="uppercase text-white sub-title">в учетную запись</h6>-->
+                                </div>
+                            </div>
+                            </div></div>
+                    </div>
+                </div>
+            </section>
+            <div class=" clearfix"></div>
+            <!--end section-->
+        </div>
+        <div class="clearfix"></div>
+        <!--end header inner-->
+
+        <!--end section-->
+
+
+        <!--end map-->
+        <section class="sec-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="clearfix"></div>
+                    <div class="col-md-10 col-centered">
+                        <!--                        <h3>Contact Form</h3>-->
+                        <!--                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit. Suspendisse et justo. augue.</p>-->
+                        <!--                        <br/>-->
+                        <div class="col-md-4 col-centered">
+                            <div layout:fragment="content">
+                                <form class="form-signin" style="margin: 15px" th:action="@{/signup}" method="post">
+                                    <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
+                                    <h1 class="h3 mb-3 font-weight-normal">Signup Here</h1>
+                                    <div th:if="${param.error}">
+                                        Invalid email and password.
+                                    </div>
+                                    <div th:if="${param.logout}">
+                                        You have been logged out.
+                                    </div>
+                                    <label for="inputEmail" class="sr-only">Username</label>
+                                    <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Username" required="" />
+                                    <label for="inputPassword" class="sr-only">Password</label>
+                                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" />
+                                    <label for="inputFullname" class="sr-only">Full Name</label>
+                                    <input type="text" name="fullname" id="inputFullname" class="form-control" placeholder="Fullname" required="" />
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+                                </form>
+                                <form class="form-signin" style="margin: 15px" th:action="@{/login}" method="get">
+                                    <button class="btn btn-md btn-success btn-block" type="Submit">Sign In</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- end section -->
+
+    <div class="sec-padding-5 section-fulldark">
+        <div class="container">
+            <div class="row">
+                <div class=" col-md-12 col-centered text-center">
+                    <div class="clearfix"></div>
+
+                    <ul class="footer-social-icons round">
+                        <!--              <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>-->
+                        <li><a href="#"><i class="fa fa-github"></i></a></li>
+                        <!--              <li><a class="active" href="#"><i class="fa fa-google-plus"></i></a></li>-->
+                        <!--              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>-->
+                        <!--              <li><a href="#"><i class="fa fa-dribbble"></i></a></li>-->
+                    </ul>
+                    <div class="col-md-12">
+                        <p class="text-gray"> All rights reserved. © 2020 </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- end section -->
+
+    <a href="#" class="scrollup"></a><!-- end scroll to top of the page-->
+
+</div>
+<!--end site wrapper-->
+</div>
+<!--end wrapper boxed-->
+
+<!-- Scripts -->
+<script src="js/jquery/jquery.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/less/less.min.js" data-env="development"></script>
+<!-- Scripts END -->
+
+<!-- Template scripts -->
+<script src="js/megamenu/js/main.js"></script>
+<script src="js/owl-carousel/owl.carousel.js"></script>
+<script src="js/owl-carousel/custom.js"></script>
+<script src="js/owl-carousel/owl.carousel.js"></script>
+<script src="js/owl-carousel/custom.js"></script>
+<script src="js/parallax/parallax-background.min.js"></script>
+<script src="js/parallax/parallax-custom.js"></script>
+<script src="js/loaders/loading-custom.js"></script>
+<script src="js/functions/functions.js"></script>
+
+</body>
 </html>

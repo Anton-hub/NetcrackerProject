@@ -22,7 +22,7 @@ public class TokenService implements VkSdkObjHolder{
 	}
 	
 	public String takeToken() {
-		if (token != "") {
+		if (token != null) {
 			return token;
 		} else {
 			if (tryToInit())

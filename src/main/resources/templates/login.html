@@ -82,9 +82,7 @@
                                     </ul>
                                     <div id="menu" class="collapse">
                                         <ul class="nav navbar-nav">
-                                            <li> <a href= "/index"><b>Главная</b></a> </li>
-                                            <li class="right"> <a href="/search"><b>К поиску</b></a></li>
-
+                                            <li class="right"> <a href="/index"><b>Главная</b></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -108,15 +106,13 @@
                 <div class="container-fluid" >
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 clearfix nopadding">
-                            <div class="header-inner"> 
-                            	<div class="overlay">
-	                                <div class="text text-center">
-	                                    <h3 class="uppercase text-white less-mar-1 title">Связаться</h3>
-	                                    <h6 class="uppercase text-white sub-title">с разработчиками</h6>
-	                                </div>
-                            	</div>
-                       		</div>
-                    	</div>
+                            <div class="header-inner"> <div class="overlay">
+                                <div class="text text-center">
+                                    <h3 class="uppercase text-white less-mar-1 title">Вход</h3>
+                                    <h6 class="uppercase text-white sub-title">в учетную запись</h6>
+                                </div>
+                            </div>
+                            </div></div>
                     </div>
                 </div>
             </section>
@@ -135,12 +131,12 @@
                 <div class="row">
                     <div class="clearfix"></div>
                     <div class="col-md-10 col-centered">
-                    <h3>Contact Form</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit. Suspendisse et justo. augue.</p>
-                    <br/>
-                    <div class="col-md-6 col-centered">
+<!--                    <h3>Contact Form</h3>-->
+<!--                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse et justo. Praesent mattis commodo augue. Aliquam ornare hendrerit consectetuer adipiscing elit. Suspendisse et justo. augue.</p>-->
+<!--                    <br/>-->
+                    <div class="col-md-4 col-centered">
                     <div layout:fragment="content">
-                        <form class="form-signin" th:action="@{/login}" method="post">
+                        <form class="form-signin" style="margin: 15px" th:action="@{/login}" method="post">
                             <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
                             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                             <div th:if="${param.error}">
@@ -155,7 +151,7 @@
                             <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" />
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                         </form>
-                        <form class="form-signin" th:action="@{/signup}" method="get">
+                        <form class="form-signin" style="margin: 15px" th:action="@{/signup}" method="get">
                             <button class="btn btn-md btn-success btn-block" type="Submit">Signup Here</button>
                         </form>
                     </div>
@@ -177,11 +173,11 @@
                     <div class="clearfix"></div>
 
                     <ul class="footer-social-icons round">
-                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a class="active" href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                        <!--              <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>-->
+                        <li><a href="#"><i class="fa fa-github"></i></a></li>
+                        <!--              <li><a class="active" href="#"><i class="fa fa-google-plus"></i></a></li>-->
+                        <!--              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>-->
+                        <!--              <li><a href="#"><i class="fa fa-dribbble"></i></a></li>-->
                     </ul>
                     <div class="col-md-12">
                         <p class="text-gray"> All rights reserved. © 2020 </p>

@@ -13,7 +13,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="js/mdb.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/history.js"></script>
 
 
     <!-- Mobile view -->
@@ -48,9 +48,6 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- Style Customizer's stylesheets END -->
-
-    <!-- Skin stylesheet -->
 
 </head>
 <body>
@@ -69,7 +66,7 @@
 
 
 <div class="wrapper-boxed">
-    <section class="site-wrapper">
+    <div class="site-wrapper">
         <div class="col-md-12 nopadding">
             <div class="header-section style1 pin-style">
                 <div class="container">
@@ -85,7 +82,6 @@
                                     <div id="menu" class="collapse">
                                         <ul class="nav navbar-nav">
                                             <li class="right"> <a href="/index"><b>Главная</b></a></li>
-                                            <li class="right"> <a href="/send"><b>Обратная связь</b></a></li>
                                             <li class="right"> <a href="/logout"><b>Выход</b></a></li>
                                         </ul>
                                     </div>
@@ -112,8 +108,8 @@
                         <div class="col-md-12 col-sm-12 col-xs-12 clearfix nopadding">
                             <div class="header-inner"> <div class="overlay">
                                 <div class="text text-center">
-                                    <h3 class="uppercase text-white less-mar-1 title">Приступим</h3>
-                                    <h6 class="uppercase text-white sub-title">К анализу данных</h6>
+                                    <h3 class="uppercase text-white less-mar-1 title">Добро</h3>
+                                    <h6 class="uppercase text-white sub-title">Пожаловать</h6>
                                 </div>
                             </div>
                             </div></div>
@@ -125,50 +121,101 @@
         </div>
         <section class="sec-padding">
             <div class="container">
-                <div class="row">
+                <div class="row" >
+                        <div class="col-md-4" style="padding-top: 30px">
+                        <div class="ce-feature-box-6 text-center">
+                            <div class="icon-plain-small center"><span class="icon-phone text-primary"></span></div>
+                            <a href= "/send"><div class="text-box text-center">
+                                <div class="top-line"></div>
+                                <h5 class="title font-weight-5">Связаться с разработчиками</h5>
+                                <p> Оставьте сообщение, и мы обязательно ответим</p>
+                            </div></a>
+                        </div>
+                    </div>
+                    <!--end item-->
 
-                    <div class="col-sm-8 col-centered">
-                        <div class="sec-title-container text-left">
-                            <div class="ce-title-line"></div>
-                            <div class="clearfix"></div>
-                            <h2 class="font-weight-6 less-mar-1 line-height-5">Добро пожаловать</h2>
-                            <!--               <div class="col-md-6 nopadding"> <h6 class="font-weight-3">Praesent mattis commodo augue Aliquam ornare hendrerit augue Cras tellus. <br> </h6></div>-->
-                            <li> <a href= "/search"><b>Поиск сообщества</b></a> </li>
-                            <li> <a href= "/history"><b>История поиска</b></a> </li>
-                            <li> <a href= "/send"><b>Связь с разработчиками</b></a> </li>
-                            <li> <a href= "/logout"><b>Выход</b></a> </li>
-                            <li> <a href= "https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/dash&scope=offline,groups&response_type=code&v=5.103"><b>Подтвердить аккаунт ВК</b></a> </li>
+                    <div class="col-md-4" style="padding-top: 30px">
+                        <div class="ce-feature-box-6 text-center">
+                            <a href= "https://oauth.vk.com/authorize?client_id=7362729&display=page&redirect_uri=http://localhost:8080/dash&scope=offline&response_type=code&v=5.103">
+                            <div class="icon-plain-small center"><span class="icon-lock text-primary"></span></div>
+                            <div class="text-box text-center">
+                                <div class="top-line"></div>
+                                <h5 class="title font-weight-5">Подтвердить аккаунт ВК</h5>
+                                <p>Для доступа к статистике закрытых групп (при условии, что вы там состоите)</p>
+                            </div></a>
+                        </div>
+                    </div>
+                    <!--end item-->
+
+
+                    <div class="col-md-4" style="padding-top: 30px">
+                        <div class="ce-feature-box-6 text-center">
+                            <a href="/search"><div class="icon-plain-small center"><span class="icon-magnifying-glass text-primary"></span></div>
+                            <div class="text-box text-center">
+                                <div class="top-line"></div>
+                                <h5 class="title font-weight-5">Искать группу</h5>
+                                <p>Различная статистика, а также топ-20 групп, популярных среди подписчиков</p>
+                            </div></a>
+                        </div>
+                    </div>
+                        <!--end title-->
+                    </div>
+<!--                </div>-->
+            <div class = "row">
+                <div class="col-sm-8 col-centered" style="padding: 30px">
+                    <div class="sec-title-container text-left">
+                        <div class="ce-title-line"></div>
+                        <div class="clearfix"></div>
+                        <h2 class="font-weight-6 less-mar-1 line-height-5"> Не в первый раз здесь? </h2>
+                        <div class="col-md-6 nopadding"> <h6 class="font-weight-3"> Посмотрите свою историю поиска  </h6></div>
+                    </div>
+                    <form class="form-inline" style="margin:20px 20px 20px 20px" id="historyForm">
+
+                        <button id="historyBtn" class="btn btn-outline-primary btn-medium">Показать историю поиска</button>
+                        <div id="getResultDiv" style="padding:0px 10px 0px 50px"/>
+                    </form>
+                </div>
+
+                <div class="col-md-12">
+                    <table class="table table-hover">
+                        <thead id="thead">
+                        <tbody id="tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <!-- end section -->
+
+
+
+
+        <div class="sec-padding-5 section-fulldark">
+            <div class="container">
+                <div class="row">
+                    <div class=" col-md-12 col-centered text-center">
+                        <div class="clearfix"></div>
+
+                        <ul class="footer-social-icons round">
+                            <!--              <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>-->
+                            <li><a href="#"><i class="fa fa-github"></i></a></li>
+                            <!--              <li><a class="active" href="#"><i class="fa fa-google-plus"></i></a></li>-->
+                            <!--              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>-->
+                            <!--              <li><a href="#"><i class="fa fa-dribbble"></i></a></li>-->
+                        </ul>
+                        <div class="col-md-12">
+                            <p class="text-gray"> All rights reserved. © 2020 </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-
-<div class="sec-padding-5 section-fulldark">
-    <div class="container">
-        <div class="row">
-            <div class=" col-md-12 col-centered text-center">
-                <div class="clearfix"></div>
-
-                <ul class="footer-social-icons round">
-                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a class="active" href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                </ul>
-                <div class="col-md-12">
-                    <p class="text-gray"> All rights reserved. © 2020 </p>
-                </div>
-            </div>
         </div>
-    </div>
-</div>
-<div class="clearfix"></div>
-<!-- end section -->
+        <div class="clearfix"></div>
+        <!-- end section -->
 
-<a href="#" class="scrollup"></a><!-- end scroll to top of the page-->
+        <a href="#" class="scrollup"><i class="fa fa-angle-up" aria-hidden="true"></i></a><!-- end scroll to top of the page-->
 
 </div>
 <!--end site wrapper-->
