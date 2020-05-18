@@ -63,11 +63,10 @@ public class StockController {
 		Group group;
 		try {
 //			group = service.groupRequestHandler(search.getGroupName());
-			LOG.info("fut1" + search.getGroupName());
 			CompletableFuture<Group> fut = manager.getGroup(search.getGroupName());
-			LOG.info("fut2" + search.getGroupName());
+			LOG.info("fut1 " + search.getGroupName());
 			group = fut.get();
-			LOG.info("fut3" + search.getGroupName());
+			LOG.info("fut2 " + search.getGroupName());
 		} catch (NoDataAccessException | InterruptedException | ExecutionException e) {
 			group = null; //добавить сюда обработку ошибки
 		}
