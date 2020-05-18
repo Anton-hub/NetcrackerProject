@@ -3,6 +3,8 @@ package com.vkgroupstat.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import com.vkgroupstat.vkconnection.vkentity.Subscription;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +24,7 @@ import com.vkgroupstat.model.SearchCriteria;
 import com.vkgroupstat.model.User;
 import com.vkgroupstat.service.FeedbackService;
 import com.vkgroupstat.service.GroupService;
+import com.vkgroupstat.service.QueueManager;
 import com.vkgroupstat.service.UserService;
 
 import javax.servlet.ServletOutputStream;
@@ -42,10 +45,13 @@ public class StockController {
 //	String email="checkins.tracker@gmail.com";
 	private final GroupService service;
 	private final UserService uService;
+	
+	private final QueueManager manager;
 
-	public StockController(GroupService service, UserService uService) {
+	public StockController(GroupService service, UserService uService, QueueManager manager) {
 		this.service = service;
 		this.uService = uService;
+		this.manager = manager;
 	}
 
 
@@ -56,11 +62,16 @@ public class StockController {
 
 		Group group;
 		try {
-			group = service.groupRequestHandler(search.getGroupName());
-		} catch (NoDataAccessException e) {
+//			group = service.groupRequestHandler(search.getGroupName());
+			LOG.info("fut1" + search.getGroupName());
+			CompletableFuture<Group> fut = manager.getGroup(search.getGroupName());
+			LOG.info("fut2" + search.getGroupName());
+			group = fut.get();
+			LOG.info("fut3" + search.getGroupName());
+		} catch (NoDataAccessException | InterruptedException | ExecutionException e) {
 			group = null; //добавить сюда обработку ошибки
 		}
-//		model.addAttribute(group);
+		model.addAttribute(group);
 		return ResponseEntity.ok(group);
 
 	}
