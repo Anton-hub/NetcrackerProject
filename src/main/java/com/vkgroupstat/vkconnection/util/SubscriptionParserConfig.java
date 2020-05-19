@@ -32,7 +32,7 @@ public class SubscriptionParserConfig {
 	}
 	
 	public Integer batchSize() {
-		return subsCount / mode.getThreadCount();
+		return subsCount / mode.getThreadCount() + 1;
 	}
 	public Integer threadCount() {
 		return mode.getThreadCount();
