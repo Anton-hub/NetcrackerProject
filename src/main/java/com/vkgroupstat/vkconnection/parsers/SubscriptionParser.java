@@ -38,10 +38,11 @@ public class SubscriptionParser {
 	public LinkedList<Subscription> parse() {
 		ExecutorService executor = Executors.newCachedThreadPool();		
 		for (int i = 0 ; i < mode.threadCount() ; i++)
-			executor.execute(new Request());		
+			executor.execute(new Request());
+		executor.execute(new Checker());
 		executor.shutdown();
 		try {
-			if (executor.awaitTermination(5, TimeUnit.MINUTES)) {// ДОРАБОТАТЬ
+			if (executor.awaitTermination(40, TimeUnit.MINUTES)) {// ДОРАБОТАТЬ
 				 executor.shutdownNow();
 			}
 		} catch (InterruptedException e) {LOG.error(e.getMessage());}
@@ -63,7 +64,8 @@ public class SubscriptionParser {
 					for (int i = 0; (in.size() > 0)&&(i < mode.batchSize()); i++) {
 						threadIn.add(in.remove());
 					}
-				}				
+				}
+				LOG.info("cut");
 				while (threadIn.size() > 0) {
 					Subscriber subscriber = threadIn.remove();
 					if (subscriber.getClosed()||subscriber.getIsBanned())
@@ -78,7 +80,8 @@ public class SubscriptionParser {
 						} else {
 							threadOut.put(subscriptionId, new Subscription(subscriptionId, subscriber));
 						}
-					}					
+					}
+					LOG.info(threadIn.size());
 				}
 			}			
 			synchronized (out) {				
@@ -92,4 +95,19 @@ public class SubscriptionParser {
 			}
 		}
 	}
+	class Checker implements  Runnable{
+
+		@Override
+		public void run() {
+			synchronized (in) {
+				while(in.size()>0) {
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {}
+					LOG.info("SIZE : " + in.size());
+				}
+			}
+		}
+	}
+
 }
