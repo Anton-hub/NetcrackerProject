@@ -18,7 +18,7 @@ public interface VkSdkObjHolder {
 	 * но пока тут мой токен)) 
 	 * P.S. скорей всего когда ты это читаешь он уже просрочен
 	 */
-	String U_TOKEN = "f1fe991990510ebbd0a03c22a8432ef1e428f75dfe1520a7f3b20600c236ff688403201115801d0c11f8a";
+	String U_TOKEN = "8417495f64370f891321811d7571d1485c4e342de39ee7b1c0faa1734cb21c711c2756f56c8d78250d74e";
 	UserActor U_ACTOR = new UserActor(APPID, U_TOKEN);
 
 	VkApiClient VK = new VkApiClient(HttpTransportClient.getInstance());
