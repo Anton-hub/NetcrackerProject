@@ -42,7 +42,9 @@ public class GroupService {
 	public LinkedList<Group> findListById(LinkedList<String> listId){
 		LinkedList<Group> responseList = new LinkedList<Group>();
 		for (String item : listId) {
-			responseList.add(repository.findById(item));
+			Group group = repository.findById(item);
+			if (group != null)
+				responseList.add(group);
 		}		
 		return responseList;
 	}
